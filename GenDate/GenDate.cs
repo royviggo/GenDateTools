@@ -75,7 +75,12 @@ namespace GenDate
 
         public GenDate(string dateString)
         {
-            StringParser.Parse(dateString);
+            var genDate = StringParser.Parse(dateString);
+            DateType = genDate.DateType;
+            DateFrom = genDate.DateFrom;
+            DateTo = genDate.DateTo;
+            DatePhrase = genDate.DatePhrase;
+            IsValid = genDate.IsValid;
             SortDate = GetSortDate();
         }
 
@@ -84,12 +89,11 @@ namespace GenDate
             ConvertIntToGenDate(dateNum);
         }
 
-        private void ConvertIntToGenDate(long dateInt)
+        private void ConvertIntToGenDate(long dateNum)
         {
-            long convertInt = 11900010119000101;
-            long from = convertInt / 100000000;
-            long to = convertInt % 100000000;
-            long type = from / 100000000;
+            long from = (dateNum / 1000000000) % 100000000;
+            long type = (dateNum / 100000000) % 10;
+            long to = dateNum % 100000000;
 
             DateType = (GenDateType)type;
             DateFrom = new DatePart(from);
@@ -101,7 +105,12 @@ namespace GenDate
         public GenDate(IDateStringParser parser, string dateString)
         {
             StringParser = parser;
-            StringParser.Parse(dateString);
+            var genDate = StringParser.Parse(dateString);
+            DateType = genDate.DateType;
+            DateFrom = genDate.DateFrom;
+            DateTo = genDate.DateTo;
+            DatePhrase = genDate.DatePhrase;
+            IsValid = genDate.IsValid;
             SortDate = GetSortDate();
         }
 
