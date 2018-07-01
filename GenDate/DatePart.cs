@@ -20,6 +20,20 @@ namespace GenDate
             Day = day;
         }
 
+        public DatePart(long date)
+        {
+            var day = date / 100;
+            var month = (date % 100) / 100;
+            var year = date / 10000;
+                
+            if (!(year >= 0 && year <= 9999 && month >= 0 && month <= 12 && day >= 0 && day <= 31))
+                throw new ArgumentException("Arguments out of range");
+
+            Year = (int)year;
+            Month = (int)month;
+            Day = (int)day;
+        }
+
         public DatePart(string year, string month, string day)
             : this(Convert.ToInt32(year), Convert.ToInt32(month), Convert.ToInt32(day)) { }
 

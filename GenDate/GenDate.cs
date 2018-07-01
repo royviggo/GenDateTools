@@ -78,6 +78,26 @@ namespace GenDate
             StringParser.Parse(dateString);
             SortDate = GetSortDate();
         }
+
+        public GenDate(long dateNum)
+        {
+            ConvertIntToGenDate(dateNum);
+        }
+
+        private void ConvertIntToGenDate(long dateInt)
+        {
+            long convertInt = 11900010119000101;
+            long from = convertInt / 100000000;
+            long to = convertInt % 100000000;
+            long type = from / 100000000;
+
+            DateType = (GenDateType)type;
+            DateFrom = new DatePart(from);
+            DateTo = new DatePart(to);
+            SortDate = GetSortDate();
+            IsValid = true;
+        }
+
         public GenDate(IDateStringParser parser, string dateString)
         {
             StringParser = parser;
