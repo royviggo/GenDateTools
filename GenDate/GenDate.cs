@@ -16,6 +16,7 @@ namespace GenDate
         public bool IsValid { get;  set; }
         public int SortDate { get;  set; }
         public string DateString => CreateDateString();
+        public long DateLong => GetLongDate();
 
         public GenDate() { }
 
@@ -183,6 +184,16 @@ namespace GenDate
         private int GetSortDate()
         {
             return (DatePart.CompareValue(DateFrom) * 10) + (int)DateType;
+        }
+
+        private long GetLongDate()
+        {
+            if (!IsValid)
+                return 0;
+
+            return ((DatePart.CompareValue(DateFrom) + 100000000L) * 1000000000L) + 
+                   (((long)DateType) * 100000000L) + 
+                   DatePart.CompareValue(DateTo);
         }
 
         private string CreateDateString()

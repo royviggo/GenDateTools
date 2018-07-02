@@ -98,6 +98,18 @@ namespace GenDate.Test
         }
 
         [Theory]
+        [InlineData(119000101219000101)]
+        [InlineData(118981101519000101)]
+        [InlineData(118900101619000101)]
+        [InlineData(120180229120180229)]
+        public void GenDate_GetDateLong_ValidGenDate(long dateNum)
+        {
+            var genDate = new GenDate(dateNum);
+
+            Assert.Equal(dateNum, genDate.DateLong);
+        }
+
+        [Theory]
         [InlineData("110000000310000000", "Abt. 1000")]
         [InlineData("119000101219000101", "01 Jan 1900")]
         [InlineData("118981101718981101", "Aft. 01 Nov 1898")]
