@@ -84,24 +84,6 @@ namespace GenDate
             SortDate = GetSortDate();
         }
 
-        public GenDate(long dateNum)
-        {
-            ConvertIntToGenDate(dateNum);
-        }
-
-        private void ConvertIntToGenDate(long dateNum)
-        {
-            long from = (dateNum / 1000000000) % 100000000;
-            long type = (dateNum / 100000000) % 10;
-            long to = dateNum % 100000000;
-
-            DateType = (GenDateType)type;
-            DateFrom = new DatePart(from);
-            DateTo = new DatePart(to);
-            SortDate = GetSortDate();
-            IsValid = true;
-        }
-
         public GenDate(IDateStringParser parser, string dateString)
         {
             StringParser = parser;
@@ -114,6 +96,15 @@ namespace GenDate
             SortDate = GetSortDate();
         }
 
+        public GenDate(long dateNum)
+        {
+            DateType = (GenDateType)((dateNum / 100000000) % 10);
+            DateFrom = new DatePart((dateNum / 1000000000) % 100000000);
+            DateTo = new DatePart(dateNum % 100000000);
+            SortDate = GetSortDate();
+            IsValid = true;
+        }
+
         public int CompareTo(GenDate other)
         {
             var sortDate = GetSortDate();
@@ -121,25 +112,41 @@ namespace GenDate
 
         }
 
-        public static bool operator ==(GenDate obj1, GenDate obj2)
+        public static bool operator ==(GenDate genDate1, GenDate genDate2)
         {
-            return obj1 != null && (Equals(obj1, obj2) || obj1.Equals(obj2));
+            if (genDate1 is null)
+                return false;
+
+            return genDate1.Equals(genDate2);
         }
 
-        public static bool operator !=(GenDate obj1, GenDate obj2)
+        public static bool operator !=(GenDate genDate1, GenDate genDate2)
         {
-            return !(obj1 == obj2);
+            if (genDate1 is null)
+                return false;
+
+            return !(genDate1 == genDate2);
         }
 
         public bool Equals(GenDate other)
         {
-            return other != null && (DateType == other.DateType && DateFrom == other.DateFrom && DateTo == other.DateTo 
-                   && DatePhrase == other.DatePhrase && IsValid == other.IsValid && SortDate == other.SortDate);
+            if (other is null)
+                return false;
+            if (ReferenceEquals(this, other))
+                return true;
+
+            return (DateType == other.DateType && DateFrom == other.DateFrom && DateTo == other.DateTo && 
+                    DatePhrase == other.DatePhrase && IsValid == other.IsValid && SortDate == other.SortDate);
         }
 
         public override bool Equals(object obj)
         {
-            return obj != null && (obj.GetType() == GetType() && Equals((GenDate)obj));
+            if (obj is null)
+                return false;
+            if (GetType() != obj.GetType())
+                return false;
+
+            return Equals((GenDate) obj);
         }
 
         public override int GetHashCode()

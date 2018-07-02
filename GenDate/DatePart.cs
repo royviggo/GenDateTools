@@ -57,11 +57,17 @@ namespace GenDate
 
         public static bool operator ==(DatePart datePart1, DatePart datePart2)
         {
+            if (datePart1 is null)
+                return false;
+
             return datePart1.Equals(datePart2);
         }
 
         public static bool operator !=(DatePart datePart1, DatePart datePart2)
         {
+            if (datePart1 is null)
+                return false;
+
             return !(datePart1 == datePart2);
         }
 
