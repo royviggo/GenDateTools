@@ -4,15 +4,9 @@ namespace GenDate
 {
     public class DatePart : IEquatable<DatePart>, IComparable<DatePart>
     {
-        #region Properties
-
         public int Year { get;  set; }
         public int Month { get;  set; }
         public int Day { get;  set; }
-
-        #endregion
-
-        #region Constructors
 
         public DatePart() { }
 
@@ -35,19 +29,21 @@ namespace GenDate
         public DatePart(string date)
             : this(GetSubString(date, 0, 4), GetSubString(date, 4, 2), GetSubString(date, 6, 2)) { }
 
-        #endregion
-
-        #region Methods
-
+        /// <summary>
+        /// Check if the DatePart object is valid, which means a valid date except that either one or more of 
+        /// the values for Year, Month and Day can be 0. If a property is 0, it means that the value is unknown.
+        /// </summary>
         public bool IsValid() => IsValid(Year, Month, Day);
 
+        /// <summary>
+        /// Check if the DatePart object is a valid DateTime.
+        /// </summary>
         public bool IsValidDateTime() => IsValidDateTime(Year, Month, Day);
 
+        /// <summary>
+        /// Check if the year is a leap year.
+        /// </summary>
         public bool IsLeapYear() => IsLeapYear(Year);
-
-        #endregion
-
-        #region Overrides
 
         public override string ToString()
         {
@@ -122,13 +118,9 @@ namespace GenDate
             }
         }
 
-        #endregion
-
-        #region Static Functions
-
         /// <summary>
-        /// Checks if the parameters form a valid DatePart, which is a valid date except that one or 
-        /// more parameters can be 0. If a parameter is 0, it means that the value is unknown.
+        /// Check if the parameters year, month and day is a valid DatePart, which means a valid date except that 
+        /// either one or more of the parameters can be 0. If a value is 0, it means that the value is unknown.
         /// </summary>
         public static bool IsValid(int year, int month, int day)
         {
@@ -144,7 +136,7 @@ namespace GenDate
         }
 
         /// <summary>
-        /// Checks if a year is a leap year.
+        /// Check if a year is a leap year.
         /// </summary>
         public static bool IsLeapYear(int year)
         {
@@ -153,10 +145,6 @@ namespace GenDate
 
             return (year % 4 == 0 && year % 100 != 0) || year % 400 == 0;
         }
-
-        #endregion
-
-        #region Private Functions
 
         private static string GetSubString(string source, int startIndex, int length)
         {
@@ -169,7 +157,7 @@ namespace GenDate
         {
             if (year >= lowestValue && year <= 9999 && month >= lowestValue && month <= 12)
             {
-                int[] days = GenExtension.IsLeapYear(year)
+                int[] days = IsLeapYear(year)
                     ? new[] { 31, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 }
                     : new[] { 31, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
 
@@ -178,7 +166,5 @@ namespace GenDate
             }
             return false;
         }
-
-        #endregion
     }
 }
