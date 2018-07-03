@@ -52,5 +52,20 @@ namespace GenDate
             {11, "Nov" },
             {12, "Dec" },
         };
+
+        public static bool IsLeapYear(this int year)
+        {
+            return DatePart.IsLeapYear(year);
+        }
+
+        public static bool IsValid(this DatePart datePart)
+        {
+            return DatePart.IsValid(datePart.Year, datePart.Month, datePart.Day);
+        }
+
+        public static bool IsValidDateTime(this DatePart datePart)
+        {
+            return DatePart.IsValidDateTime(datePart.Year, datePart.Month, datePart.Day);
+        }
     }
 }

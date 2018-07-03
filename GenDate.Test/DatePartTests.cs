@@ -122,5 +122,57 @@ namespace GenDate.Test
 
             Assert.Equal(expected, datePart.ToString());
         }
+
+        [Theory]
+        [InlineData(-20, false)]
+        [InlineData(0, false)]
+        [InlineData(4, true)]
+        [InlineData(10, false)]
+        [InlineData(100, false)]
+        [InlineData(1600, true)]
+        [InlineData(1900, false)]
+        [InlineData(2000, true)]
+        [InlineData(360, true)]
+        [InlineData(2004, true)]
+        [InlineData(9000, false)]
+        [InlineData(10000, false)]
+        public void DatePart_IsLeapYear_Expected(int year, bool expected)
+        {
+            var isValid = DatePart.IsLeapYear(year);
+
+            Assert.Equal(expected, isValid);
+        }
+
+        [Theory]
+        [InlineData(-0, -10, 0, false)]
+        [InlineData(0, 0, 0, true)]
+        [InlineData(1900, 1, 1, true)]
+        [InlineData(1898, 2, 31, false)]
+        [InlineData(1890, 11, 31, false)]
+        [InlineData(1980, 02, 29, true)]
+        [InlineData(2000, 02, 29, false)]
+        [InlineData(9999, 12, 31, true)]
+        public void DatePart_YearMonthDay_IsValidDate(int year, int month, int day, bool expected)
+        {
+            var isValid = DatePart.IsValid(year, month, day);
+
+            Assert.Equal(expected, isValid);
+        }
+
+        [Theory]
+        [InlineData(-0, -10, 0, false)]
+        [InlineData(0, 0, 0, false)]
+        [InlineData(1900, 1, 1, true)]
+        [InlineData(1898, 2, 31, false)]
+        [InlineData(1890, 11, 31, false)]
+        [InlineData(1980, 02, 29, true)]
+        [InlineData(2000, 02, 29, false)]
+        [InlineData(9999, 12, 31, true)]
+        public void DatePart_YearMonthDay_IsValidDateTime(int year, int month, int day, bool expected)
+        {
+            var isValid = DatePart.IsValidDateTime(year, month, day);
+
+            Assert.Equal(expected, isValid);
+        }
     }
 }

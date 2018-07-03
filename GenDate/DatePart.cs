@@ -4,9 +4,15 @@ namespace GenDate
 {
     public class DatePart : IEquatable<DatePart>, IComparable<DatePart>
     {
+        #region Properties
+
         public int Year { get;  set; }
         public int Month { get;  set; }
         public int Day { get;  set; }
+
+        #endregion
+
+        #region Constructors
 
         public DatePart() { }
 
@@ -28,6 +34,20 @@ namespace GenDate
 
         public DatePart(string date)
             : this(GetSubString(date, 0, 4), GetSubString(date, 4, 2), GetSubString(date, 6, 2)) { }
+
+        #endregion
+
+        #region Methods
+
+        public bool IsValid() => IsValid(Year, Month, Day);
+
+        public bool IsValidDateTime() => IsValidDateTime(Year, Month, Day);
+
+        public bool IsLeapYear() => IsLeapYear(Year);
+
+        #endregion
+
+        #region Overrides
 
         public override string ToString()
         {
@@ -102,11 +122,63 @@ namespace GenDate
             }
         }
 
+        #endregion
+
+        #region Static Functions
+
+        /// <summary>
+        /// Checks if the parameters form a valid DatePart, which is a valid date except that one or 
+        /// more parameters can be 0. If a parameter is 0, it means that the value is unknown.
+        /// </summary>
+        public static bool IsValid(int year, int month, int day)
+        {
+            return IsValidDate(year, month, day, 0);
+        }
+
+        /// <summary>
+        /// Checks if the parameters form a valid DateTime.
+        /// </summary>
+        public static bool IsValidDateTime(int year, int month, int day)
+        {
+            return IsValidDate(year, month, day, 1);
+        }
+
+        /// <summary>
+        /// Checks if a year is a leap year.
+        /// </summary>
+        public static bool IsLeapYear(int year)
+        {
+            if (year <= 0 || year > 9999)
+                return false;
+
+            return (year % 4 == 0 && year % 100 != 0) || year % 400 == 0;
+        }
+
+        #endregion
+
+        #region Private Functions
+
         private static string GetSubString(string source, int startIndex, int length)
         {
             var returnString = source;
 
             return returnString.Substring(startIndex, length);
         }
+
+        private static bool IsValidDate(int year, int month, int day, int lowestValue)
+        {
+            if (year >= lowestValue && year <= 9999 && month >= lowestValue && month <= 12)
+            {
+                int[] days = GenExtension.IsLeapYear(year)
+                    ? new[] { 31, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 }
+                    : new[] { 31, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+
+                if (day >= lowestValue && day <= days[month])
+                    return true;
+            }
+            return false;
+        }
+
+        #endregion
     }
 }

@@ -126,7 +126,5 @@ namespace GenDate.Test
 
             Assert.Equal(expected, genDate.ToString());
         }
-
-        
     }
 }
