@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace GenDate
 {
@@ -9,9 +10,9 @@ namespace GenDate
     /// </summary>
     public class DatePart : IEquatable<DatePart>, IComparable<DatePart>
     {
-        public int Year { get;  set; }
-        public int Month { get;  set; }
-        public int Day { get;  set; }
+        public int Year { get; set; }
+        public int Month { get; set; }
+        public int Day { get; set; }
 
         /// <summary>
         /// Creates a DatePart object without parameters, with only unknown values for Year, Month and Day.
@@ -54,8 +55,8 @@ namespace GenDate
         /// <para>These values are recreated from the long value, and passed to <see cref="DatePart.DatePart(int, int, int)"/>.</para>
         /// </summary>
         /// <exception cref="ArgumentOutOfRangeException"></exception>
-        public DatePart(long date) 
-            : this((int) date / 10000, (int)(date / 100) % 100, (int) date % 100) { }
+        public DatePart(long date)
+            : this((int)date / 10000, (int)(date / 100) % 100, (int)date % 100) { }
 
         /// <summary>
         /// Creates a DatePart object using a string date of the format <c>YYYYMMDD</c>. The values are split and passed to 
@@ -196,7 +197,7 @@ namespace GenDate
             if (GetType() != obj.GetType())
                 return false;
 
-            return Equals((DatePart) obj);
+            return Equals((DatePart)obj);
         }
 
         public override int GetHashCode()
@@ -216,7 +217,7 @@ namespace GenDate
         public override string ToString()
         {
             var output = Day > 0 && Day <= 31 ? Day.ToString().PadLeft(2, '0') : "";
-            var month = Month > 0 && Month <= 12 ? Month.ToMonthName() : "";
+            var month = Month > 0 && Month <= 12 ? MonthName(Month) : "";
             var year = Year > 0 ? Year.ToString() : "";
 
             output += output != "" && month != "" ? " " : "";
@@ -226,12 +227,24 @@ namespace GenDate
             return output + year;
         }
 
+        /// <summary>
+        /// Takes a month number as parameter and returns a three character long month name.
+        /// </summary>
+        public static string MonthName(int month)
+        {
+            var months = new Dictionary<int, string>
+            {
+                { 1, "Jan" }, { 2, "Feb" }, { 3, "Mar" }, { 4, "Apr" }, { 5, "May" }, { 6, "Jun" },
+                { 7, "Jul" }, { 8, "Aug" }, { 9, "Sep" }, {10, "Oct" }, {11, "Nov" }, {12, "Dec" },
+            };
+            return months.ContainsKey(month) ? months[month] : "";
+        }
+
         private static string GetSubString(string source, int startIndex, int length)
         {
             var returnString = source;
 
             return returnString.Substring(startIndex, length);
         }
-
     }
 }
