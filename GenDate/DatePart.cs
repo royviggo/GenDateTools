@@ -4,9 +4,8 @@ namespace GenDate
 {
     /// <summary>
     /// <para>DatePart is a class for genealogy dates. It has properties for Year, Month and Day, and anyone of them can be 0, which means 
-    /// that the value is unknown.</para> <para>In genealogy there often are unknown parts of the date, in many cases only the Year is known.</para>
-    /// <para>Limitations: Uses rules from the Gregorian calendar, e.g. leap year. Year must be a number from 0 to 9999, Month a number from 
-    /// 0 to 12 and Day a number between 0 and 31.</para>
+    /// that the value is unknown.</para><para>Limitations: Uses rules from the Gregorian calendar, e.g. leap year. Year must be a number 
+    /// from 0 to 9999, Month a number from 0 to 12 and Day a number between 0 and 31.</para>
     /// </summary>
     public class DatePart : IEquatable<DatePart>, IComparable<DatePart>
     {
