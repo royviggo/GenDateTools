@@ -46,36 +46,6 @@ namespace GenDate.Test
         }
 
         [Theory]
-        [InlineData(0, 0, 0, "00000000")]
-        [InlineData(1900, 1, 1, "19000101")]
-        [InlineData(1898, 11, 1, "18981101")]
-        [InlineData(1890, 11, 21, "18901121")]
-        [InlineData(2018, 02, 29, "20180229")]
-        [InlineData(9999, 12, 31, "99991231")]
-        public void DatePart_EqualToOtherDatePart_ReturnsTrue(int year, int month, int day, string compareDate)
-        {
-            var datePart1 = new DatePart(year, month, day);
-            var datePart2 = new DatePart(compareDate);
-
-            Assert.True(datePart1.Equals(datePart2));
-        }
-
-        [Theory]
-        [InlineData(0, 0, 0, "00000000")]
-        [InlineData(1900, 1, 1, "19000101")]
-        [InlineData(1898, 11, 1, "18981101")]
-        [InlineData(1890, 11, 21, "18901121")]
-        [InlineData(2018, 02, 29, "20180229")]
-        [InlineData(9999, 12, 31, "99991231")]
-        public void DatePart_EqualToOtherDatePartUsingOperator_ReturnsTrue(int year, int month, int day, string compareDate)
-        {
-            var datePart1 = new DatePart(year, month, day);
-            var datePart2 = new DatePart(compareDate);
-
-            Assert.True(datePart1 == datePart2);
-        }
-
-        [Theory]
         [InlineData("00000000", "10000000")]
         [InlineData("19000101", "19000102")]
         [InlineData("18981131", "18981101")]
@@ -150,7 +120,7 @@ namespace GenDate.Test
         [InlineData(1898, 2, 31, false)]
         [InlineData(1890, 11, 31, false)]
         [InlineData(1980, 02, 29, true)]
-        [InlineData(2000, 02, 29, false)]
+        [InlineData(2000, 02, 29, true)]
         [InlineData(9999, 12, 31, true)]
         public void DatePart_YearMonthDay_IsValidDate(int year, int month, int day, bool expected)
         {
@@ -166,13 +136,118 @@ namespace GenDate.Test
         [InlineData(1898, 2, 31, false)]
         [InlineData(1890, 11, 31, false)]
         [InlineData(1980, 02, 29, true)]
-        [InlineData(2000, 02, 29, false)]
+        [InlineData(2000, 02, 29, true)]
         [InlineData(9999, 12, 31, true)]
         public void DatePart_YearMonthDay_IsValidDateTime(int year, int month, int day, bool expected)
         {
             var isValid = DatePart.IsValidDateTime(year, month, day);
 
             Assert.Equal(expected, isValid);
+        }
+
+        [Theory]
+        [InlineData(0, 0, 0, "00000000")]
+        [InlineData(1900, 1, 1, "19000101")]
+        [InlineData(1898, 11, 1, "18981101")]
+        [InlineData(1890, 11, 21, "18901121")]
+        [InlineData(2018, 02, 29, "20180229")]
+        [InlineData(9999, 12, 31, "99991231")]
+        public void DatePart_Equals_ReturnsTrue(int year, int month, int day, string compareDate)
+        {
+            var datePart1 = new DatePart(year, month, day);
+            var datePart2 = new DatePart(compareDate);
+
+            Assert.True(datePart1.Equals(datePart2));
+        }
+
+        [Theory]
+        [InlineData(0, 0, 0, "00000000")]
+        [InlineData(1900, 1, 1, "19000101")]
+        [InlineData(1898, 11, 1, "18981101")]
+        [InlineData(1890, 11, 21, "18901121")]
+        [InlineData(2018, 02, 29, "20180229")]
+        [InlineData(9999, 12, 31, "99991231")]
+        public void DatePart_OperatorEqual_ReturnsTrue(int year, int month, int day, string compareDate)
+        {
+            var datePart1 = new DatePart(year, month, day);
+            var datePart2 = new DatePart(compareDate);
+
+            Assert.True(datePart1 == datePart2);
+        }
+
+        [Theory]
+        [InlineData(0, 0, 0, "00000000")]
+        [InlineData(1900, 1, 1, "19000101")]
+        [InlineData(1898, 11, 1, "18981101")]
+        [InlineData(1890, 11, 21, "18901121")]
+        [InlineData(2018, 02, 29, "20180229")]
+        [InlineData(9999, 12, 31, "99991231")]
+        public void DatePart_OperatorNotEqual_ReturnsTrue(int year, int month, int day, string compareDate)
+        {
+            var datePart1 = new DatePart(year, month, day);
+            var datePart2 = new DatePart(compareDate);
+
+            Assert.False(datePart1 != datePart2);
+        }
+
+        [Theory]
+        [InlineData(0, 0, 1, "00000000")]
+        [InlineData(1900, 1, 2, "19000101")]
+        [InlineData(1899, 11, 1, "18981101")]
+        [InlineData(1890, 12, 21, "18901121")]
+        [InlineData(2018, 03, 29, "20180229")]
+        [InlineData(9999, 12, 31, "99991230")]
+        public void DatePart_OperatorLargerThan_ReturnsTrue(int year, int month, int day, string compareDate)
+        {
+            var datePart1 = new DatePart(year, month, day);
+            var datePart2 = new DatePart(compareDate);
+
+            Assert.True(datePart1 > datePart2);
+        }
+
+        [Theory]
+        [InlineData(0, 0, 0, "00000001")]
+        [InlineData(1900, 1, 1, "19000102")]
+        [InlineData(1898, 11, 1, "18981201")]
+        [InlineData(1890, 11, 21, "18901122")]
+        [InlineData(2018, 02, 29, "20180329")]
+        [InlineData(9999, 12, 30, "99991231")]
+        public void DatePart_OperatorLessThan_ReturnsTrue(int year, int month, int day, string compareDate)
+        {
+            var datePart1 = new DatePart(year, month, day);
+            var datePart2 = new DatePart(compareDate);
+
+            Assert.True(datePart1 < datePart2);
+        }
+
+        [Theory]
+        [InlineData(0, 0, 0, "00000000")]
+        [InlineData(1900, 1, 2, "19000101")]
+        [InlineData(1899, 11, 1, "18981101")]
+        [InlineData(1890, 12, 21, "18901121")]
+        [InlineData(2018, 02, 29, "20180229")]
+        [InlineData(9999, 12, 31, "99991231")]
+        public void DatePart_OperatorLargerThanOrEqual_ReturnsTrue(int year, int month, int day, string compareDate)
+        {
+            var datePart1 = new DatePart(year, month, day);
+            var datePart2 = new DatePart(compareDate);
+
+            Assert.True(datePart1 >= datePart2);
+        }
+
+        [Theory]
+        [InlineData(0, 0, 0, "00000000")]
+        [InlineData(1900, 1, 1, "19000102")]
+        [InlineData(1898, 11, 1, "18981201")]
+        [InlineData(1890, 11, 21, "18901122")]
+        [InlineData(2018, 02, 29, "20180229")]
+        [InlineData(9999, 12, 31, "99991231")]
+        public void DatePart_OperatorLessThanOrEqual_ReturnsTrue(int year, int month, int day, string compareDate)
+        {
+            var datePart1 = new DatePart(year, month, day);
+            var datePart2 = new DatePart(compareDate);
+
+            Assert.True(datePart1 <= datePart2);
         }
     }
 }

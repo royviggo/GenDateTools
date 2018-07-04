@@ -45,17 +45,41 @@ namespace GenDate
         /// </summary>
         public bool IsLeapYear() => IsLeapYear(Year);
 
-        public override string ToString()
+        /// <summary>
+        /// Check if the parameters year, month and day is a valid DatePart, which means a valid date except that 
+        /// either one or more of the parameters can be 0. If a value is 0, it means that the value is unknown.
+        /// </summary>
+        public static bool IsValid(int year, int month, int day)
         {
-            var output = Day > 0 && Day <= 31 ? Day.ToString().PadLeft(2, '0') : "";
-            var month = Month > 0 && Month <= 12 ? Month.ToMonthName() : "";
-            var year = Year > 0 ? Year.ToString() : "";
+            if (year >= 0 && year <= 9999 && month >= 0 && month <= 12)
+            {
+                int[] days = IsLeapYear(year)
+                    ? new[] { 31, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 }
+                    : new[] { 31, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
 
-            output += output != "" && month != "" ? " " : "";
-            output += month;
-            output += output != "" && year != "" ? " " : "";
+                if (day >= 0 && day <= days[month])
+                    return true;
+            }
+            return false;
+        }
 
-            return output + year;
+        /// <summary>
+        /// Checks if the parameters form a valid DateTime.
+        /// </summary>
+        public static bool IsValidDateTime(int year, int month, int day)
+        {
+            return year >= 1 && month >= 1 && day >= 1 && IsValid(year, month, day);
+        }
+
+        /// <summary>
+        /// Check if a year is a leap year.
+        /// </summary>
+        public static bool IsLeapYear(int year)
+        {
+            if (year <= 0 || year > 9999)
+                return false;
+
+            return (year % 4 == 0 && year % 100 != 0) || year % 400 == 0;
         }
 
         public int CompareTo(DatePart other)
@@ -85,6 +109,38 @@ namespace GenDate
                 return false;
 
             return !(datePart1 == datePart2);
+        }
+
+        public static bool operator >(DatePart datePart1, DatePart datePart2)
+        {
+            if (datePart1 is null)
+                return false;
+
+            return datePart1.CompareTo(datePart2) == 1;
+        }
+
+        public static bool operator <(DatePart datePart1, DatePart datePart2)
+        {
+            if (datePart1 is null)
+                return false;
+
+            return datePart1.CompareTo(datePart2) == -1;
+        }
+
+        public static bool operator >=(DatePart datePart1, DatePart datePart2)
+        {
+            if (datePart1 is null)
+                return false;
+
+            return datePart1.CompareTo(datePart2) >= 0;
+        }
+
+        public static bool operator <=(DatePart datePart1, DatePart datePart2)
+        {
+            if (datePart1 is null)
+                return false;
+
+            return datePart1.CompareTo(datePart2) <= 0;
         }
 
         public bool Equals(DatePart other)
@@ -118,32 +174,17 @@ namespace GenDate
             }
         }
 
-        /// <summary>
-        /// Check if the parameters year, month and day is a valid DatePart, which means a valid date except that 
-        /// either one or more of the parameters can be 0. If a value is 0, it means that the value is unknown.
-        /// </summary>
-        public static bool IsValid(int year, int month, int day)
+        public override string ToString()
         {
-            return IsValidDate(year, month, day, 0);
-        }
+            var output = Day > 0 && Day <= 31 ? Day.ToString().PadLeft(2, '0') : "";
+            var month = Month > 0 && Month <= 12 ? Month.ToMonthName() : "";
+            var year = Year > 0 ? Year.ToString() : "";
 
-        /// <summary>
-        /// Checks if the parameters form a valid DateTime.
-        /// </summary>
-        public static bool IsValidDateTime(int year, int month, int day)
-        {
-            return IsValidDate(year, month, day, 1);
-        }
+            output += output != "" && month != "" ? " " : "";
+            output += month;
+            output += output != "" && year != "" ? " " : "";
 
-        /// <summary>
-        /// Check if a year is a leap year.
-        /// </summary>
-        public static bool IsLeapYear(int year)
-        {
-            if (year <= 0 || year > 9999)
-                return false;
-
-            return (year % 4 == 0 && year % 100 != 0) || year % 400 == 0;
+            return output + year;
         }
 
         private static string GetSubString(string source, int startIndex, int length)
@@ -153,18 +194,5 @@ namespace GenDate
             return returnString.Substring(startIndex, length);
         }
 
-        private static bool IsValidDate(int year, int month, int day, int lowestValue)
-        {
-            if (year >= lowestValue && year <= 9999 && month >= lowestValue && month <= 12)
-            {
-                int[] days = IsLeapYear(year)
-                    ? new[] { 31, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 }
-                    : new[] { 31, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
-
-                if (day >= lowestValue && day <= days[month])
-                    return true;
-            }
-            return false;
-        }
     }
 }
