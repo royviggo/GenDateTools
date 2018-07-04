@@ -60,7 +60,7 @@ namespace GenDate
 
         public static bool IsValid(this DatePart datePart)
         {
-            return DatePart.IsValid(datePart.Year, datePart.Month, datePart.Day);
+            return DatePart.IsValidDate(datePart.Year, datePart.Month, datePart.Day);
         }
 
         public static bool IsValidDateTime(this DatePart datePart)

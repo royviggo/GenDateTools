@@ -2,6 +2,12 @@ using System;
 
 namespace GenDate
 {
+    /// <summary>
+    /// <para>DatePart is a class for genealogy dates. It has properties for Year, Month and Day, and anyone of them can be 0, which means 
+    /// that the value is unknown.</para> <para>In genealogy there often are unknown parts of the date, in many cases only the Year is known.</para>
+    /// <para>Limitations: Uses rules from the Gregorian calendar, e.g. leap year. Year must be a number from 0 to 9999, Month a number from 
+    /// 0 to 12 and Day a number between 0 and 31.</para>
+    /// </summary>
     public class DatePart : IEquatable<DatePart>, IComparable<DatePart>
     {
         public int Year { get;  set; }
@@ -64,7 +70,7 @@ namespace GenDate
         /// Checks if the DatePart object is valid, which means a valid date in the Gregorian calendar, except that 
         /// one or more of the values Year, Month and Day can be 0. If a value is 0, it means that it is unknown.
         /// </summary>
-        public bool IsValid() => IsValid(Year, Month, Day);
+        public bool IsValidDate() => IsValidDate(Year, Month, Day);
 
         /// <summary>
         /// Check if the DatePart object is a valid DateTime.
@@ -80,7 +86,7 @@ namespace GenDate
         /// Checks if the parameters year, month and day is a valid DatePart, which means a valid date in the Gregorian 
         /// calendar, except that one or more of the values can be 0. If a value is 0, it means that it is unknown.
         /// </summary>
-        public static bool IsValid(int year, int month, int day)
+        public static bool IsValidDate(int year, int month, int day)
         {
             if (year >= 0 && year <= 9999 && month >= 0 && month <= 12)
             {
@@ -99,7 +105,7 @@ namespace GenDate
         /// </summary>
         public static bool IsValidDateTime(int year, int month, int day)
         {
-            return year >= 1 && month >= 1 && day >= 1 && IsValid(year, month, day);
+            return year >= 1 && month >= 1 && day >= 1 && IsValidDate(year, month, day);
         }
 
         /// <summary>

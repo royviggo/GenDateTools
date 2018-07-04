@@ -32,7 +32,7 @@ namespace GenDate.Test
         {
             var datePart = new DatePart(year, month, day);
 
-            Assert.Equal(expected, datePart.IsValid());
+            Assert.Equal(expected, datePart.IsValidDate());
             Assert.IsType<DatePart>(datePart);
         }
 

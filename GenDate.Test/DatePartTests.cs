@@ -124,7 +124,7 @@ namespace GenDate.Test
         [InlineData(9999, 12, 31, true)]
         public void DatePart_YearMonthDay_IsValidDate(int year, int month, int day, bool expected)
         {
-            var isValid = DatePart.IsValid(year, month, day);
+            var isValid = DatePart.IsValidDate(year, month, day);
 
             Assert.Equal(expected, isValid);
         }
