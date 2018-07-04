@@ -8,8 +8,23 @@ namespace GenDate
         public int Month { get;  set; }
         public int Day { get;  set; }
 
-        public DatePart() { }
+        /// <summary>
+        /// Creates a DatePart object without parameters, with only unknown values for Year, Month and Day.
+        /// </summary>
+        public DatePart()
+        {
+            Year = 0;
+            Month = 0;
+            Day = 0;
+        }
 
+        /// <summary>
+        /// Creates a DatePart object using three parameters; year, month and day, similar to DateTime. year must be an integer 
+        /// between 0 and 9999, month an integer between 0 and 12, and day an integer between 0 and 31. <para>Any combinations of these 
+        /// values work, even if the date is not valid. The value 0 means that it is unknown. Throws an exception if parameters are out 
+        /// of range.</para>
+        /// </summary>
+        /// <exception cref="ArgumentOutOfRangeException"></exception>
         public DatePart(int year, int month, int day)
         {
             if (!(year >= 0 && year <= 9999 && month >= 0 && month <= 12 && day >= 0 && day <= 31))
@@ -20,18 +35,34 @@ namespace GenDate
             Day = day;
         }
 
-        public DatePart(long date) 
-            : this((int) date / 10000, (int)(date / 100) % 100, (int) date % 100) { }
-
+        /// <summary>
+        /// Creates a DatePart object using 3 string parameters; year, month and day. 
+        /// See also: <seealso cref="DatePart.DatePart(int, int, int)"/>
+        /// </summary>
+        /// <exception cref="ArgumentOutOfRangeException"></exception>
         public DatePart(string year, string month, string day)
             : this(Convert.ToInt32(year), Convert.ToInt32(month), Convert.ToInt32(day)) { }
 
+        /// <summary>
+        /// Creates a DatePart object using a numeric date as a parameter. It is a long between 0 and 99991231, which is made with the formula:
+        /// <para><c>Year * 10000 + Month * 100 + Day</c></para>
+        /// <para>These values are recreated from the long value, and passed to <see cref="DatePart.DatePart(int, int, int)"/>.</para>
+        /// </summary>
+        /// <exception cref="ArgumentOutOfRangeException"></exception>
+        public DatePart(long date) 
+            : this((int) date / 10000, (int)(date / 100) % 100, (int) date % 100) { }
+
+        /// <summary>
+        /// Creates a DatePart object using a string date of the format <c>YYYYMMDD</c>. The values are split and passed to 
+        /// <see cref="DatePart.DatePart(int, int, int)"/>.
+        /// </summary>
+        /// <exception cref="ArgumentOutOfRangeException"></exception>
         public DatePart(string date)
             : this(GetSubString(date, 0, 4), GetSubString(date, 4, 2), GetSubString(date, 6, 2)) { }
 
         /// <summary>
-        /// Check if the DatePart object is valid, which means a valid date except that either one or more of 
-        /// the values for Year, Month and Day can be 0. If a property is 0, it means that the value is unknown.
+        /// Checks if the DatePart object is valid, which means a valid date in the Gregorian calendar, except that 
+        /// one or more of the values Year, Month and Day can be 0. If a value is 0, it means that it is unknown.
         /// </summary>
         public bool IsValid() => IsValid(Year, Month, Day);
 
@@ -46,8 +77,8 @@ namespace GenDate
         public bool IsLeapYear() => IsLeapYear(Year);
 
         /// <summary>
-        /// Check if the parameters year, month and day is a valid DatePart, which means a valid date except that 
-        /// either one or more of the parameters can be 0. If a value is 0, it means that the value is unknown.
+        /// Checks if the parameters year, month and day is a valid DatePart, which means a valid date in the Gregorian 
+        /// calendar, except that one or more of the values can be 0. If a value is 0, it means that it is unknown.
         /// </summary>
         public static bool IsValid(int year, int month, int day)
         {
@@ -174,6 +205,9 @@ namespace GenDate
             }
         }
 
+        /// <summary>
+        /// Converts a DatePart to a string representation with the format <c>01 Jan 2000</c>.
+        /// </summary>
         public override string ToString()
         {
             var output = Day > 0 && Day <= 31 ? Day.ToString().PadLeft(2, '0') : "";
