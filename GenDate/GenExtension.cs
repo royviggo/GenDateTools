@@ -24,7 +24,7 @@
 
         public static string ToGenString(this GenDate genDate)
         {
-            return genDate.DateFrom.ToString();
+            return genDate.ToString();
         }
 
         public static bool IsLeapYear(this int year)

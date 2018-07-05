@@ -1,4 +1,3 @@
-using System;
 using Xunit;
 
 namespace GenDate.Test
@@ -79,35 +78,43 @@ namespace GenDate.Test
             Assert.Equal(expected, genDate.DateString);
         }
 
-        [Fact]
-        public void GenDate_NewFromDateTypeFromDatePartAndToDatePartIsValid_ValidGenDate()
+        [Theory]
+        [InlineData(1, "19000101", "19000101", true, "119000101119000101")]
+        [InlineData(5, "20171231", "20180123", true, "120171231520180123")]
+        [InlineData(6, "20171231", "20180301", true, "120171231620180301")]
+        [InlineData(3, "99990022", "99990022", true, "199990022399990022")]
+        [InlineData(7, "00000000", "00000000", true, "100000000700000000")]
+        [InlineData(7, "99991231", "99991231", true, "199991231799991231")]
+        public void GenDate_NewFromDateTypeFromDatePartAndToDatePartIsValid_ValidGenDate(int dateType, string fromDatePartStr, string toDatePartStr, bool isValid, string expected)
         {
-            var fromDatePart = new DatePart(2018, 6, 23);
-            var toDatePart = fromDatePart;
-            var isValid = true;
+            var fromDatePart = new DatePart(fromDatePartStr);
+            var toDatePart = new DatePart(toDatePartStr);
 
-            var genDate = new GenDate(GenDateType.Before, fromDatePart, toDatePart, isValid);
+            var genDate = new GenDate((GenDateType)dateType, fromDatePart, toDatePart, isValid);
+            var expectedGenDate = new GenDate(expected);
 
-            Assert.Equal("20180623", genDate.DateFrom.ToSortString());
-            Assert.Equal("20180623", genDate.DateTo.ToSortString());
-            Assert.Equal(GenDateType.Before, genDate.DateType);
-            Assert.Null(genDate.DatePhrase);
-            Assert.True(genDate.IsValid);
+            Assert.Equal(expectedGenDate, genDate);
         }
 
-        [Fact]
-        public void GenDate_NewFromAll_ValidGenDate()
+        [Theory]
+        [InlineData(1, "19000101", "19000101", true, "119000101119000101")]
+        [InlineData(5, "20171231", "20180123", true, "120171231520180123")]
+        [InlineData(6, "20171231", "20180301", true, "120171231620180301")]
+        [InlineData(3, "99990022", "99990022", true, "199990022399990022")]
+        [InlineData(7, "00000000", "00000000", true, "100000000700000000")]
+        [InlineData(7, "99991231", "99991231", true, "199991231799991231")]
+        public void GenDate_NewFromAll_ValidGenDate(int dateType, string fromDatePartStr, string toDatePartStr, bool isValid, string expected)
         {
-            var fromDatePart = new DatePart(2018, 6, 23);
-            var toDatePart = fromDatePart;
-            var datePhrase = "Testing testing";
-            var isValid = true;
+            var fromDatePart = new DatePart(fromDatePartStr);
+            var toDatePart = new DatePart(toDatePartStr);
+            var datePhrase = "Testing a pretty long string";
 
-            var genDate = new GenDate(GenDateType.Before, fromDatePart, toDatePart, datePhrase, isValid);
+            var genDate = new GenDate((GenDateType)dateType, fromDatePart, toDatePart, datePhrase, isValid);
+            var expectedGenDate = new GenDate(expected);
 
-            Assert.Equal("20180623", genDate.DateFrom.ToSortString());
-            Assert.Equal("20180623", genDate.DateTo.ToSortString());
-            Assert.Equal(GenDateType.Before, genDate.DateType);
+            Assert.Equal(expectedGenDate.DateLong, genDate.DateLong);
+            Assert.Equal(expectedGenDate.DateString, genDate.DateString);
+            Assert.Equal(expectedGenDate.ToString(), genDate.ToString());
             Assert.Equal(datePhrase, genDate.DatePhrase);
             Assert.True(genDate.IsValid);
         }
@@ -154,6 +161,8 @@ namespace GenDate.Test
         [InlineData(118981101519000101, "118981101519000101")]
         [InlineData(118900101619000101, "118900101619000101")]
         [InlineData(120180229120180229, "120180229120180229")]
+        [InlineData(199991231799991231, "199991231799991231")]
+        [InlineData(100000000300000000, "100000000300000000")]
         public void GenDate_Equals_ReturnsTrue(long dateNum, string compareDate)
         {
             var genDate1 = new GenDate(dateNum);
@@ -167,6 +176,8 @@ namespace GenDate.Test
         [InlineData(118981101519000101, "118981101519000101")]
         [InlineData(118900101619000101, "118900101619000101")]
         [InlineData(120180229120180229, "120180229120180229")]
+        [InlineData(199991231799991231, "199991231799991231")]
+        [InlineData(100000000300000000, "100000000300000000")]
         public void GenDate_OperatorEqual_ReturnsTrue(long dateNum, string compareDate)
         {
             var genDate1 = new GenDate(dateNum);
@@ -180,6 +191,8 @@ namespace GenDate.Test
         [InlineData(118981101519000101, "118981101519000101")]
         [InlineData(118900101619000101, "118900101619000101")]
         [InlineData(120180229120180229, "120180229120180229")]
+        [InlineData(199991231799991231, "199991231799991231")]
+        [InlineData(100000000300000000, "100000000300000000")]
         public void GenDate_OperatorNotEqual_ReturnsTrue(long dateNum, string compareDate)
         {
             var genDate1 = new GenDate(dateNum);
@@ -193,6 +206,8 @@ namespace GenDate.Test
         [InlineData(118981102519000110, "118981102519000101")]
         [InlineData(118900106619000107, "118900106619000106")]
         [InlineData(120180329120180329, "120180229120180229")]
+        [InlineData(199991231799991231, "199991231399991231")]
+        [InlineData(100000000300000000, "100000000200000000")]
         public void GenDate_OperatorLargerThan_ReturnsTrue(long dateNum, string compareDate)
         {
             var genDate1 = new GenDate(dateNum);
@@ -206,6 +221,8 @@ namespace GenDate.Test
         [InlineData(118981101519000101, "118981102519000101")]
         [InlineData(118900105619000106, "118900106619000107")]
         [InlineData(120180229120180229, "120180329120180329")]
+        [InlineData(199991231399991231, "199991231799991231")]
+        [InlineData(100000000200000000, "100000000300000000")]
         public void GenDate_OperatorLessThan_ReturnsTrue(long dateNum, string compareDate)
         {
             var genDate1 = new GenDate(dateNum);
