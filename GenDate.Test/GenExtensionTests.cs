@@ -22,7 +22,7 @@ namespace GenDate.Test
         [InlineData(11, "Nov")]
         [InlineData(12, "Dec")]
         [InlineData(13, "")]
-        [InlineData(9999999999999999999, "")]
+        [InlineData(999999999, "")]
         public void GenExtension_ToMonthName_ReturnMonth(int month, string expected)
         {
             Assert.Equal(expected, DatePart.MonthName(month));
