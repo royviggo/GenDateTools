@@ -5,7 +5,7 @@ namespace GenDate
 {
     public class DateStringParser : IDateStringParser
     {
-        public GenDate Parse(string dateString)
+        public virtual GenDate Parse(string dateString)
         {
             var regex = new Regex(@"^(?<stype>\d)(?<fyear>\d{4})(?<fmonth>\d{2})(?<fday>\d{2})(?<dtype>\d)(?<tyear>\d{4})(?<tmonth>\d{2})(?<tday>\d{2})");
             var m = regex.Match(dateString);
@@ -27,7 +27,7 @@ namespace GenDate
             return new GenDate(GenDateType.Invalid, datePhrase, false);
         }
 
-        public DatePart GetDatePartFromStringDate(string sDate)
+        public virtual DatePart GetDatePartFromStringDate(string sDate)
         {
             var regex = new Regex(@"^(?<year>\d{4})(?<month>\d{2})(?<day>\d{2})");
             var m = regex.Match(sDate);
