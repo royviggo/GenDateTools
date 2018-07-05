@@ -106,13 +106,6 @@ namespace GenDate
             IsValid = true;
         }
 
-        public int CompareTo(GenDate other)
-        {
-            var sortDate = GetSortDate();
-            return sortDate.CompareTo(other.SortDate);
-
-        }
-
         public static bool operator ==(GenDate genDate1, GenDate genDate2)
         {
             if (genDate1 is null)
@@ -127,6 +120,45 @@ namespace GenDate
                 return false;
 
             return !(genDate1 == genDate2);
+        }
+
+        public static bool operator >(GenDate genDate1, GenDate genDate2)
+        {
+            if (genDate1 is null)
+                return false;
+
+            return genDate1.CompareTo(genDate2) == 1;
+        }
+
+        public static bool operator <(GenDate genDate1, GenDate genDate2)
+        {
+            if (genDate1 is null)
+                return false;
+
+            return genDate1.CompareTo(genDate2) == -1;
+        }
+
+        public static bool operator >=(GenDate genDate1, GenDate genDate2)
+        {
+            if (genDate1 is null)
+                return false;
+
+            return genDate1.CompareTo(genDate2) >= 0;
+        }
+
+        public static bool operator <=(GenDate genDate1, GenDate genDate2)
+        {
+            if (genDate1 is null)
+                return false;
+
+            return genDate1.CompareTo(genDate2) <= 0;
+        }
+
+        public int CompareTo(GenDate other)
+        {
+            var longDate = GetLongDate();
+            return longDate.CompareTo(other.GetLongDate());
+
         }
 
         public bool Equals(GenDate other)
