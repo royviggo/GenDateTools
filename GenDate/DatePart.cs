@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 
 namespace GenDate
 {
@@ -8,7 +9,7 @@ namespace GenDate
     /// that the value is unknown.</para><para>Limitations: Uses rules from the Gregorian calendar, e.g. leap year. Year must be a number 
     /// from 0 to 9999, Month a number from 0 to 12 and Day a number between 0 and 31.</para>
     /// </summary>
-    public class DatePart : IEquatable<DatePart>, IComparable<DatePart>
+    public class DatePart : IEquatable<DatePart>, IComparable<DatePart>, IConvertible, ISerializable
     {
         public int Year { get; set; }
         public int Month { get; set; }
@@ -65,6 +66,16 @@ namespace GenDate
         /// <exception cref="ArgumentOutOfRangeException"></exception>
         public DatePart(string date)
             : this(GetSubString(date, 0, 4), GetSubString(date, 4, 2), GetSubString(date, 6, 2)) { }
+
+        protected DatePart(SerializationInfo info, StreamingContext context)
+        {
+            if (info == null)
+                throw new ArgumentNullException("info");
+
+            Year = Convert.ToInt32(info.GetString("Year"));
+            Month = Convert.ToInt32(info.GetString("Month"));
+            Day = Convert.ToInt32(info.GetString("Day"));
+        }
 
         /// <summary>
         /// Checks if the DatePart object is valid, which means a valid date in the Gregorian calendar, except that 
@@ -245,6 +256,108 @@ namespace GenDate
             var returnString = source;
 
             return returnString.Substring(startIndex, length);
+        }
+
+        #region IConvertible GetTypeCode and Methods
+        public TypeCode GetTypeCode()
+        {
+            return TypeCode.Object;
+        }
+
+        public bool ToBoolean(IFormatProvider provider)
+        {
+            throw new InvalidCastException();
+        }
+
+        public byte ToByte(IFormatProvider provider)
+        {
+            throw new InvalidCastException();
+        }
+
+        public char ToChar(IFormatProvider provider)
+        {
+            throw new InvalidCastException();
+        }
+
+        public DateTime ToDateTime(IFormatProvider provider)
+        {
+            return (IsValidDateTime()) ? new DateTime(Year, Month, Day) : new DateTime();
+        }
+
+        public decimal ToDecimal(IFormatProvider provider)
+        {
+            return Convert.ToDecimal(CompareValue(this));
+        }
+
+        public double ToDouble(IFormatProvider provider)
+        {
+            return Convert.ToDouble(CompareValue(this));
+        }
+
+        public short ToInt16(IFormatProvider provider)
+        {
+            throw new InvalidCastException();
+        }
+
+        public int ToInt32(IFormatProvider provider)
+        {
+            return Convert.ToInt32(CompareValue(this));
+        }
+
+        public long ToInt64(IFormatProvider provider)
+        {
+            return Convert.ToInt64(CompareValue(this));
+        }
+
+        public sbyte ToSByte(IFormatProvider provider)
+        {
+            throw new InvalidCastException();
+        }
+
+        public float ToSingle(IFormatProvider provider)
+        {
+            return Convert.ToSingle(CompareValue(this));
+        }
+
+        public string ToString(IFormatProvider provider)
+        {
+            return ToString();
+        }
+
+        public object ToType(Type conversionType, IFormatProvider provider)
+        {
+            return Convert.ChangeType(CompareValue(this), conversionType);
+        }
+
+        public ushort ToUInt16(IFormatProvider provider)
+        {
+            throw new InvalidCastException();
+        }
+
+        public uint ToUInt32(IFormatProvider provider)
+        {
+            return Convert.ToUInt32(CompareValue(this));
+        }
+
+        public ulong ToUInt64(IFormatProvider provider)
+        {
+            return Convert.ToUInt64(CompareValue(this));
+        }
+        #endregion
+
+        public virtual void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            info.AddValue("Year", Year);
+            info.AddValue("Month", Month);
+            info.AddValue("Day", Day);
+        }
+
+        void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            if (info == null)
+                throw new ArgumentNullException("info");
+
+            GetObjectData(info, context);
         }
     }
 }

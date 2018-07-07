@@ -249,5 +249,130 @@ namespace GenDate.Test
 
             Assert.True(datePart1 <= datePart2);
         }
+
+        [Fact]
+        public void DatePart_ConvertToBoolean_ThrowsInvalidCastException()
+        {
+            Assert.Throws<InvalidCastException>(() => Convert.ToBoolean(new DatePart(20000101)));
+        }
+
+        [Fact]
+        public void DatePart_ConvertToInt16_ThrowsInvalidCastException()
+        {
+            Assert.Throws<InvalidCastException>(() => Convert.ToInt16(new DatePart(20000101)));
+        }
+
+        [Fact]
+        public void DatePart_ConvertToByte_ThrowsInvalidCastException()
+        {
+            Assert.Throws<InvalidCastException>(() => Convert.ToByte(new DatePart(20000101)));
+        }
+
+        [Fact]
+        public void DatePart_ConvertToChar_ThrowsInvalidCastException()
+        {
+            Assert.Throws<InvalidCastException>(() => Convert.ToChar(new DatePart(20000101)));
+        }
+
+        [Fact]
+        public void DatePart_ConvertToSByte_ThrowsInvalidCastException()
+        {
+            Assert.Throws<InvalidCastException>(() => Convert.ToSByte(new DatePart(20000101)));
+        }
+
+        [Fact]
+        public void DatePart_ConvertToUInt16_ThrowsInvalidCastException()
+        {
+            Assert.Throws<InvalidCastException>(() => Convert.ToUInt16(new DatePart(20000101)));
+        }
+
+        [Fact]
+        public void DatePart_ConvertToInt32_IsEqualToType()
+        {
+            var datePartConverted = Convert.ToInt32(new DatePart(20000101));
+            var expected = Convert.ToInt32(20000101);
+
+            Assert.Equal(expected, datePartConverted);
+            Assert.IsType<Int32>(datePartConverted);
+        }
+
+        [Fact]
+        public void DatePart_ConvertToInt64_IsEqualToType()
+        {
+            var datePartConverted = Convert.ToInt64(new DatePart(20000101));
+            var expected = Convert.ToInt64(20000101);
+
+            Assert.Equal(expected, datePartConverted);
+            Assert.IsType<Int64>(datePartConverted);
+        }
+
+        [Fact]
+        public void DatePart_ConvertToUInt32_IsEqualToType()
+        {
+            var datePartConverted = Convert.ToUInt32(new DatePart(20000101));
+            var expected = Convert.ToUInt32(20000101);
+
+            Assert.Equal(expected, datePartConverted);
+            Assert.IsType<UInt32>(datePartConverted);
+        }
+
+        [Fact]
+        public void DatePart_ConvertToUInt64_IsEqualToType()
+        {
+            var datePartConverted = Convert.ToUInt64(new DatePart(20000101));
+            var expected = Convert.ToUInt64(20000101);
+
+            Assert.Equal(expected, datePartConverted);
+            Assert.IsType<UInt64>(datePartConverted);
+        }
+
+        [Fact]
+        public void DatePart_ConvertToSingle_IsEqualToType()
+        {
+            var datePartConverted = Convert.ToSingle(new DatePart(20000101));
+            var expected = Convert.ToSingle(20000101);
+
+            Assert.Equal(expected, datePartConverted);
+            Assert.IsType<Single>(datePartConverted);
+        }
+
+        [Fact]
+        public void DatePart_ConvertToDouble_IsEqualToType()
+        {
+            var datePartConverted = Convert.ToDouble(new DatePart(20000101));
+            var expected = Convert.ToDouble(20000101);
+
+            Assert.Equal(expected, datePartConverted);
+            Assert.IsType<Double>(datePartConverted);
+        }
+
+        [Fact]
+        public void DatePart_ConvertToDecimal_IsEqualToType()
+        {
+            var datePartConverted = Convert.ToDecimal(new DatePart(20000101));
+            var expected = Convert.ToDecimal(20000101);
+
+            Assert.Equal(expected, datePartConverted);
+            Assert.IsType<Decimal>(datePartConverted);
+        }
+
+        [Theory]
+        [InlineData("10000000", "1000")]
+        [InlineData("19000101", "01 Jan 1900")]
+        [InlineData("18981101", "01 Nov 1898")]
+        [InlineData("18901200", "Dec 1890")]
+        [InlineData("20180229", "29 Feb 2018")]
+        [InlineData("99991231", "31 Dec 9999")]
+        [InlineData("00000031", "31")]
+        [InlineData("00000431", "31 Apr")]
+        [InlineData("00001000", "Oct")]
+        [InlineData("20170015", "15 2017")]
+        public void DatePart_ConvertToString_IsStringAndEqual(string dateString, string expected)
+        {
+            var datePartConverted = Convert.ToString(new DatePart(dateString));
+
+            Assert.Equal(expected, datePartConverted);
+            Assert.IsType<string>(datePartConverted);
+        }
     }
 }
