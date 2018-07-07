@@ -11,6 +11,11 @@ namespace GenDate
     /// </summary>
     public class DatePart : IEquatable<DatePart>, IComparable<DatePart>, IConvertible, ISerializable
     {
+        private const int MaxDaysInMonth = 31;
+
+        private static readonly int[] DaysToMonth365 = { 0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334, 365 };
+        private static readonly int[] DaysToMonth366 = { 0, 31, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335, 366 };
+
         public int Year { get; set; }
         public int Month { get; set; }
         public int Day { get; set; }
@@ -77,6 +82,16 @@ namespace GenDate
             Day = Convert.ToInt32(info.GetString("Day"));
         }
 
+        public int DayOfYear()
+        {
+            int[] daysInMonth = IsLeapYear(Year) ? DaysToMonth366 : DaysToMonth365;
+            var prevMonth = Month > 0 ? Month - 1 : 0;
+
+            return daysInMonth[prevMonth] + Day;
+        }
+
+        public int DaysInMonth() => DaysInMonth(Year, Month);
+
         /// <summary>
         /// Checks if the DatePart object is valid, which means a valid date in the Gregorian calendar, except that 
         /// one or more of the values Year, Month and Day can be 0. If a value is 0, it means that it is unknown.
@@ -93,6 +108,13 @@ namespace GenDate
         /// </summary>
         public bool IsLeapYear() => IsLeapYear(Year);
 
+        public static int DaysInMonth(int year, int month)
+        {
+            int[] daysInMonth = IsLeapYear(year) ? DaysToMonth366 : DaysToMonth365;
+
+            return month == 0 ? MaxDaysInMonth : daysInMonth[month] - daysInMonth[month - 1];
+        }
+
         /// <summary>
         /// Checks if the parameters year, month and day is a valid DatePart, which means a valid date in the Gregorian 
         /// calendar, except that one or more of the values can be 0. If a value is 0, it means that it is unknown.
@@ -101,11 +123,9 @@ namespace GenDate
         {
             if (year >= 0 && year <= 9999 && month >= 0 && month <= 12)
             {
-                int[] days = IsLeapYear(year)
-                    ? new[] { 31, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 }
-                    : new[] { 31, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+                int[] days = IsLeapYear(year) ? DaysToMonth366 : DaysToMonth365;
 
-                if (day >= 0 && day <= days[month])
+                if (day >= 0 && day <= DaysInMonth(year, month))
                     return true;
             }
             return false;
@@ -128,6 +148,13 @@ namespace GenDate
                 return false;
 
             return (year % 4 == 0 && year % 100 != 0) || year % 400 == 0;
+        }
+
+        public static DatePart Today()
+        {
+            var dateTime = DateTime.Today;
+
+            return new DatePart(dateTime.Year, dateTime.Month, dateTime.Day);
         }
 
         public int CompareTo(DatePart other)

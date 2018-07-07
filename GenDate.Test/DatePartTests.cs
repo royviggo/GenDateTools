@@ -116,11 +116,15 @@ namespace GenDate.Test
         [Theory]
         [InlineData(-0, -10, 0, false)]
         [InlineData(0, 0, 0, true)]
+        [InlineData(1, 1, 0, true)]
         [InlineData(1900, 1, 1, true)]
         [InlineData(1898, 2, 31, false)]
         [InlineData(1890, 11, 31, false)]
+        [InlineData(1900, 0, 10, true)]
+        [InlineData(1940, 0, 0, true)]
         [InlineData(1980, 02, 29, true)]
         [InlineData(2000, 02, 29, true)]
+        [InlineData(2018, 0, 31, true)]
         [InlineData(9999, 12, 31, true)]
         public void DatePart_YearMonthDay_IsValidDate(int year, int month, int day, bool expected)
         {

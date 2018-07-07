@@ -4,7 +4,7 @@ namespace GenDate
 {
     public class DateSpan : IEquatable<DateSpan>, IComparable<DateSpan>
     {
-        private const int DaysInYear = 365;
+        private const int DaysPerYear = 365;
 
         internal int _years;
         internal int _days;
@@ -13,15 +13,15 @@ namespace GenDate
         public DateSpan(int totalDays)
         {
             _totalDays = totalDays;
-            _years = totalDays / DaysInYear;
-            _days = totalDays % DaysInYear;
+            _years = totalDays / DaysPerYear;
+            _days = totalDays % DaysPerYear;
         }
 
         public DateSpan(int years, int days)
         {
             _years = years;
             _days = days;
-            _totalDays = years * DaysInYear + days;
+            _totalDays = years * DaysPerYear + days;
         }
 
         public int Days => _days;
