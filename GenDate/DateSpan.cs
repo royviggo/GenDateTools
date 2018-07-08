@@ -5,7 +5,6 @@ namespace GenDate
     public class DateSpan : IEquatable<DateSpan>, IComparable<DateSpan>
     {
         private const int DaysPerYear = 365;
-        private const int DaysPerYearLeap = 366;
 
         internal int _years;
         internal int _days;

@@ -69,6 +69,7 @@ namespace GenDate.Test
         [InlineData(1, "1 day")]
         [InlineData(2, "2 days")]
         [InlineData(100, "100 days")]
+        [InlineData(364, "364 days")]
         [InlineData(365, "1 year")]
         [InlineData(366, "1 year and 1 day")]
         [InlineData(367, "1 year and 2 days")]
