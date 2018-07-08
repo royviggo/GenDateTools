@@ -5,6 +5,7 @@ namespace GenDate
     public class DateSpan : IEquatable<DateSpan>, IComparable<DateSpan>
     {
         private const int DaysPerYear = 365;
+        private const int DaysPerYearLeap = 366;
 
         internal int _years;
         internal int _days;
@@ -22,6 +23,41 @@ namespace GenDate
             _years = years;
             _days = days;
             _totalDays = years * DaysPerYear + days;
+        }
+
+        public DateSpan(DatePart datePart1, DatePart datePart2)
+        {
+            if (datePart1 > datePart2)
+            {
+                var datePartTemp = datePart1;
+                datePart1 = datePart2;
+                datePart2 = datePartTemp;
+            }
+
+            _years = 0;
+            _totalDays = (DatePart.DaysInYear(datePart1.Year) - datePart1.DayOfYear()) - (DatePart.DaysInYear(datePart2.Year) - datePart2.DayOfYear());
+            _days = datePart2.DayOfYear() - datePart1.DayOfYear();
+
+            var processYear = datePart1.Year;
+
+            while (processYear < datePart2.Year)
+            {
+                processYear++;
+                _totalDays += DatePart.DaysInYear(processYear);
+                _years++;
+            }
+
+            if (_days < 0)
+            {
+                _years = _years > 0 ? _years - 1 : _years;
+                _days += DatePart.DaysInYear(datePart2.Year - 1) + (_years > 0 ? 1 : 0);
+            }
+
+            if (_days == DatePart.DaysInYear(datePart2.Year))
+            {
+                _days = 0;
+                _years++;
+            }
         }
 
         public int Days => _days;

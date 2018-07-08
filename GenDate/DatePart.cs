@@ -115,6 +115,13 @@ namespace GenDate
             return month == 0 ? MaxDaysInMonth : daysInMonth[month] - daysInMonth[month - 1];
         }
 
+        public static int DaysInYear(int year)
+        {
+            int[] daysInMonth = IsLeapYear(year) ? DaysToMonth366 : DaysToMonth365;
+
+            return daysInMonth[daysInMonth.Length - 1];
+        }
+
         /// <summary>
         /// Checks if the parameters year, month and day is a valid DatePart, which means a valid date in the Gregorian 
         /// calendar, except that one or more of the values can be 0. If a value is 0, it means that it is unknown.
