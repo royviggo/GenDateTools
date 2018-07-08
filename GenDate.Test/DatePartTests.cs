@@ -150,6 +150,56 @@ namespace GenDate.Test
         }
 
         [Theory]
+        [InlineData(0, 0, 31, 31)]
+        [InlineData(2000, 2, 29, 60)]
+        [InlineData(1900, 3, 1, 60)]
+        [InlineData(2018, 1, 31, 31)]
+        [InlineData(2018, 7, 31, 212)]
+        [InlineData(2018, 9, 30, 273)]
+        [InlineData(2020, 2, 29, 60)]
+        [InlineData(2020, 12, 31, 366)]
+        public void DatePart_DayOfYear_IsValidDay(int year, int month, int day, int expected)
+        {
+            var datePart = new DatePart(year, month, day);
+
+            Assert.Equal(expected, datePart.DayOfYear());
+        }
+
+        [Theory]
+        [InlineData(0, 0, 31)]
+        [InlineData(2000, 2, 29)]
+        [InlineData(1900, 2, 28)]
+        [InlineData(2018, 1, 31)]
+        [InlineData(2018, 7, 31)]
+        [InlineData(2018, 9, 30)]
+        [InlineData(2020, 2, 29)]
+        [InlineData(2020, 12, 31)]
+        public void DatePart_DaysInMonth_IsValidDays(int year, int month, int expected)
+        {
+            var daysInMonth = DatePart.DaysInMonth(year, month);
+
+            Assert.Equal(expected, daysInMonth);
+        }
+
+        [Theory]
+        [InlineData(0, 365)]
+        [InlineData(1, 365)]
+        [InlineData(4, 366)]
+        [InlineData(100, 365)]
+        [InlineData(1900, 365)]
+        [InlineData(2000, 366)]
+        [InlineData(2018, 365)]
+        [InlineData(2020, 366)]
+        [InlineData(2400, 366)]
+        [InlineData(9999, 365)]
+        public void DatePart_DaysInYear_IsValidDays(int year, int expected)
+        {
+            var daysInYear = DatePart.DaysInYear(year);
+
+            Assert.Equal(expected, daysInYear);
+        }
+
+        [Theory]
         [InlineData(0, 0, 0, "00000000")]
         [InlineData(1900, 1, 1, "19000101")]
         [InlineData(1898, 11, 1, "18981101")]

@@ -63,5 +63,24 @@ namespace GenDate.Test
             Assert.Equal(expectedYears, dateSpan.Years);
             Assert.Equal(expectedDays, dateSpan.Days);
         }
+
+        [Theory]
+        [InlineData(0, "0 days")]
+        [InlineData(1, "1 day")]
+        [InlineData(2, "2 days")]
+        [InlineData(100, "100 days")]
+        [InlineData(365, "1 year")]
+        [InlineData(366, "1 year and 1 day")]
+        [InlineData(367, "1 year and 2 days")]
+        [InlineData(730, "2 years")]
+        [InlineData(800, "2 years and 70 days")]
+        [InlineData(3650, "10 years")]
+        public void DataSpan_ToString_ReturnsValidString(int totalDays, string expected)
+        {
+            var dateSpan = new DateSpan(totalDays);
+
+            Assert.Equal(expected, dateSpan.ToString());
+        }
+
     }
 }

@@ -110,12 +110,12 @@ namespace GenDate
         public override string ToString()
         {
             var years = $"{Years} year{(Years > 1 ? "s" : "")}";
-            var days = $"{Days} year{(Days == 0 || Days > 1 ? "s" : "")}";
+            var days = $"{Days} day{(Days == 0 || Days > 1 ? "s" : "")}";
 
             var output = Years > 0 ? years : "";
             output += (Years > 0 && Days > 0) ? " and " : "";
 
-            return output + days;
+            return output + ((Days > 0 || Years == 0) ? days : "");
         }
 
     }
