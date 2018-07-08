@@ -82,6 +82,9 @@ namespace GenDate
             Day = Convert.ToInt32(info.GetString("Day"));
         }
 
+        /// <summary>
+        /// Gets the day number from the beginning of the year.
+        /// </summary>
         public int DayOfYear()
         {
             int[] daysInMonth = IsLeapYear(Year) ? DaysToMonth366 : DaysToMonth365;
@@ -90,6 +93,9 @@ namespace GenDate
             return daysInMonth[prevMonth] + Day;
         }
 
+        /// <summary>
+        /// Gets the number of days in the month.
+        /// </summary>
         public int DaysInMonth() => DaysInMonth(Year, Month);
 
         /// <summary>
@@ -108,6 +114,9 @@ namespace GenDate
         /// </summary>
         public bool IsLeapYear() => IsLeapYear(Year);
 
+        /// <summary>
+        /// Gets the number of days in a month, given a year and a month.
+        /// </summary>
         public static int DaysInMonth(int year, int month)
         {
             int[] daysInMonth = IsLeapYear(year) ? DaysToMonth366 : DaysToMonth365;
@@ -115,6 +124,9 @@ namespace GenDate
             return month == 0 ? MaxDaysInMonth : daysInMonth[month] - daysInMonth[month - 1];
         }
 
+        /// <summary>
+        /// Gets the number of days in a given year.
+        /// </summary>
         public static int DaysInYear(int year)
         {
             int[] daysInMonth = IsLeapYear(year) ? DaysToMonth366 : DaysToMonth365;
@@ -157,6 +169,9 @@ namespace GenDate
             return (year % 4 == 0 && year % 100 != 0) || year % 400 == 0;
         }
 
+        /// <summary>
+        /// Gets the current date as a DatePart.
+        /// </summary>
         public static DatePart Today()
         {
             var dateTime = DateTime.Today;
