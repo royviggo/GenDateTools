@@ -14,7 +14,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\GenDate\GenDateTools.csproj" />
+    <ProjectReference Include="..\GenDateTools\GenDateTools.csproj" />
+    <ProjectReference Include="..\GenDateTools\GenDateTools.csproj" />
   </ItemGroup>
 
 </Project>
