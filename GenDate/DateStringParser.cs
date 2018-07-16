@@ -7,7 +7,7 @@ namespace GenDate
     {
         public virtual GenDate Parse(string dateString)
         {
-            var regex = new Regex(@"^(?<stype>\d)(?<fyear>\d{4})(?<fmonth>\d{2})(?<fday>\d{2})(?<dtype>\d)(?<tyear>\d{4})(?<tmonth>\d{2})(?<tday>\d{2})");
+            var regex = new Regex(@"^(?<stype>\d)(?<fromdate>\d{8})(?<dtype>\d)(?<todate>\d{8})");
             var m = regex.Match(dateString);
 
             if (m.Success)
@@ -16,8 +16,8 @@ namespace GenDate
 
                 if (Enum.TryParse(m.Groups["dtype"].Value, out dateTypeOut))
                 {
-                    var fromDate = new DatePart(m.Groups["fyear"].Value, m.Groups["fmonth"].Value, m.Groups["fday"].Value);
-                    var toDate = new DatePart(m.Groups["tyear"].Value, m.Groups["tmonth"].Value, m.Groups["tday"].Value);
+                    var fromDate = new DatePart(m.Groups["fromdate"].Value);
+                    var toDate = new DatePart(m.Groups["todate"].Value);
 
                     return new GenDate(dateTypeOut, fromDate, toDate, true);
                 }
@@ -29,10 +29,10 @@ namespace GenDate
 
         public virtual DatePart GetDatePartFromStringDate(string sDate)
         {
-            var regex = new Regex(@"^(?<year>\d{4})(?<month>\d{2})(?<day>\d{2})");
+            var regex = new Regex(@"^(?<date>\d{8})");
             var m = regex.Match(sDate);
 
-            return m.Success ? new DatePart(m.Groups["year"].Value, m.Groups["month"].Value, m.Groups["day"].Value)
+            return m.Success ? new DatePart(m.Groups["date"].Value)
                 : new DatePart();
         }
     }

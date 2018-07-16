@@ -6,7 +6,7 @@ namespace GenDate
     {
         public override GenDate Parse(string dateString)
         {
-            var regex = new Regex(@"^(?<stype>D)(?<dtype>.).+(?<fyear>\d{4})(?<fmonth>\d{2})(?<fday>\d{2}).(?<dstype>\S).(?<tyear>\d{4})(?<tmonth>\d{2})(?<tday>\d{2})..");
+            var regex = new Regex(@"^(?<stype>D)(?<dtype>.).+(?<fromdate>\d{8}).(?<dstype>\S).(?<todate>\d{8})..");
             var m = regex.Match(dateString);
 
             if (m.Success)
@@ -41,10 +41,8 @@ namespace GenDate
                         break;
                 }
 
-                var fromDate = new DatePart(m.Groups["fyear"].Value, m.Groups["fmonth"].Value, m.Groups["fday"].Value);
-                var toDate = (dateType == GenDateType.Between || dateType == GenDateType.FromTo)
-                             ? new DatePart(m.Groups["tyear"].Value, m.Groups["tmonth"].Value, m.Groups["tday"].Value)
-                             : fromDate;
+                var fromDate = new DatePart(m.Groups["fromdate"].Value);
+                var toDate = (dateType == GenDateType.Between || dateType == GenDateType.FromTo) ? new DatePart(m.Groups["todate"].Value) : fromDate;
 
                 return new GenDate(dateType, fromDate, toDate, true);
             }
