@@ -116,6 +116,5 @@ namespace GenDateTools.Models
 
             return output + ((Days > 0 || Years == 0) ? days : "");
         }
-
     }
 }
