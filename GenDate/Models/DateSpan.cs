@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace GenDate
+namespace GenDateTools.Models
 {
     public class DateSpan : IEquatable<DateSpan>, IComparable<DateSpan>
     {

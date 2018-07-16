@@ -1,4 +1,4 @@
-﻿namespace GenDate
+﻿namespace GenDateTools.Models
 {
     public enum GenDateStringType
     {

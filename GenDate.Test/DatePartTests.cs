@@ -1,7 +1,8 @@
-﻿using System;
+﻿using GenDateTools.Models;
+using System;
 using Xunit;
 
-namespace GenDate.Test
+namespace GenDateTools.Test
 {
     public class DatePartTests
     {

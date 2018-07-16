@@ -1,7 +1,8 @@
+using GenDateTools.Models;
 using System;
 using System.Text.RegularExpressions;
 
-namespace GenDate
+namespace GenDateTools.Parser
 {
     public class DateStringParser : IDateStringParser
     {

@@ -1,6 +1,7 @@
-﻿using System.Text.RegularExpressions;
+﻿using GenDateTools.Models;
+using System.Text.RegularExpressions;
 
-namespace GenDate
+namespace GenDateTools.Parser
 {
     public class RootsMagicDateStringParser : DateStringParser
     {

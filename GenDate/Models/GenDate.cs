@@ -1,8 +1,9 @@
-﻿using System;
+﻿using GenDateTools.Parser;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace GenDate
+namespace GenDateTools.Models
 {
     public class GenDate : IEquatable<GenDate>, IComparable<GenDate>
     {

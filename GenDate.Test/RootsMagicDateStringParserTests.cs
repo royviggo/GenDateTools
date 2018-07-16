@@ -1,6 +1,9 @@
-﻿using Xunit;
+﻿using GenDateTools.Models;
+using GenDateTools.Parser;
 
-namespace GenDate.Test
+using Xunit;
+
+namespace GenDateTools.Test
 {
     public class RootsMagicDateStringParserTests
     {

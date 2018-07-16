@@ -1,6 +1,7 @@
+using GenDateTools.Models;
 using Xunit;
 
-namespace GenDate.Test
+namespace GenDateTools.Test
 {
     public class GenDateTests
     {
