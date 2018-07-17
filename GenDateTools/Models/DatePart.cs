@@ -12,6 +12,14 @@ namespace GenDateTools.Models
     public class DatePart : IEquatable<DatePart>, IComparable<DatePart>, IConvertible, ISerializable
     {
         private const int MaxDaysInMonth = 31;
+        private const int MinDaysInMonth = 0;
+        private const int MaxMonthInYear = 12;
+        private const int MinMonthInYear = 0;
+        private const int MaxYear = 9999;
+        private const int MinYear = 0;
+
+        public static readonly DatePart MinValue = new DatePart(MinYear, MinMonthInYear, MinDaysInMonth);
+        public static readonly DatePart MaxValue = new DatePart(MaxYear, MaxMonthInYear, MaxDaysInMonth);
 
         private static readonly int[] DaysToMonth365 = { 0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334, 365 };
         private static readonly int[] DaysToMonth366 = { 0, 31, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335, 366 };
@@ -25,9 +33,9 @@ namespace GenDateTools.Models
         /// </summary>
         public DatePart()
         {
-            Year = 0;
-            Month = 0;
-            Day = 0;
+            Year = MinValue.Year;
+            Month = MinValue.Month;
+            Day = MinValue.Day;
         }
 
         /// <summary>
@@ -39,7 +47,7 @@ namespace GenDateTools.Models
         /// <exception cref="ArgumentOutOfRangeException"></exception>
         public DatePart(int year, int month, int day)
         {
-            if (!(year >= 0 && year <= 9999 && month >= 0 && month <= 12 && day >= 0 && day <= 31))
+            if (!(year >= MinYear && year <= MaxYear && month >= MinMonthInYear && month <= MaxMonthInYear && day >= MinDaysInMonth && day <= MaxDaysInMonth))
                 throw new ArgumentOutOfRangeException("Arguments out of range");
 
             Year = year;
@@ -140,11 +148,11 @@ namespace GenDateTools.Models
         /// </summary>
         public static bool IsValidDate(int year, int month, int day)
         {
-            if (year >= 0 && year <= 9999 && month >= 0 && month <= 12)
+            if (year >= MinYear && year <= MaxYear && month >= MinMonthInYear && month <= MaxMonthInYear)
             {
                 int[] days = IsLeapYear(year) ? DaysToMonth366 : DaysToMonth365;
 
-                if (day >= 0 && day <= DaysInMonth(year, month))
+                if (day >= MinDaysInMonth && day <= DaysInMonth(year, month))
                     return true;
             }
             return false;
@@ -163,7 +171,7 @@ namespace GenDateTools.Models
         /// </summary>
         public static bool IsLeapYear(int year)
         {
-            if (year <= 0 || year > 9999)
+            if (year <= MinYear || year > MaxYear)
                 return false;
 
             return (year % 4 == 0 && year % 100 != 0) || year % 400 == 0;
@@ -276,8 +284,8 @@ namespace GenDateTools.Models
         /// </summary>
         public override string ToString()
         {
-            var output = Day > 0 && Day <= 31 ? Day.ToString().PadLeft(2, '0') : "";
-            var month = Month > 0 && Month <= 12 ? MonthName(Month) : "";
+            var output = Day > 0 && Day <= MaxDaysInMonth ? Day.ToString().PadLeft(2, '0') : "";
+            var month = Month > 0 && Month <= MaxMonthInYear ? MonthName(Month) : "";
             var year = Year > 0 ? Year.ToString() : "";
 
             output += output != "" && month != "" ? " " : "";
