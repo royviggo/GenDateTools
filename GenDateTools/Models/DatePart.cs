@@ -91,6 +91,32 @@ namespace GenDateTools.Models
         }
 
         /// <summary>
+        /// Creates a DatePart object using a year and number of days in that year.
+        /// </summary>
+        /// <exception cref="ArgumentOutOfRangeException"></exception>
+        public DatePart(int year, int dayOfYear)
+        {
+            if (!(year >= MinYear && year <= MaxYear))
+                throw new ArgumentOutOfRangeException(nameof(year), year, "Arguments out of range");
+
+            if (!(dayOfYear >= 0 && dayOfYear <= DaysInYear(year)))
+                throw new ArgumentOutOfRangeException(nameof(dayOfYear), dayOfYear, "Arguments out of range");
+
+            var month = 0;
+            int[] daysInMonth = IsLeapYear(year) ? DaysToMonth366 : DaysToMonth365;
+
+            while (dayOfYear > daysInMonth[month])
+            {
+                month++;
+                if (month == 13) break;
+            }
+
+            Year = year;
+            Month = month > 12 ? month - 1 : month;
+            Day = dayOfYear - daysInMonth[month > 0 ? month - 1 : 0];
+        }
+
+        /// <summary>
         /// Gets the day number from the beginning of the year.
         /// </summary>
         public int DayOfYear()
@@ -121,6 +147,80 @@ namespace GenDateTools.Models
         /// Check if the year is a leap year.
         /// </summary>
         public bool IsLeapYear() => IsLeapYear(Year);
+
+        /// <summary>
+        /// Adds a number of years to the DatePart.
+        /// </summary>
+        /// <exception cref="ArgumentOutOfRangeException"></exception>
+        public DatePart AddYears(int years)
+        {
+            if (((Year + years) > MaxYear) || ((Year + years) < MinYear))
+                throw new ArgumentOutOfRangeException(nameof(years), years, $"Resulting year must be between {MinYear} and {MaxYear}.");
+
+            return new DatePart(Year + years, Month, Day);
+        }
+
+        /// <summary>
+        /// Adds a number of months to the DatePart.
+        /// </summary>
+        /// <exception cref="ArgumentOutOfRangeException"></exception>
+        public DatePart AddMonths(int months)
+        {
+            int year = Year, mon = Month, day = Day;
+
+            var calcMonth = mon - 1 + months;
+            if (calcMonth >= 0)
+            {
+                mon = calcMonth % 12 + 1;
+                year = year + calcMonth / 12;
+            }
+            else
+            {
+                mon = 12 + (calcMonth + 1) % 12;
+                year = year + (calcMonth - 11) / 12;
+            }
+
+            if (year < MinYear || year > MaxYear)
+                throw new ArgumentOutOfRangeException(nameof(months), months, $"Resulting year must be between {MinYear} and {MaxYear}.");
+
+            var daysInMonth = DaysInMonth(year, mon);
+            if (day > daysInMonth)
+                day = daysInMonth;
+
+            return new DatePart(year, mon, day);
+        }
+
+        /// <summary>
+        /// Adds a number of days to the DatePart.
+        /// </summary>
+        /// <exception cref="ArgumentOutOfRangeException"></exception>
+        public DatePart AddDays(int days)
+        {
+            int year = Year;
+
+            var dayOfYear = DayOfYear();
+            var calcDayOfYear = dayOfYear + days;
+
+            if (calcDayOfYear >= 0)
+            {
+                while (calcDayOfYear > DaysInYear(year))
+                {
+                    calcDayOfYear -= DaysInYear(year);
+                    year++;
+                }
+            }
+            else
+            {
+                calcDayOfYear = 0 - calcDayOfYear;
+                while (calcDayOfYear > DaysInYear(year))
+                {
+                    calcDayOfYear -= DaysInYear(year);
+                    year--;
+                }
+            }
+
+            return new DatePart(year, calcDayOfYear);
+        }
 
         /// <summary>
         /// Gets the number of days in a month, given a year and a month.
@@ -415,29 +515,6 @@ namespace GenDateTools.Models
                 throw new ArgumentNullException("info");
 
             GetObjectData(info, context);
-        }
-
-
-        public DatePart AddYear(int years)
-        {
-            if (years <= 0)
-                throw new ArgumentOutOfRangeException(nameof(years), years, "Value must be >= 1");
-
-            if ((Year + years) > MaxYear)
-                throw new ArgumentOutOfRangeException(nameof(years), years, "Current year plus given year must be <= MaxYear");
-
-            return new DatePart(Year + years, Month, Day);
-        }
-
-        public DatePart SubtractYear(int years)
-        {
-            if (years <= 0)
-                throw new ArgumentOutOfRangeException(nameof(years), years, "Value must be >= 1");
-
-            if ((Year - years) < MinYear)
-                throw new ArgumentOutOfRangeException(nameof(years), years, "Current year minus given year must be >= MinYear");
-
-            return new DatePart(Year - years, Month, Day);
         }
     }
 }
