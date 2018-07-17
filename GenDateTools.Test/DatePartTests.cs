@@ -77,6 +77,7 @@ namespace GenDateTools.Test
         }
 
         [Theory]
+        [InlineData("00010000", "1")]
         [InlineData("10000000", "1000")]
         [InlineData("19000101", "01 Jan 1900")]
         [InlineData("18981101", "01 Nov 1898")]
@@ -428,6 +429,62 @@ namespace GenDateTools.Test
 
             Assert.Equal(expected, datePartConverted);
             Assert.IsType<string>(datePartConverted);
+        }
+
+        [Theory]
+        [InlineData(0, 1, 10000)]
+        [InlineData(10000000, 1000, 20000000)]
+        [InlineData(20000229, 4, 20040229)]
+        [InlineData(20000229, 100, 21000229)]
+        [InlineData(99981231, 1, 99991231)]
+        public void DatePart_AddYear_DatePartWithAddedYears(long datePartLong, int years, long expected)
+        {
+            var datePart = new DatePart(datePartLong);
+            var datePartAdded = datePart.AddYear(years);
+            var datePartExpected = new DatePart(expected);
+
+            Assert.Equal(datePartExpected, datePartAdded);
+        }
+
+        [Theory]
+        [InlineData(20000101, 0)]
+        [InlineData(20000101, -10)]
+        [InlineData(99991231, 1)]
+        [InlineData(99981231, 2)]
+        [InlineData(1, 99991231)]
+        public void DatePart_AddYear_ThrowsArgumentOutOfRangeException(long datePartLong, int years)
+        {
+            var datePart = new DatePart(datePartLong);
+
+            Assert.Throws<ArgumentOutOfRangeException>(() => datePart.AddYear(years));
+        }
+
+        [Theory]
+        [InlineData(10000, 1, 0)]
+        [InlineData(10000000, 1000, 0)]
+        [InlineData(20000229, 4, 19960229)]
+        [InlineData(20000229, 100, 19000229)]
+        [InlineData(99991231, 1, 99981231)]
+        public void DatePart_SubtractYear_DatePartWithAddedYears(long datePartLong, int years, long expected)
+        {
+            var datePart = new DatePart(datePartLong);
+            var datePartAdded = datePart.SubtractYear(years);
+            var datePartExpected = new DatePart(expected);
+
+            Assert.Equal(datePartExpected, datePartAdded);
+        }
+
+        [Theory]
+        [InlineData(20000101, 0)]
+        [InlineData(20000101, -10)]
+        [InlineData(0, 1)]
+        [InlineData(1, 2)]
+        [InlineData(99991231, 100000000)]
+        public void DatePart_SubtractYear_ThrowsArgumentOutOfRangeException(long datePartLong, int years)
+        {
+            var datePart = new DatePart(datePartLong);
+
+            Assert.Throws<ArgumentOutOfRangeException>(() => datePart.SubtractYear(years));
         }
     }
 }

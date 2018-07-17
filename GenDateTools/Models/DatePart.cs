@@ -416,5 +416,28 @@ namespace GenDateTools.Models
 
             GetObjectData(info, context);
         }
+
+
+        public DatePart AddYear(int years)
+        {
+            if (years <= 0)
+                throw new ArgumentOutOfRangeException(nameof(years), years, "Value must be >= 1");
+
+            if ((Year + years) > MaxYear)
+                throw new ArgumentOutOfRangeException(nameof(years), years, "Current year plus given year must be <= MaxYear");
+
+            return new DatePart(Year + years, Month, Day);
+        }
+
+        public DatePart SubtractYear(int years)
+        {
+            if (years <= 0)
+                throw new ArgumentOutOfRangeException(nameof(years), years, "Value must be >= 1");
+
+            if ((Year - years) < MinYear)
+                throw new ArgumentOutOfRangeException(nameof(years), years, "Current year minus given year must be >= MinYear");
+
+            return new DatePart(Year - years, Month, Day);
+        }
     }
 }
