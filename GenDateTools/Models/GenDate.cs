@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace GenDateTools.Models
+namespace GenDateTools
 {
     public class GenDate : IEquatable<GenDate>, IComparable<GenDate>
     {

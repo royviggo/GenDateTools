@@ -1,6 +1,4 @@
-﻿using GenDateTools.Models;
-
-namespace GenDateTools.Parser
+﻿namespace GenDateTools.Parser
 {
     public interface IDateStringParser
     {

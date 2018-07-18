@@ -4,6 +4,12 @@
     <TargetFramework>netcoreapp2.1</TargetFramework>
 
     <IsPackable>false</IsPackable>
+
+    <Authors>royviggo</Authors>
+
+    <Version>1.0.1</Version>
+
+    <Copyright>Copyright (c) 2018 Roy Viggo Pedersen</Copyright>
   </PropertyGroup>
 
   <ItemGroup>

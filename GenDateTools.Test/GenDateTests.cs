@@ -1,4 +1,3 @@
-using GenDateTools.Models;
 using Xunit;
 
 namespace GenDateTools.Test

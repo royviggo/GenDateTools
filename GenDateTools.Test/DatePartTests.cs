@@ -1,5 +1,4 @@
-﻿using GenDateTools.Models;
-using System;
+﻿using System;
 using Xunit;
 
 namespace GenDateTools.Test

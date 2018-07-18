@@ -1,4 +1,4 @@
-﻿namespace GenDateTools.Models
+﻿namespace GenDateTools
 {
     public enum GenDateType
     {

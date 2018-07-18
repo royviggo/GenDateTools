@@ -1,5 +1,4 @@
-﻿using GenDateTools.Models;
-using GenDateTools.Parser;
+﻿using GenDateTools.Parser;
 
 using Xunit;
 
