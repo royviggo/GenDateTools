@@ -91,7 +91,7 @@ namespace GenDateTools.Models
         }
 
         /// <summary>
-        /// Creates a DatePart object using a year and number of days in that year.
+        /// Creates a DatePart object using a year and the day number in that year.
         /// </summary>
         /// <exception cref="ArgumentOutOfRangeException"></exception>
         public DatePart(int year, int dayOfYear)

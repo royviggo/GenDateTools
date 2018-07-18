@@ -1,7 +1,17 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <PackageId>GenDateTools</PackageId>
+    <Version>1.0.0</Version>
+    <Authors>royviggo</Authors>
+    <Copyright>Copyright (c) 2018 Roy Viggo Pedersen</Copyright>
+    <PackageProjectUrl>https://github.com/royviggo/GenDateTools</PackageProjectUrl>
+    <Description>Class library for Genealogy dates, where there can be one or more unknown parts. Features approximate dates, before/after dates, date ranges and free text. Have basic arithmetic and compare functions. Parsing dates from other Genealogy software.</Description>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.ComponentModel.Annotations" Version="4.5.0" />
+  </ItemGroup>
 
 </Project>
