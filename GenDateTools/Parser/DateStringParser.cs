@@ -12,28 +12,22 @@ namespace GenDateTools.Parser
 
             if (m.Success)
             {
-                GenDateType dateTypeOut;
-
-                if (Enum.TryParse(m.Groups["dtype"].Value, out dateTypeOut))
+                if (Enum.TryParse(m.Groups["dtype"].Value, out GenDateType dateTypeOut))
                 {
-                    var fromDate = new DatePart(m.Groups["fromdate"].Value);
-                    var toDate = new DatePart(m.Groups["todate"].Value);
+                    var fromDate = GetDatePartFromStringDate(m.Groups["fromdate"].Value);
+                    var toDate = GetDatePartFromStringDate(m.Groups["todate"].Value);
 
                     return new GenDate(dateTypeOut, fromDate, toDate, true);
                 }
             }
-            var datePhrase = dateString.Length > 1 ? dateString.Substring(2, dateString.Length - 1) : "";
+            var datePhrase = dateString.Length > 1 ? dateString.Substring(1, dateString.Length - 1) : string.Empty;
 
             return new GenDate(GenDateType.Invalid, datePhrase, false);
         }
 
         public virtual DatePart GetDatePartFromStringDate(string sDate)
         {
-            var regex = new Regex(@"^(?<date>\d{8})");
-            var m = regex.Match(sDate);
-
-            return m.Success ? new DatePart(m.Groups["date"].Value)
-                : new DatePart();
+            return new DatePart(sDate);
         }
     }
 }

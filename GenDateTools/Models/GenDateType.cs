@@ -7,8 +7,10 @@
         Exact = 2,
         About = 3,
         Calculated = 4,
-        Between = 5,
-        FromTo = 6,
-        After = 7,
+        Estimated = 5,
+        Between = 6,
+        Range = 7,
+        Interpreted = 8,
+        After = 9,
     }
 }

@@ -4,7 +4,7 @@
     {
         public static string ToMonthName(this int month)
         {
-            return DatePart.MonthName(month);
+            return GenTools.MonthName(month);
         }
 
         public static string ToSortString(this DatePart datePart)

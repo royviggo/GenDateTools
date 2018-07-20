@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <PackageId>GenDateTools</PackageId>
-    <Version>1.0.3</Version>
+    <Version>1.0.4</Version>
     <Authors>royviggo</Authors>
     <Copyright>Copyright (c) 2018 Roy Viggo Pedersen</Copyright>
     <PackageProjectUrl>https://github.com/royviggo/GenDateTools</PackageProjectUrl>

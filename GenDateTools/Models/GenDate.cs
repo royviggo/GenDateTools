@@ -1,15 +1,11 @@
 ﻿using GenDateTools.Parser;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace GenDateTools
 {
     public class GenDate : IEquatable<GenDate>, IComparable<GenDate>
     {
-        [NotMapped]
-        public IDateStringParser StringParser { get; private set; } = new DateStringParser();
-
         public GenDateType DateType { get; set; }
         public DatePart DateFrom { get;  set; }
         public DatePart DateTo { get;  set; }
@@ -22,40 +18,16 @@ namespace GenDateTools
         public GenDate() { }
 
         public GenDate(DatePart datePart)
-        {
-            DateFrom = datePart;
-            DateTo = datePart;
-            DateType = GenDateType.Exact;
-            SortDate = GetSortDate();
-            IsValid = true;
-        }
+            : this(GenDateType.Exact, datePart, datePart, string.Empty, datePart.IsValidDate()) { }
 
         public GenDate(GenDateType dateType, DatePart datePart)
-        {
-            DateFrom = datePart;
-            DateTo = datePart;
-            DateType = dateType;
-            SortDate = GetSortDate();
-            IsValid = true;
-        }
+            : this(dateType, datePart, datePart, string.Empty, datePart.IsValidDate()) { }
 
         public GenDate(GenDateType dateType, DatePart fromDatePart, DatePart toDatePart)
-        {
-            DateFrom = fromDatePart;
-            DateTo = toDatePart;
-            DateType = dateType;
-            SortDate = GetSortDate();
-            IsValid = true;
-        }
+            : this(dateType, fromDatePart, toDatePart, string.Empty, fromDatePart.IsValidDate() && toDatePart.IsValidDate()) { }
 
-        public GenDate(GenDateType dateType, DatePart fromDatePart, DatePart toDatePart, bool isValid)
-        {
-            DateType = dateType;
-            DateFrom = fromDatePart;
-            DateTo = toDatePart;
-            SortDate = GetSortDate();
-            IsValid = isValid;
-        }
+        public GenDate(GenDateType dateType, DatePart fromDatePart, DatePart toDatePart, bool isValid) 
+            : this(dateType, fromDatePart, toDatePart, string.Empty, isValid) { }
 
         public GenDate(GenDateType dateType, DatePart fromDatePart, DatePart toDatePart, string datePhrase, bool isValid)
         {
@@ -63,33 +35,18 @@ namespace GenDateTools
             DateFrom = fromDatePart;
             DateTo = toDatePart;
             DatePhrase = datePhrase;
-            SortDate = GetSortDate();
             IsValid = isValid;
+            SortDate = GetSortDate();
         }
 
         public GenDate(GenDateType dateType, string datePhrase, bool isValid)
-        {
-            DateType = dateType;
-            DatePhrase = datePhrase;
-            SortDate = GetSortDate();
-            IsValid = isValid;
-        }
+            : this(dateType, new DatePart(), new DatePart(), datePhrase, isValid) { }
 
-        public GenDate(string dateString)
-        {
-            var genDate = StringParser.Parse(dateString);
-            DateType = genDate.DateType;
-            DateFrom = genDate.DateFrom;
-            DateTo = genDate.DateTo;
-            DatePhrase = genDate.DatePhrase;
-            IsValid = genDate.IsValid;
-            SortDate = GetSortDate();
-        }
+        public GenDate(string dateString) : this(new DateStringParser(), dateString) { }
 
         public GenDate(IDateStringParser parser, string dateString)
         {
-            StringParser = parser;
-            var genDate = StringParser.Parse(dateString);
+            var genDate = parser.Parse(dateString);
             DateType = genDate.DateType;
             DateFrom = genDate.DateFrom;
             DateTo = genDate.DateTo;
@@ -103,8 +60,9 @@ namespace GenDateTools
             DateType = (GenDateType)((dateNum / 100000000) % 10);
             DateFrom = new DatePart((dateNum / 1000000000) % 100000000);
             DateTo = new DatePart(dateNum % 100000000);
-            SortDate = GetSortDate();
+            DatePhrase = string.Empty;
             IsValid = true;
+            SortDate = GetSortDate();
         }
 
         public static bool operator ==(GenDate genDate1, GenDate genDate2)
@@ -199,8 +157,8 @@ namespace GenDateTools
 
         public override string ToString()
         {
-            var typeNames = new Dictionary<int, string> { {0, ""}, {1, "Bef. "}, {2, ""}, {3, "Abt. "}, {4, "Cal. "}, {5, "Bet. "}, {6, "From "}, {7, "Aft. "} };
-            var rangeJoin = new Dictionary<int, string> { {5, " - "}, {6, " to "} };
+            var typeNames = new Dictionary<int, string> { {0, ""}, {1, "Bef. "}, {2, ""}, {3, "Abt. "}, {4, "Cal. "}, { 5, "Est. " }, {6, "Bet. "}, {7, "From "}, { 8, "Int. " }, {9, "Aft. "} };
+            var rangeJoin = new Dictionary<int, string> { {6, " - "}, {7, " to "} };
 
             if (!IsValid)
                 return DatePhrase;
@@ -208,7 +166,7 @@ namespace GenDateTools
             var result = typeNames[(int)DateType];
             result += DateFrom.ToString();
 
-            if (DateType == GenDateType.Between || DateType == GenDateType.FromTo)
+            if (DateType == GenDateType.Between || DateType == GenDateType.Range)
                 result += rangeJoin[(int)DateType] + DateTo;
 
             return result;

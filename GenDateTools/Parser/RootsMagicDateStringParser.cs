@@ -26,7 +26,7 @@ namespace GenDateTools.Parser
                         dateType = GenDateType.Between;
                         break;
                     case "S":
-                        dateType = GenDateType.FromTo;
+                        dateType = GenDateType.Range;
                         break;
                     case ".":
                         if (m.Groups["dstype"].Value == "A")
@@ -42,12 +42,12 @@ namespace GenDateTools.Parser
                 }
 
                 var fromDate = new DatePart(m.Groups["fromdate"].Value);
-                var toDate = (dateType == GenDateType.Between || dateType == GenDateType.FromTo) ? new DatePart(m.Groups["todate"].Value) : fromDate;
+                var toDate = (dateType == GenDateType.Between || dateType == GenDateType.Range) ? new DatePart(m.Groups["todate"].Value) : fromDate;
 
                 return new GenDate(dateType, fromDate, toDate, true);
             }
 
-            var datePhrase = dateString.Length > 1 ? dateString.Substring(1, dateString.Length - 1) : "";
+            var datePhrase = dateString.Length > 1 ? dateString.Substring(1, dateString.Length - 1) : string.Empty;
 
             return new GenDate(GenDateType.Invalid, datePhrase, false);
         }

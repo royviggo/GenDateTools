@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Runtime.Serialization;
 
 namespace GenDateTools
@@ -78,7 +77,7 @@ namespace GenDateTools
         /// </summary>
         /// <exception cref="ArgumentOutOfRangeException"></exception>
         public DatePart(string date)
-            : this(GetSubString(date, 0, 4), GetSubString(date, 4, 2), GetSubString(date, 6, 2)) { }
+            : this(GenTools.GetSubString(date, 0, 4), GenTools.GetSubString(date, 4, 2), GenTools.GetSubString(date, 6, 2)) { }
 
         protected DatePart(SerializationInfo info, StreamingContext context)
         {
@@ -385,7 +384,7 @@ namespace GenDateTools
         public override string ToString()
         {
             var output = Day > 0 && Day <= MaxDaysInMonth ? Day.ToString().PadLeft(2, '0') : "";
-            var month = Month > 0 && Month <= MaxMonthInYear ? MonthName(Month) : "";
+            var month = Month > 0 && Month <= MaxMonthInYear ? GenTools.MonthName(Month) : "";
             var year = Year > 0 ? Year.ToString() : "";
 
             output += output != "" && month != "" ? " " : "";
@@ -393,26 +392,6 @@ namespace GenDateTools
             output += output != "" && year != "" ? " " : "";
 
             return output + year;
-        }
-
-        /// <summary>
-        /// Takes a month number as parameter and returns a three character long month name.
-        /// </summary>
-        public static string MonthName(int month)
-        {
-            var months = new Dictionary<int, string>
-            {
-                { 1, "Jan" }, { 2, "Feb" }, { 3, "Mar" }, { 4, "Apr" }, { 5, "May" }, { 6, "Jun" },
-                { 7, "Jul" }, { 8, "Aug" }, { 9, "Sep" }, {10, "Oct" }, {11, "Nov" }, {12, "Dec" },
-            };
-            return months.ContainsKey(month) ? months[month] : "";
-        }
-
-        private static string GetSubString(string source, int startIndex, int length)
-        {
-            var returnString = source;
-
-            return returnString.Substring(startIndex, length);
         }
 
         #region IConvertible GetTypeCode and Methods
