@@ -65,19 +65,19 @@ namespace GenDateTools.Test
         }
 
         [Theory]
-        [InlineData("110000000310000000", "Abt. 1000")]
+        [InlineData("110000000310001231", "Abt. 1000")]
         [InlineData("119000101219000101", "01 Jan 1900")]
         [InlineData("118981101918981101", "Aft. 01 Nov 1898")]
-        [InlineData("118901200618910300", "Bet. Dec 1890 - Mar 1891")]
+        [InlineData("118901200618910331", "Bet. Dec 1890 - 31 Mar 1891")]
         [InlineData("120180229720180301", "From 29 Feb 2018 to 01 Mar 2018")]
         [InlineData("199991231299991231", "31 Dec 9999")]
-        [InlineData("100000031600000031", "Bet. 31 - 31")]
+        [InlineData("100000031600001231", "Bet. 31 - 31 Dec")]
         [InlineData("100000431100000431", "Bef. 31 Apr")]
-        [InlineData("100001000300001000", "Abt. Oct")]
+        [InlineData("100001000300001031", "Abt. Oct")]
         [InlineData("120170015420170015", "Cal. 15 2017")]
         [InlineData("100000001100000001", "Bef. 01")]
-        [InlineData("100500000600700000", "Bet. 50 - 70")]
-        [InlineData("108600000609100000", "Bet. 860 - 910")]
+        [InlineData("100500000600701231", "Bet. 50 - 31 Dec 70")]
+        [InlineData("108600000609101231", "Bet. 860 - 31 Dec 910")]
         public void GenExtension_GenDateToGenString_ReturnGenString(string genDateStr, string expected)
         {
             var genDate = new GenDate(genDateStr);

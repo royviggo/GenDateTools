@@ -24,7 +24,7 @@ namespace GenDateTools.Test
         [InlineData("118900101719000101", "118900101719000101")]
         [InlineData("120180229120180229", "120180229120180229")]
         [InlineData("199991231999991231", "199991231999991231")]
-        [InlineData("100000000300000000", "100000000300000000")]
+        [InlineData("100000000300000000", "100000000300001231")]
         public void GenDate_NewFromString_ValidGenDate(string dateString, string expected)
         {
             var genDate = new GenDate(dateString);
@@ -34,9 +34,9 @@ namespace GenDateTools.Test
 
         [Theory]
         [InlineData("19000101", "119000101219000101")]
-        [InlineData("00000000", "100000000200000000")]
-        [InlineData("00000001", "100000001200000001")]
-        [InlineData("99990022", "199990022299990022")]
+        [InlineData("00000000", "100000000200001231")]
+        [InlineData("00000001", "100000001200001201")]
+        [InlineData("99990022", "199990022299991222")]
         [InlineData("99991231", "199991231299991231")]
         [InlineData("20000229", "120000229220000229")]
         public void GenDate_NewFromDatePart_ValidGenDate(string datePartString, string expected)
@@ -49,9 +49,9 @@ namespace GenDateTools.Test
 
         [Theory]
         [InlineData(1, "19000101", "119000101119000101")]
-        [InlineData(3, "99990022", "199990022399990022")]
-        [InlineData(9, "00000000", "100000000900000000")]
-        [InlineData(1, "00000001", "100000001100000001")]
+        [InlineData(3, "99990022", "199990022399991222")]
+        [InlineData(9, "00000000", "100000000900001231")]
+        [InlineData(1, "00000001", "100000001100001201")]
         [InlineData(9, "99991231", "199991231999991231")]
         [InlineData(4, "20000229", "120000229420000229")]
         public void GenDate_NewFromDateTypeAndDatePart_ValidGenDate(int dateType, string datePartString, string expected)
@@ -66,8 +66,8 @@ namespace GenDateTools.Test
         [InlineData(1, "19000101", "19000101", "119000101119000101")]
         [InlineData(6, "20171231", "20180123", "120171231620180123")]
         [InlineData(7, "20171231", "20180301", "120171231720180301")]
-        [InlineData(3, "99990022", "99990022", "199990022399990022")]
-        [InlineData(9, "00000000", "00000000", "100000000900000000")]
+        [InlineData(3, "99990022", "99990022", "199990022399991222")]
+        [InlineData(9, "00000000", "00000000", "100000000900001231")]
         [InlineData(9, "99991231", "99991231", "199991231999991231")]
         public void GenDate_NewFromDateTypeFromDatePartAndToDatePart_ValidGenDate(int dateType, string fromDatePartStr, string toDatePartStr, string expected)
         {
@@ -82,8 +82,8 @@ namespace GenDateTools.Test
         [InlineData(1, "19000101", "19000101", true, "119000101119000101")]
         [InlineData(6, "20171231", "20180123", true, "120171231620180123")]
         [InlineData(7, "20171231", "20180301", true, "120171231720180301")]
-        [InlineData(3, "99990022", "99990022", true, "199990022399990022")]
-        [InlineData(9, "00000000", "00000000", true, "100000000900000000")]
+        [InlineData(3, "99990022", "99990022", true, "199990022399991222")]
+        [InlineData(9, "00000000", "00000000", true, "100000000900001231")]
         [InlineData(9, "99991231", "99991231", true, "199991231999991231")]
         public void GenDate_NewFromDateTypeFromDatePartAndToDatePartIsValid_ValidGenDate(int dateType, string fromDatePartStr, string toDatePartStr, bool isValid, string expected)
         {
@@ -100,8 +100,8 @@ namespace GenDateTools.Test
         [InlineData(1, "19000101", "19000101", true, "119000101119000101")]
         [InlineData(6, "20171231", "20180123", true, "120171231620180123")]
         [InlineData(7, "20171231", "20180301", true, "120171231720180301")]
-        [InlineData(3, "99990022", "99990022", true, "199990022399990022")]
-        [InlineData(9, "00000000", "00000000", true, "100000000900000000")]
+        [InlineData(3, "99990022", "99990022", true, "199990022399991222")]
+        [InlineData(9, "00000000", "00000000", true, "100000000900001231")]
         [InlineData(9, "99991231", "99991231", true, "199991231999991231")]
         public void GenDate_NewFromAll_ValidGenDate(int dateType, string fromDatePartStr, string toDatePartStr, bool isValid, string expected)
         {
@@ -136,19 +136,19 @@ namespace GenDateTools.Test
         }
 
         [Theory]
-        [InlineData("110000000310000000", "Abt. 1000")]
+        [InlineData("110000000310001231", "Abt. 1000")]
         [InlineData("119000101219000101", "01 Jan 1900")]
         [InlineData("118981101918981101", "Aft. 01 Nov 1898")]
-        [InlineData("118901200618910300", "Bet. Dec 1890 - Mar 1891")]
+        [InlineData("118901200618910331", "Bet. Dec 1890 - 31 Mar 1891")]
         [InlineData("120180229720180301", "From 29 Feb 2018 to 01 Mar 2018")]
         [InlineData("199991231299991231", "31 Dec 9999")]
-        [InlineData("100000031600000031", "Bet. 31 - 31")]
+        [InlineData("100000031600001231", "Bet. 31 - 31 Dec")]
         [InlineData("100000431100000431", "Bef. 31 Apr")]
-        [InlineData("100001000300001000", "Abt. Oct")]
+        [InlineData("100001000300001031", "Abt. Oct")]
         [InlineData("120170015420170015", "Cal. 15 2017")]
         [InlineData("100000001100000001", "Bef. 01")]
-        [InlineData("100500000600700000", "Bet. 50 - 70")]
-        [InlineData("108600000609100000", "Bet. 860 - 910")]
+        [InlineData("100500000600701231", "Bet. 50 - 31 Dec 70")]
+        [InlineData("108600000609101231", "Bet. 860 - 31 Dec 910")]
         public void Gendate_ToString_EqualString(string dateString, string expected)
         {
             var genDate = new GenDate(dateString);
@@ -162,7 +162,7 @@ namespace GenDateTools.Test
         [InlineData(118900101719000101, "118900101719000101")]
         [InlineData(120180229120180229, "120180229120180229")]
         [InlineData(199991231999991231, "199991231999991231")]
-        [InlineData(100000000300000000, "100000000300000000")]
+        [InlineData(100000000300001231, "100000000300001231")]
         public void GenDate_Equals_ReturnsTrue(long dateNum, string compareDate)
         {
             var genDate1 = new GenDate(dateNum);
@@ -177,7 +177,7 @@ namespace GenDateTools.Test
         [InlineData(118900101619000101, "118900101619000101")]
         [InlineData(120180229120180229, "120180229120180229")]
         [InlineData(199991231799991231, "199991231799991231")]
-        [InlineData(100000000300000000, "100000000300000000")]
+        [InlineData(100000000300001231, "100000000300001231")]
         public void GenDate_OperatorEqual_ReturnsTrue(long dateNum, string compareDate)
         {
             var genDate1 = new GenDate(dateNum);
@@ -192,7 +192,7 @@ namespace GenDateTools.Test
         [InlineData(118900101619000101, "118900101619000101")]
         [InlineData(120180229120180229, "120180229120180229")]
         [InlineData(199991231799991231, "199991231799991231")]
-        [InlineData(100000000300000000, "100000000300000000")]
+        [InlineData(100000000300001231, "100000000300001231")]
         public void GenDate_OperatorNotEqual_ReturnsTrue(long dateNum, string compareDate)
         {
             var genDate1 = new GenDate(dateNum);
@@ -207,7 +207,7 @@ namespace GenDateTools.Test
         [InlineData(118900106619000107, "118900106619000106")]
         [InlineData(120180329120180329, "120180229120180229")]
         [InlineData(199991231799991231, "199991231399991231")]
-        [InlineData(100000000300000000, "100000000200000000")]
+        [InlineData(100000000300000000, "100000000200001231")]
         public void GenDate_OperatorLargerThan_ReturnsTrue(long dateNum, string compareDate)
         {
             var genDate1 = new GenDate(dateNum);
