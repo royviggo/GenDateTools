@@ -221,14 +221,6 @@ namespace GenDateTools
             return new DatePart(year, calcDayOfYear);
         }
 
-        public DatePart GetMaxRange()
-        {
-            return new DatePart(
-                Year,
-                Month != 0 ? Month : MaxMonthInYear,
-                Day != 0 ? Day : DaysInMonth(Year, Month));
-        }
-
         /// <summary>
         /// Gets the number of days in a month, given a year and a month.
         /// </summary>

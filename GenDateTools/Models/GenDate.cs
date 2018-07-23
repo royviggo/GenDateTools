@@ -33,7 +33,7 @@ namespace GenDateTools
         {
             DateType = dateType;
             DateFrom = fromDatePart;
-            DateTo = toDatePart.GetMaxRange();
+            DateTo = toDatePart;
             DatePhrase = datePhrase;
             IsValid = isValid;
             SortDate = GetSortDate();
@@ -49,7 +49,7 @@ namespace GenDateTools
             var genDate = parser.Parse(dateString);
             DateType = genDate.DateType;
             DateFrom = genDate.DateFrom;
-            DateTo = genDate.DateTo.GetMaxRange();
+            DateTo = genDate.DateTo;
             DatePhrase = genDate.DatePhrase;
             IsValid = genDate.IsValid;
             SortDate = GetSortDate();
