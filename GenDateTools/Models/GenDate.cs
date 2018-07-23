@@ -166,7 +166,7 @@ namespace GenDateTools
             var result = typeNames[(int)DateType];
             result += DateFrom.ToString();
 
-            if (DateType == GenDateType.Between || DateType == GenDateType.Range)
+            if (DateType == GenDateType.Between || DateType == GenDateType.Period)
                 result += rangeJoin[(int)DateType] + DateTo;
 
             return result;

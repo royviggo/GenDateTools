@@ -9,7 +9,7 @@
         Calculated = 4,
         Estimated = 5,
         Between = 6,
-        Range = 7,
+        Period = 7,
         Interpreted = 8,
         After = 9,
     }

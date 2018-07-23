@@ -26,7 +26,7 @@ namespace GenDateTools.Parser
                         dateType = GenDateType.Between;
                         break;
                     case "S":
-                        dateType = GenDateType.Range;
+                        dateType = GenDateType.Period;
                         break;
                     case ".":
                         if (m.Groups["dstype"].Value == "A")
@@ -42,7 +42,7 @@ namespace GenDateTools.Parser
                 }
 
                 var fromDate = new DatePart(m.Groups["fromdate"].Value);
-                var toDate = (dateType == GenDateType.Between || dateType == GenDateType.Range) ? new DatePart(m.Groups["todate"].Value) : fromDate;
+                var toDate = (dateType == GenDateType.Between || dateType == GenDateType.Period) ? new DatePart(m.Groups["todate"].Value) : fromDate;
 
                 return new GenDate(dateType, fromDate, toDate, true);
             }
