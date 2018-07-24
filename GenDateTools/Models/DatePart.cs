@@ -10,10 +10,10 @@ namespace GenDateTools
     /// </summary>
     public class DatePart : IEquatable<DatePart>, IComparable<DatePart>, IConvertible, ISerializable
     {
-        private const int MaxDaysInMonth = 31;
-        private const int MinDaysInMonth = 0;
-        private const int MaxMonthInYear = 12;
-        private const int MinMonthInYear = 0;
+        internal const int MaxDaysInMonth = 31;
+        internal const int MinDaysInMonth = 0;
+        internal const int MaxMonthInYear = 12;
+        internal const int MinMonthInYear = 0;
         private const int MaxYear = 9999;
         private const int MinYear = 0;
 
@@ -200,7 +200,7 @@ namespace GenDateTools
             var dayOfYear = DayOfYear();
             var calcDayOfYear = dayOfYear + days;
 
-            if (calcDayOfYear >= 0)
+            if (calcDayOfYear > 0)
             {
                 while (calcDayOfYear > DaysInYear(year))
                 {
@@ -211,10 +211,10 @@ namespace GenDateTools
             else
             {
                 calcDayOfYear = 0 - calcDayOfYear;
-                while (calcDayOfYear > DaysInYear(year))
+                while (calcDayOfYear < 1)
                 {
-                    calcDayOfYear -= DaysInYear(year);
                     year--;
+                    calcDayOfYear += DaysInYear(year);
                 }
             }
 
@@ -494,6 +494,13 @@ namespace GenDateTools
                 throw new ArgumentNullException("info");
 
             GetObjectData(info, context);
+        }
+
+        internal static DatePart GetMaxRange(DatePart datePart)
+        {
+            return new DatePart(datePart.Year,
+                    datePart.Month != 0 ? datePart.Month : MaxMonthInYear,
+                    datePart.Day != 0 ? datePart.Day : DaysInMonth(datePart.Year, datePart.Month));
         }
     }
 }

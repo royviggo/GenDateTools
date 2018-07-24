@@ -6,6 +6,8 @@ namespace GenDateTools
 {
     public class GenDate : IEquatable<GenDate>, IComparable<GenDate>
     {
+        private const int BeforeAfterYears = 20;
+
         public GenDateType DateType { get; set; }
         public DatePart DateFrom { get;  set; }
         public DatePart DateTo { get;  set; }
@@ -170,6 +172,31 @@ namespace GenDateTools
                 result += rangeJoin[(int)DateType] + DateTo;
 
             return result;
+        }
+
+        public int GetDateFromInt()
+        {
+            if (DateType == GenDateType.Before)
+                return Convert.ToInt32(DateFrom.AddYears(-BeforeAfterYears));
+
+            if (DateType == GenDateType.After)
+                return Convert.ToInt32(DateFrom.AddDays(1));
+
+            return Convert.ToInt32(DateFrom);
+        }
+
+        public int GetDateToInt()
+        {
+            if (DateType == GenDateType.About || DateType == GenDateType.Calculated || DateType == GenDateType.Estimated || DateType == GenDateType.Exact || DateType == GenDateType.Interpreted)
+                return Convert.ToInt32(DatePart.GetMaxRange(DateFrom));
+
+            if (DateType == GenDateType.Before)
+                return Convert.ToInt32(DateFrom.AddDays(-1));
+
+            if (DateType == GenDateType.After)
+                return Convert.ToInt32(DatePart.GetMaxRange(DateFrom.AddYears(BeforeAfterYears)));
+
+            return Convert.ToInt32(DatePart.GetMaxRange(DateTo));
         }
 
         private int GetSortDate()

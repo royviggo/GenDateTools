@@ -261,5 +261,38 @@ namespace GenDateTools.Test
             Assert.True(genDate1 <= genDate2);
         }
 
+        [Theory]
+        [InlineData(119000101219000101, 19000101)]
+        [InlineData(119000101119000101, 18800101)]
+        [InlineData(120000301120000301, 19800301)]
+        [InlineData(119000101919000101, 19000102)]
+        [InlineData(120000301920000301, 20000302)]
+        [InlineData(120000301420000301, 20000301)]
+        [InlineData(120000301520000301, 20000301)]
+        [InlineData(119000101619001200, 19000101)]
+        [InlineData(119000101719001200, 19000101)]
+        public void GenDate_GetDateFromInt_ReturnsInt(long dateNum, int expected)
+        {
+            var genDate = new GenDate(dateNum);
+
+            Assert.Equal(expected, genDate.GetDateFromInt());
+        }
+
+        [Theory]
+        [InlineData(119000101219000101, 19000101)]
+        [InlineData(119000101119000101, 18991231)]
+        [InlineData(120000301120000301, 20000229)]
+        [InlineData(119000101919000101, 19200101)]
+        [InlineData(120000301920000301, 20200301)]
+        [InlineData(120000301420000301, 20000301)]
+        [InlineData(120000301520000301, 20000301)]
+        [InlineData(119000101619001200, 19001231)]
+        [InlineData(119000101719001200, 19001231)]
+        public void GenDate_GetDateToInt_ReturnsInt(long dateNum, int expected)
+        {
+            var genDate = new GenDate(dateNum);
+
+            Assert.Equal(expected, genDate.GetDateToInt());
+        }
     }
 }
