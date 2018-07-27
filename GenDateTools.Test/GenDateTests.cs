@@ -275,7 +275,7 @@ namespace GenDateTools.Test
         {
             var genDate = new GenDate(dateNum);
 
-            Assert.Equal(expected, genDate.GetDateFromInt());
+            Assert.Equal(expected, genDate.From);
         }
 
         [Theory]
@@ -292,7 +292,7 @@ namespace GenDateTools.Test
         {
             var genDate = new GenDate(dateNum);
 
-            Assert.Equal(expected, genDate.GetDateToInt());
+            Assert.Equal(expected, genDate.To);
         }
     }
 }

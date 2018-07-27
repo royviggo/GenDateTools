@@ -16,6 +16,8 @@ namespace GenDateTools
         public int SortDate { get;  set; }
         public string DateString => CreateDateString();
         public long DateLong => GetLongDate();
+        public int From => GetDateFromInt();
+        public int To => GetDateToInt();
 
         public GenDate() { }
 
@@ -174,7 +176,7 @@ namespace GenDateTools
             return result;
         }
 
-        public int GetDateFromInt()
+        private int GetDateFromInt()
         {
             if (DateType == GenDateType.Before)
                 return Convert.ToInt32(DateFrom.AddYears(-BeforeAfterYears));
@@ -185,7 +187,7 @@ namespace GenDateTools
             return Convert.ToInt32(DateFrom);
         }
 
-        public int GetDateToInt()
+        private int GetDateToInt()
         {
             if (DateType == GenDateType.About || DateType == GenDateType.Calculated || DateType == GenDateType.Estimated || DateType == GenDateType.Exact || DateType == GenDateType.Interpreted)
                 return Convert.ToInt32(DatePart.GetMaxRange(DateFrom));
