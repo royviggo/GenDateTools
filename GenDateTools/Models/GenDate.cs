@@ -8,17 +8,6 @@ namespace GenDateTools
     {
         private const int BeforeAfterYears = 20;
 
-        public GenDateType DateType { get; set; }
-        public DatePart DateFrom { get;  set; }
-        public DatePart DateTo { get;  set; }
-        public string DatePhrase { get;  set; }
-        public bool IsValid { get;  set; }
-        public int SortDate { get;  set; }
-        public string DateString => CreateDateString();
-        public long DateLong => GetLongDate();
-        public int From => GetDateFromInt();
-        public int To => GetDateToInt();
-
         public GenDate() { }
 
         public GenDate(DatePart datePart)
@@ -30,7 +19,7 @@ namespace GenDateTools
         public GenDate(GenDateType dateType, DatePart fromDatePart, DatePart toDatePart)
             : this(dateType, fromDatePart, toDatePart, string.Empty, fromDatePart.IsValidDate() && toDatePart.IsValidDate()) { }
 
-        public GenDate(GenDateType dateType, DatePart fromDatePart, DatePart toDatePart, bool isValid) 
+        public GenDate(GenDateType dateType, DatePart fromDatePart, DatePart toDatePart, bool isValid)
             : this(dateType, fromDatePart, toDatePart, string.Empty, isValid) { }
 
         public GenDate(GenDateType dateType, DatePart fromDatePart, DatePart toDatePart, string datePhrase, bool isValid)
@@ -40,7 +29,6 @@ namespace GenDateTools
             DateTo = toDatePart;
             DatePhrase = datePhrase;
             IsValid = isValid;
-            SortDate = GetSortDate();
         }
 
         public GenDate(GenDateType dateType, string datePhrase, bool isValid)
@@ -56,7 +44,6 @@ namespace GenDateTools
             DateTo = genDate.DateTo;
             DatePhrase = genDate.DatePhrase;
             IsValid = genDate.IsValid;
-            SortDate = GetSortDate();
         }
 
         public GenDate(long dateNum)
@@ -66,8 +53,78 @@ namespace GenDateTools
             DateTo = new DatePart(dateNum % 100000000);
             DatePhrase = string.Empty;
             IsValid = true;
-            SortDate = GetSortDate();
         }
+
+        /// <summary>Gets or sets the type of the date.</summary>
+        /// <value>The type of the date</value>
+        public GenDateType DateType { get; set; }
+
+        /// <summary>Gets or sets the from date in a date sequence.</summary>
+        /// <value>The from date</value>
+        public DatePart DateFrom { get; set; }
+
+        /// <summary>Gets or sets the to date in a date sequence.</summary>
+        /// <value>The to date</value>
+        public DatePart DateTo { get; set; }
+
+        /// <summary>Gets or sets the date phrase.</summary>
+        /// <value>Textual value of the date</value>
+        public string DatePhrase { get; set; }
+
+        /// <summary>Gets or sets if the date is a valid GenDate or not.</summary>
+        /// <value>True or false</value>
+        public bool IsValid { get; set; }
+
+        public long DateLong
+        {
+            get
+            {
+                if (!IsValid)
+                    return 0;
+
+                return ((DatePart.CompareValue(DateFrom) + 100000000L) * 1000000000L) +
+                       (((long)DateType) * 100000000L) +
+                       DatePart.CompareValue(DateTo);
+            }
+        }
+
+        public string DateString => IsValid
+                ? string.Join("", new List<string> { "1", DateFrom.ToSortString(), ((int)DateType).ToString(), DateTo.ToSortString() })
+                : string.Join("", new List<string> { "2", DatePhrase });
+
+        public int From
+        {
+            get
+            {
+                if (DateType == GenDateType.Before)
+                    return Convert.ToInt32(DateFrom.AddYears(-BeforeAfterYears));
+
+                if (DateType == GenDateType.After)
+                    return Convert.ToInt32(DateFrom.AddDays(1));
+
+                return Convert.ToInt32(DateFrom);
+            }
+        }
+
+        public int To
+        {
+            get
+            {
+                if (DateType == GenDateType.About || DateType == GenDateType.Calculated || DateType == GenDateType.Estimated || DateType == GenDateType.Exact || DateType == GenDateType.Interpreted)
+                    return Convert.ToInt32(DatePart.GetMaxRange(DateFrom));
+
+                if (DateType == GenDateType.Before)
+                    return Convert.ToInt32(DateFrom.AddDays(-1));
+
+                if (DateType == GenDateType.After)
+                    return Convert.ToInt32(DatePart.GetMaxRange(DateFrom.AddYears(BeforeAfterYears)));
+
+                return Convert.ToInt32(DatePart.GetMaxRange(DateTo));
+            }
+        }
+
+        public int SortDate => (DatePart.CompareValue(DateFrom) * 10) + (int)DateType;
+
 
         public static bool operator ==(GenDate genDate1, GenDate genDate2)
         {
@@ -119,8 +176,8 @@ namespace GenDateTools
 
         public int CompareTo(GenDate other)
         {
-            var longDate = GetLongDate();
-            return longDate.CompareTo(other.GetLongDate());
+            var longDate = DateLong;
+            return longDate.CompareTo(other.DateLong);
 
         }
 
@@ -131,7 +188,7 @@ namespace GenDateTools
             if (ReferenceEquals(this, other))
                 return true;
 
-            return (DateType == other.DateType && DateFrom == other.DateFrom && DateTo == other.DateTo && 
+            return (DateType == other.DateType && DateFrom == other.DateFrom && DateTo == other.DateTo &&
                     DatePhrase == other.DatePhrase && IsValid == other.IsValid && SortDate == other.SortDate);
         }
 
@@ -142,14 +199,14 @@ namespace GenDateTools
             if (GetType() != obj.GetType())
                 return false;
 
-            return Equals((GenDate) obj);
+            return Equals((GenDate)obj);
         }
 
         public override int GetHashCode()
         {
             unchecked
             {
-                var hashCode = (int) DateType;
+                var hashCode = (int)DateType;
                 hashCode = (hashCode * 397) ^ (DateFrom?.GetHashCode() ?? 0);
                 hashCode = (hashCode * 397) ^ (DateTo?.GetHashCode() ?? 0);
                 hashCode = (hashCode * 397) ^ (DatePhrase?.GetHashCode() ?? 0);
@@ -161,8 +218,8 @@ namespace GenDateTools
 
         public override string ToString()
         {
-            var typeNames = new Dictionary<int, string> { {0, ""}, {1, "Bef. "}, {2, ""}, {3, "Abt. "}, {4, "Cal. "}, { 5, "Est. " }, {6, "Bet. "}, {7, "From "}, { 8, "Int. " }, {9, "Aft. "} };
-            var rangeJoin = new Dictionary<int, string> { {6, " - "}, {7, " to "} };
+            var typeNames = new Dictionary<int, string> { { 0, "" }, { 1, "Bef. " }, { 2, "" }, { 3, "Abt. " }, { 4, "Cal. " }, { 5, "Est. " }, { 6, "Bet. " }, { 7, "From " }, { 8, "Int. " }, { 9, "Aft. " } };
+            var rangeJoin = new Dictionary<int, string> { { 6, " - " }, { 7, " to " } };
 
             if (!IsValid)
                 return DatePhrase;
@@ -176,51 +233,5 @@ namespace GenDateTools
             return result;
         }
 
-        private int GetDateFromInt()
-        {
-            if (DateType == GenDateType.Before)
-                return Convert.ToInt32(DateFrom.AddYears(-BeforeAfterYears));
-
-            if (DateType == GenDateType.After)
-                return Convert.ToInt32(DateFrom.AddDays(1));
-
-            return Convert.ToInt32(DateFrom);
-        }
-
-        private int GetDateToInt()
-        {
-            if (DateType == GenDateType.About || DateType == GenDateType.Calculated || DateType == GenDateType.Estimated || DateType == GenDateType.Exact || DateType == GenDateType.Interpreted)
-                return Convert.ToInt32(DatePart.GetMaxRange(DateFrom));
-
-            if (DateType == GenDateType.Before)
-                return Convert.ToInt32(DateFrom.AddDays(-1));
-
-            if (DateType == GenDateType.After)
-                return Convert.ToInt32(DatePart.GetMaxRange(DateFrom.AddYears(BeforeAfterYears)));
-
-            return Convert.ToInt32(DatePart.GetMaxRange(DateTo));
-        }
-
-        private int GetSortDate()
-        {
-            return (DatePart.CompareValue(DateFrom) * 10) + (int)DateType;
-        }
-
-        private long GetLongDate()
-        {
-            if (!IsValid)
-                return 0;
-
-            return ((DatePart.CompareValue(DateFrom) + 100000000L) * 1000000000L) + 
-                   (((long)DateType) * 100000000L) + 
-                   DatePart.CompareValue(DateTo);
-        }
-
-        private string CreateDateString()
-        {
-            return IsValid
-                ? string.Join("", new List<string> { "1", DateFrom.ToSortString(), ((int)DateType).ToString(), DateTo.ToSortString() })
-                : string.Join("", new List<string> { "2", DatePhrase });
-        }
     }
 }
