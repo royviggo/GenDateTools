@@ -3,13 +3,14 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <PackageId>GenDateTools</PackageId>
+    <IsPackable>true</IsPackable>
     <Version>1.0.7</Version>
     <Authors>royviggo</Authors>
     <Copyright>Copyright (c) 2018-2019 Roy Viggo Pedersen</Copyright>
     <PackageProjectUrl>https://github.com/royviggo/GenDateTools</PackageProjectUrl>
     <Description>Class library for Genealogy dates, where there can be one or more unknown parts. Features approximate dates, before/after dates, date ranges and free text. Have basic arithmetic and compare functions. Parsing dates from other Genealogy software.</Description>
     <PackageTags>dates, genealogy</PackageTags>
-    <PackageLicenseUrl>https://github.com/royviggo/GenDateTools/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
 
   <ItemGroup>
