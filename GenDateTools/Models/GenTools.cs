@@ -21,12 +21,27 @@ namespace GenDateTools
         /// <summary>
         /// Takes a month number as parameter and returns a three character long month name.
         /// </summary>
+        /// <param name="month">Month number from 1 to 12</param>
         public static string MonthName(int month)
         {
             return MonthsFromNumber().ContainsKey(month) ? MonthsFromNumber()[month] : "";
         }
 
-        public static Dictionary<TValue, TKey> Reverse<TKey, TValue>(this IDictionary<TKey, TValue> source)
+        /// <summary>
+        /// Returns substring instead of modifying the string.
+        /// </summary>
+        /// <param name="source">String to find substring in</param>
+        /// <param name="startIndex">Start position</param>
+        /// <param name="length">Length of the string</param>
+        /// <returns></returns>
+        public static string GetSubString(string source, int startIndex, int length)
+        {
+            var returnString = source;
+
+            return returnString.Substring(startIndex, length);
+        }
+
+        private static Dictionary<TValue, TKey> Reverse<TKey, TValue>(this IDictionary<TKey, TValue> source)
         {
             var dictionary = new Dictionary<TValue, TKey>();
             foreach (var entry in source)
@@ -37,7 +52,7 @@ namespace GenDateTools
             return dictionary;
         }
 
-        public static Dictionary<string, int> ReverseUpper(this IDictionary<int, string> source)
+        private static Dictionary<string, int> ReverseUpper(this IDictionary<int, string> source)
         {
             var dictionary = new Dictionary<string, int>();
             foreach (var entry in source)
@@ -48,13 +63,6 @@ namespace GenDateTools
                     dictionary.Add(entryUpper, entry.Key);
             }
             return dictionary;
-        }
-
-        public static string GetSubString(string source, int startIndex, int length)
-        {
-            var returnString = source;
-
-            return returnString.Substring(startIndex, length);
         }
     }
 }
