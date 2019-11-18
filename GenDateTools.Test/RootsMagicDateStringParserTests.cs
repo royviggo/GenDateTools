@@ -1,5 +1,4 @@
 ﻿using GenDateTools.Parser;
-
 using Xunit;
 
 namespace GenDateTools.Test
