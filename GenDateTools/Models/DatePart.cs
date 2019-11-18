@@ -247,14 +247,8 @@ namespace GenDateTools
         /// </summary>
         public static bool IsValidDate(int year, int month, int day)
         {
-            if (year >= MinYear && year <= MaxYear && month >= MinMonthInYear && month <= MaxMonthInYear)
-            {
-                int[] days = IsLeapYear(year) ? DaysToMonth366 : DaysToMonth365;
-
-                if (day >= MinDaysInMonth && day <= DaysInMonth(year, month))
-                    return true;
-            }
-            return false;
+            return year >= MinYear && year <= MaxYear && month >= MinMonthInYear && month <= MaxMonthInYear &&
+                   day >= MinDaysInMonth && day <= DaysInMonth(year, month);
         }
 
         /// <summary>
