@@ -4,24 +4,51 @@ using System.Collections.Generic;
 
 namespace GenDateTools
 {
+    /// <summary>
+    /// GenDate is a class for genealogy dates, with support for date ranges and specification af the date precision and if an event
+    /// happened before or after a date. There is also support for free text. Every date is essentially a date range.
+    /// </summary>
     public class GenDate : IEquatable<GenDate>, IComparable<GenDate>
     {
         private const int BeforeAfterYears = 20;
 
         public GenDate() { }
 
+        /// <summary>
+        /// Create a new GenDate from a single DatePart.
+        /// </summary>
+        /// <param name="datePart">A DatePart that represent the from and to part of the date range. See <seealso cref="DatePart"/>.</param>
         public GenDate(DatePart datePart)
             : this(GenDateType.Exact, datePart, datePart, string.Empty, datePart.IsValidDate()) { }
 
+        /// <summary>
+        /// Create a new GenDate from a date type and a DatePart.
+        /// </summary>
+        /// <param name="dateType">The date type, see <seealso cref="GenDateType"/>.</param>
+        /// <param name="datePart">A DatePart that represent the from and to part of the date range. See <seealso cref="DatePart"/>.</param>
         public GenDate(GenDateType dateType, DatePart datePart)
             : this(dateType, datePart, datePart, string.Empty, datePart.IsValidDate()) { }
 
+        /// <summary>
+        /// Create a new GenDate from a set of parameters.
+        /// </summary>
+        /// <param name="dateType">The date type, see <seealso cref="GenDateType"/>.</param>
+        /// <param name="fromDatePart">A DatePart that represent the from part of the date range. See <seealso cref="DatePart"/>.</param>
+        /// <param name="toDatePart">A DatePart that represent the to part of the date range. Can be equal to or larger than fromDatePart.</param>
         public GenDate(GenDateType dateType, DatePart fromDatePart, DatePart toDatePart)
             : this(dateType, fromDatePart, toDatePart, string.Empty, fromDatePart.IsValidDate() && toDatePart.IsValidDate()) { }
 
         public GenDate(GenDateType dateType, DatePart fromDatePart, DatePart toDatePart, bool isValid)
             : this(dateType, fromDatePart, toDatePart, string.Empty, isValid) { }
 
+        /// <summary>
+        /// Create a new GenDate from a set of parameters.
+        /// </summary>
+        /// <param name="dateType">The date type, see <seealso cref="GenDateType"/>.</param>
+        /// <param name="fromDatePart">A DatePart that represent the from part of the date range. See <seealso cref="DatePart"/>.</param>
+        /// <param name="toDatePart">A DatePart that represent the to part of the date range. Can be equal to or larger than fromDatePart.</param>
+        /// <param name="datePhrase">Free text.</param>
+        /// <param name="isValid">A boolean value to indicate if this is a valid date or not.</param>
         public GenDate(GenDateType dateType, DatePart fromDatePart, DatePart toDatePart, string datePhrase, bool isValid)
         {
             DateType = dateType;
@@ -31,11 +58,26 @@ namespace GenDateTools
             IsValid = isValid;
         }
 
+        /// <summary>
+        /// Create a new GenDate from a set of parameters, a type, a phrase and if it's valid. No DateParts are used.
+        /// </summary>
+        /// <param name="dateType">The date type, see <seealso cref="GenDateType"/>.</param>
+        /// <param name="datePhrase">Free text.</param>
+        /// <param name="isValid">A boolean value to indicate if this is a valid date or not.</param>
         public GenDate(GenDateType dateType, string datePhrase, bool isValid)
             : this(dateType, new DatePart(), new DatePart(), datePhrase, isValid) { }
 
+        /// <summary>
+        /// Create a new GenDate from a string that get parsed. 
+        /// </summary>
+        /// <param name="dateString">Format: string type | from date part | date type | to date part</param>
         public GenDate(string dateString) : this(new DateStringParser(), dateString) { }
 
+        /// <summary>
+        /// Create a new GenDate from a string that get parsed. 
+        /// </summary>
+        /// <param name="parser">An IDateStringParser instance object.</param>
+        /// <param name="dateString">Format: string type | from date part | date type | to date part</param>
         public GenDate(IDateStringParser parser, string dateString)
         {
             var genDate = parser.Parse(dateString);
@@ -46,6 +88,11 @@ namespace GenDateTools
             IsValid = genDate.IsValid;
         }
 
+        /// <summary>
+        /// Create a new GenDate from a long that contains a GenDate without a date phrase. 
+        /// </summary>
+        /// <param name="dateNum">First digit is string type - it should be 1. Next 8 digits is from date part. Next digit is date type,
+        /// See <see cref="GenDateType"/>. Last 8 digits is to date part.</param>
         public GenDate(long dateNum)
         {
             DateType = (GenDateType)((dateNum / 100000000) % 10);
