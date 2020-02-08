@@ -45,11 +45,11 @@ namespace GenDateTools.Parser
             var mTextMatch = regexModText.Match(dateString);
             if (mTextMatch.Success)
             {
-                var modVal = mTextMatch.Groups["mod"].Value;
+                var modVal = mTextMatch.Groups["mod"].Value.ToUpper();
 
-                if (modTextType.ContainsKey(modVal) && Enum.TryParse(modTextType[modVal].ToString(), out GenDateType dateType))
+                if (modTextType.ContainsKey(modVal) && Enum.TryParse(modTextType[modVal].ToString().ToUpper(), out GenDateType dateType))
                 {
-                    var date = GetDatePartFromStringDate(mTextMatch.Groups["date"].Value);
+                    var date = GetDatePartFromStringDate(mTextMatch.Groups["date"].Value.ToUpper());
                     var datePhrase = mTextMatch.Groups["text"].Value != null ? mTextMatch.Groups["text"].Value : string.Empty;
 
                     return new GenDate(dateType, date, date, datePhrase, date.IsValidDate());
