@@ -74,11 +74,18 @@ namespace GenDateTools
 
         /// <summary>
         /// Creates a DatePart object using a string date of the format <c>YYYYMMDD</c>. The values are split and passed to 
-        /// <see cref="DatePart.DatePart(int, int, int)"/>.
+        /// <see cref="DatePart.DatePart(int, int, int)"/>. If the string is shorter than 8 numbers, it converts the first 
+        /// 4 numbers to year, and the next 2 to month if it's 6 characters long.
         /// </summary>
         /// <exception cref="ArgumentOutOfRangeException"></exception>
+        /// <exception cref="FormatException"></exception>
+        /// <exception cref="OverflowException"></exception>
         public DatePart(string date)
-            : this(GenTools.GetSubString(date, 0, 4), GenTools.GetSubString(date, 4, 2), GenTools.GetSubString(date, 6, 2)) { }
+        {
+            Year = (date.Length >= 4) ? Convert.ToInt32(date.Substring(0, 4)) : Convert.ToInt32(date);
+            Month = (date.Length >= 6) ? Convert.ToInt32(date.Substring(4, 2)) : 0;
+            Day = (date.Length == 8) ? Convert.ToInt32(date.Substring(6, 2)) : 0;
+        }
 
         protected DatePart(SerializationInfo info, StreamingContext context)
         {
