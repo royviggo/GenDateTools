@@ -214,14 +214,21 @@ namespace GenDateTools
                 {
                     calcDayOfYear -= DaysInYear(year);
                     year++;
+
+                    if (year > MaxYear)
+                        throw new ArgumentOutOfRangeException(nameof(days), $"Resulting year must be between {MinYear} and {MaxYear}.");
                 }
             }
             else
             {
-                calcDayOfYear = 0 - calcDayOfYear;
+                calcDayOfYear = calcDayOfYear > 0 ? 0 - calcDayOfYear : calcDayOfYear;
                 while (calcDayOfYear < 1)
                 {
                     year--;
+
+                    if (year < MinYear)
+                        throw new ArgumentOutOfRangeException(nameof(days), $"Resulting year must be between {MinYear} and {MaxYear}.");
+
                     calcDayOfYear += DaysInYear(year);
                 }
             }
