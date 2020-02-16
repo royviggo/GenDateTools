@@ -52,6 +52,12 @@ namespace GenDateTools.Test
         [InlineData("18900101", "18900101")]
         [InlineData("20180229", "20180229")]
         [InlineData("99991231", "99991231")]
+        [InlineData("1890010", "18900100")]
+        [InlineData("19000", "19000000")]
+        [InlineData("9999", "99990000")]
+        [InlineData("1", "00010000")]
+        [InlineData("0", "00000000")]
+        [InlineData("10000000JHDKJHDUIDANDSNAKJNDKAJLSDJA", "10000000")]
         public void DatePart_NewFromString_ValidDatePart(string dateString, string expected)
         {
             var datePart = new DatePart(dateString);
