@@ -119,6 +119,34 @@ namespace GenDateTools.Test
             Assert.True(genDate.IsValid);
         }
 
+        [Fact]
+        public void GenDate_CallWithToDatePartEqualNull_ShouldReturnValid()
+        {
+            var datePhrase = "Testing a pretty long string";
+            var genDate = new GenDate(GenDateType.Before, new DatePart("19000101"), null, datePhrase, true);
+            var expected = new GenDate("119000101119000101");
+
+            Assert.Equal(expected.DateLong, genDate.DateLong);
+            Assert.Equal(expected.DateString, genDate.DateString);
+            Assert.Equal(expected.ToString(), genDate.ToString());
+            Assert.Equal(datePhrase, genDate.DatePhrase);
+            Assert.True(genDate.IsValid);
+        }
+
+        [Fact]
+        public void GenDate_CallWithIsValidEqualFalse_ShouldReturnValid()
+        {
+            var datePhrase = "Testing a pretty long string";
+            var genDate = new GenDate(GenDateType.Before, new DatePart("19000101"), new DatePart("19000101"), datePhrase, false);
+            var expected = new GenDate("119000101119000101");
+
+            Assert.Equal(expected.DateLong, genDate.DateLong);
+            Assert.Equal(expected.DateString, genDate.DateString);
+            Assert.Equal(expected.ToString(), genDate.ToString());
+            Assert.Equal(datePhrase, genDate.DatePhrase);
+            Assert.True(genDate.IsValid);
+        }
+
         [Theory]
         [InlineData(119000101219000101)]
         [InlineData(118981101619000101)]
