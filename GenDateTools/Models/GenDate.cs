@@ -52,8 +52,8 @@ namespace GenDateTools
         public GenDate(GenDateType dateType, DatePart fromDatePart, DatePart toDatePart, string datePhrase, bool isValid)
         {
             DateType = dateType;
-            DateFrom = fromDatePart;
-            DateTo = toDatePart;
+            DateFrom = fromDatePart ?? new DatePart();
+            DateTo = toDatePart ?? fromDatePart ?? new DatePart();
             DatePhrase = datePhrase;
             IsValid = isValid;
         }
