@@ -4,12 +4,12 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <PackageId>GenDateTools</PackageId>
     <IsPackable>true</IsPackable>
-    <Version>1.0.9</Version>
+    <Version>1.1.0</Version>
     <Authors>royviggo</Authors>
-    <Copyright>Copyright (c) 2018-2019 Roy Viggo Pedersen</Copyright>
+    <Copyright>Copyright (c) 2018-2020 Roy Viggo Pedersen</Copyright>
     <PackageProjectUrl>https://github.com/royviggo/GenDateTools</PackageProjectUrl>
-    <Description>Class library for Genealogy dates, where there can be one or more unknown parts. Features approximate dates, before/after dates, date ranges and free text. Have basic arithmetic and compare functions. Parsing dates from other Genealogy software.</Description>
-    <PackageTags>dates, genealogy</PackageTags>
+    <Description>Class library for Genealogy dates, which can have one or more unknown parts. Features approximate dates, before and after dates, date ranges and free text. Includes basic arithmetic and compare functions, and strategy for creating date ranges for searching. Have parsers for dates from Gedcom files and Genealogy software like Legacy Family Tree and RootsMagic.</Description>
+    <PackageTags>dates genealogy gedcom family-tree</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
 

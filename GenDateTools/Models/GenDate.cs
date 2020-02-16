@@ -1,6 +1,8 @@
-﻿using GenDateTools.Parser;
+﻿using GenDateTools.Models;
+using GenDateTools.Parser;
 using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 
 namespace GenDateTools
 {
@@ -8,11 +10,34 @@ namespace GenDateTools
     /// GenDate is a class for genealogy dates, with support for date ranges and specification af the date precision and if an event
     /// happened before or after a date. There is also support for free text. Every date is essentially a date range.
     /// </summary>
+    [DataContract]
     public class GenDate : IEquatable<GenDate>, IComparable<GenDate>
     {
-        private const int BeforeAfterYears = 20;
+        private DateRangeStrategy _dateRangeStrategy;
+        private static readonly GenDateType[] _aboutTypes = new[] { GenDateType.About, GenDateType.Calculated, GenDateType.Estimated, GenDateType.Interpreted };
 
-        public GenDate() { }
+        /// <summary>
+        /// Get or sets the date range strategy which is used to calculate the members <see cref="From">From</see> and <see cref="To">To</see>.
+        /// </summary>
+        /// <remarks>
+        /// The default DateRangeStrategy set at startup:
+        /// 
+        ///     GenDate.DateRangeStrategy = new DateRangeStrategy
+        ///     {
+        ///         AfterYears = 20,
+        ///         BeforeYears = 20,
+        ///         AboutYearsAfter = 1,
+        ///         AboutYearsBefore = 1,
+        ///         UseRelaxedDates = false,
+        ///     };
+        /// </remarks>
+        public DateRangeStrategy DateRangeStrategy
+        {
+            get { return _dateRangeStrategy != null ? _dateRangeStrategy : DateRangeStrategy.Strategy; }
+            set { _dateRangeStrategy = value; }
+        }
+
+        internal GenDate() { }
 
         /// <summary>
         /// Create a new GenDate from a single DatePart.
@@ -104,18 +129,22 @@ namespace GenDateTools
 
         /// <summary>Gets or sets the type of the date.</summary>
         /// <value>The type of the date</value>
+        [DataMember]
         public GenDateType DateType { get; set; }
 
         /// <summary>Gets or sets the from date in a date sequence.</summary>
         /// <value>The from date</value>
+        [DataMember]
         public DatePart DateFrom { get; set; }
 
         /// <summary>Gets or sets the to date in a date sequence.</summary>
         /// <value>The to date</value>
+        [DataMember]
         public DatePart DateTo { get; set; }
 
         /// <summary>Gets or sets the date phrase.</summary>
         /// <value>Textual value of the date</value>
+        [DataMember]
         public string DatePhrase { get; set; }
 
         /// <summary>Gets or sets if the date is a valid GenDate or not.</summary>
@@ -143,13 +172,20 @@ namespace GenDateTools
         {
             get
             {
-                if (DateType == GenDateType.Before)
-                    return Convert.ToInt32(DateFrom.AddYears(-BeforeAfterYears));
+                DatePart date;
 
-                if (DateType == GenDateType.After)
-                    return Convert.ToInt32(DateFrom.AddDays(1));
+                if (IsAboutType(DateType))
+                    date = DateFrom.AddYears(- DateRangeStrategy.AboutYearsBefore);
+                else if (DateType == GenDateType.Before)
+                    date = DateFrom.AddYears(- DateRangeStrategy.BeforeYears);
+                else if (DateType == GenDateType.After)
+                    date = DateFrom.AddDays(1);
+                else
+                    date = DateFrom;
 
-                return Convert.ToInt32(DateFrom);
+                return Convert.ToInt32(DateRangeStrategy.UseRelaxedDates 
+                    ? new DatePart(date.Year, date.Month, 0) 
+                    : date);
             }
         }
 
@@ -157,16 +193,20 @@ namespace GenDateTools
         {
             get
             {
-                if (DateType == GenDateType.About || DateType == GenDateType.Calculated || DateType == GenDateType.Estimated || DateType == GenDateType.Exact || DateType == GenDateType.Interpreted)
-                    return Convert.ToInt32(DatePart.GetMaxRange(DateFrom));
+                DatePart date;
 
-                if (DateType == GenDateType.Before)
-                    return Convert.ToInt32(DateFrom.AddDays(-1));
+                if (IsAboutType(DateType))
+                    date = DatePart.GetMaxRange(DateFrom.AddYears(DateRangeStrategy.AboutYearsAfter));
+                else if (DateType == GenDateType.Before)
+                    date = DateFrom.AddDays(-1);
+                else if (DateType == GenDateType.After)
+                    date = DatePart.GetMaxRange(DateFrom.AddYears(DateRangeStrategy.AfterYears));
+                else
+                    date = DatePart.GetMaxRange(DateTo);
 
-                if (DateType == GenDateType.After)
-                    return Convert.ToInt32(DatePart.GetMaxRange(DateFrom.AddYears(BeforeAfterYears)));
-
-                return Convert.ToInt32(DatePart.GetMaxRange(DateTo));
+                return Convert.ToInt32(DateRangeStrategy.UseRelaxedDates 
+                    ? new DatePart(date.Year, date.Month, 0).AddMonths(1)
+                    : date);
             }
         }
 
@@ -280,5 +320,15 @@ namespace GenDateTools
             return result;
         }
 
+        private static bool IsAboutType(GenDateType dateType)
+        {
+            foreach (var aboutType in _aboutTypes)
+            {
+                if (dateType == aboutType)
+                    return true;
+            }
+
+            return false;
+        }
     }
 }

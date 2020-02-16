@@ -1,3 +1,4 @@
+using GenDateTools.Models;
 using Xunit;
 
 namespace GenDateTools.Test
@@ -267,11 +268,11 @@ namespace GenDateTools.Test
         [InlineData(120000301120000301, 19800301)]
         [InlineData(119000101919000101, 19000102)]
         [InlineData(120000301920000301, 20000302)]
-        [InlineData(120000301420000301, 20000301)]
-        [InlineData(120000301520000301, 20000301)]
+        [InlineData(120000301420000301, 19990301)]
+        [InlineData(120000301520000301, 19990301)]
         [InlineData(119000101619001200, 19000101)]
         [InlineData(119000101719001200, 19000101)]
-        public void GenDate_GetDateFromInt_ReturnsInt(long dateNum, int expected)
+        public void GenDate_From_ReturnsInt(long dateNum, int expected)
         {
             var genDate = new GenDate(dateNum);
 
@@ -284,13 +285,121 @@ namespace GenDateTools.Test
         [InlineData(120000301120000301, 20000229)]
         [InlineData(119000101919000101, 19200101)]
         [InlineData(120000301920000301, 20200301)]
-        [InlineData(120000301420000301, 20000301)]
-        [InlineData(120000301520000301, 20000301)]
+        [InlineData(120000301420000301, 20010301)]
+        [InlineData(120000301520000301, 20010301)]
         [InlineData(119000101619001200, 19001231)]
         [InlineData(119000101719001200, 19001231)]
-        public void GenDate_GetDateToInt_ReturnsInt(long dateNum, int expected)
+        public void GenDate_To_ReturnsInt(long dateNum, int expected)
         {
             var genDate = new GenDate(dateNum);
+
+            Assert.Equal(expected, genDate.To);
+        }
+
+        [Fact]
+        public void GenDate_GetDateRangeStrategy_ReturnsDefault()
+        {
+            var actual = DateRangeStrategy.Strategy;
+
+            Assert.IsAssignableFrom<DateRangeStrategy>(actual);
+        }
+
+        [Fact]
+        public void GenDate_SetDateRangeStrategy_ReturnsChanged()
+        {
+            var expected = new DateRangeStrategy
+            {
+                AfterYears = 10,
+                BeforeYears = 10,
+                AboutYearsAfter = 1,
+                AboutYearsBefore = 1,
+                UseRelaxedDates = false,
+            };
+            DateRangeStrategy.Strategy =expected;
+
+            var actual = DateRangeStrategy.Strategy;
+
+            Assert.Equal(expected.AboutYearsAfter, actual.AboutYearsAfter);
+            Assert.Equal(expected.AboutYearsBefore, actual.AboutYearsBefore);
+            Assert.Equal(expected.AfterYears, actual.AfterYears);
+            Assert.Equal(expected.BeforeYears, actual.BeforeYears);
+        }
+
+        [Theory]
+        [InlineData(0, 0)]
+        [InlineData(20200220, 20200200)]
+        [InlineData(20200000, 20200000)]
+        [InlineData(99991231, 99991200)]
+        public void GenDate_From_DateRangeStrategyUseRelaxedDates_ReturnsZeroDays(int input, int expected)
+        {
+            var genDate = new GenDate(new DatePart(input));
+            genDate.DateRangeStrategy = new DateRangeStrategy
+            {
+                AfterYears = 10,
+                BeforeYears = 10,
+                AboutYearsAfter = 0,
+                AboutYearsBefore = 0,
+                UseRelaxedDates = true,
+            };
+
+            Assert.Equal(expected, genDate.From);
+        }
+
+        [Theory]
+        [InlineData(10000100, 10000200)]
+        [InlineData(20200220, 20200300)]
+        [InlineData(20000131, 20000200)]
+        [InlineData(99991130, 99991200)]
+        public void GenDate_To_DateRangeStrategyUseRelaxedDates_ReturnsNextMonthZeroDays(int input, int expected)
+        {
+            var genDate = new GenDate(new DatePart(input));
+            genDate.DateRangeStrategy = new DateRangeStrategy
+            {
+                AfterYears = 10,
+                BeforeYears = 10,
+                AboutYearsAfter = 0,
+                AboutYearsBefore = 0,
+                UseRelaxedDates = true,
+            };
+
+            Assert.Equal(expected, genDate.To);
+        }
+
+        [Theory]
+        [InlineData(10000100, 9990100)]
+        [InlineData(20200220, 20190220)]
+        [InlineData(20040229, 20030229)]
+        public void GenDate_From_DateRangeStrategyAboutYears_ReturnsYearBefore(int input, int expected)
+        {
+            var genDate = new GenDate(GenDateType.About, new DatePart(input));
+            genDate.DateRangeStrategy = new DateRangeStrategy
+            {
+                AfterYears = 0,
+                BeforeYears = 0,
+                AboutYearsAfter = 0,
+                AboutYearsBefore = 1,
+                UseRelaxedDates = false,
+            };
+
+            Assert.Equal(expected, genDate.From);
+        }
+
+        [Theory]
+        [InlineData(10000100, 10010131)]
+        [InlineData(20200220, 20210220)]
+        [InlineData(20000131, 20010131)]
+        [InlineData(99981231, 99991231)]
+        public void GenDate_To_DateRangeStrategyAboutYears_ReturnsYearAfter(int input, int expected)
+        {
+            var genDate = new GenDate(GenDateType.About, new DatePart(input));
+            genDate.DateRangeStrategy = new DateRangeStrategy
+            {
+                AfterYears = 0,
+                BeforeYears = 0,
+                AboutYearsAfter = 1,
+                AboutYearsBefore = 0,
+                UseRelaxedDates = false,
+            };
 
             Assert.Equal(expected, genDate.To);
         }
