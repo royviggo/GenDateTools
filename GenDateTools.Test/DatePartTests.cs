@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using Xunit;
 
 namespace GenDateTools.Test
@@ -529,6 +530,16 @@ namespace GenDateTools.Test
             var datePartExpected = new DatePart(expected);
 
             Assert.Equal(datePartExpected, datePartAdded);
+        }
+
+        [Fact]
+        public void DatePart_Serialize_ReturnsValidObject()
+        {
+            var datePart = new DatePart(2000, 1, 1);
+            var expected = "{\"Year\":2000,\"Month\":1,\"Day\":1}";
+            var actual = JsonConvert.SerializeObject(datePart);
+
+            Assert.Equal(expected, actual);
         }
     }
 }
