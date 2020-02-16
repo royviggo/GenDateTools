@@ -126,7 +126,7 @@ namespace GenDateTools
         {
             get
             {
-                if (!IsValid)
+                if (!IsValidDate())
                     return 0;
 
                 return ((DatePart.CompareValue(DateFrom) + 100000000L) * 1000000000L) +
@@ -135,7 +135,7 @@ namespace GenDateTools
             }
         }
 
-        public string DateString => IsValid
+        public string DateString => IsValidDate()
                 ? string.Join("", new List<string> { "1", DateFrom.ToSortString(), ((int)DateType).ToString(), DateTo.ToSortString() })
                 : string.Join("", new List<string> { "2", DatePhrase });
 
@@ -172,6 +172,12 @@ namespace GenDateTools
 
         public int SortDate => (DatePart.CompareValue(DateFrom) * 10) + (int)DateType;
 
+        public bool IsValidDate() => IsValidDate(DateType, DateFrom, DateTo);
+
+        public static bool IsValidDate(GenDateType dateType, DatePart dateFrom, DatePart dateTo)
+        {
+            return dateType != GenDateType.Invalid && dateFrom.IsValidDate() && dateTo.IsValidDate();
+        }
 
         public static bool operator ==(GenDate genDate1, GenDate genDate2)
         {

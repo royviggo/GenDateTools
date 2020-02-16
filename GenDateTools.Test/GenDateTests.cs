@@ -8,7 +8,7 @@ namespace GenDateTools.Test
         [InlineData(119000101219000101, "119000101219000101")]
         [InlineData(118981101619000101, "118981101619000101")]
         [InlineData(118900101719000101, "118900101719000101")]
-        [InlineData(120180229120180229, "120180229120180229")]
+        [InlineData(120160229120160229, "120160229120160229")]
         [InlineData(199991231999991231, "199991231999991231")]
         [InlineData(100000000300000000, "100000000300000000")]
         public void GenDate_NewFromLong_ValidGenDate(long dateNum, string expected)
@@ -22,7 +22,7 @@ namespace GenDateTools.Test
         [InlineData("119000101219000101", "119000101219000101")]
         [InlineData("118981101619000101", "118981101619000101")]
         [InlineData("118900101719000101", "118900101719000101")]
-        [InlineData("120180229120180229", "120180229120180229")]
+        [InlineData("120160229120160229", "120160229120160229")]
         [InlineData("199991231999991231", "199991231999991231")]
         [InlineData("100000000300000000", "100000000300000000")]
         public void GenDate_NewFromString_ValidGenDate(string dateString, string expected)
@@ -136,22 +136,20 @@ namespace GenDateTools.Test
         [Fact]
         public void GenDate_CallWithIsValidEqualFalse_ShouldReturnValid()
         {
-            var datePhrase = "Testing a pretty long string";
-            var genDate = new GenDate(GenDateType.Before, new DatePart("19000101"), new DatePart("19000101"), datePhrase, false);
+            var genDate = new GenDate(GenDateType.Before, new DatePart("19000101"), new DatePart("19000101"), "", false);
             var expected = new GenDate("119000101119000101");
 
             Assert.Equal(expected.DateLong, genDate.DateLong);
             Assert.Equal(expected.DateString, genDate.DateString);
-            Assert.Equal(expected.ToString(), genDate.ToString());
-            Assert.Equal(datePhrase, genDate.DatePhrase);
-            Assert.True(genDate.IsValid);
+            Assert.True(genDate.DateFrom.IsValidDate());
+            Assert.True(genDate.DateTo.IsValidDate());
         }
 
         [Theory]
         [InlineData(119000101219000101)]
         [InlineData(118981101619000101)]
         [InlineData(118900101719000101)]
-        [InlineData(120180229120180229)]
+        [InlineData(120160229120160229)]
         [InlineData(110000000310000000)]
         [InlineData(100000031600000031)]
         [InlineData(100000000900000000)]
