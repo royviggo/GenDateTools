@@ -52,6 +52,12 @@ namespace GenDateTools.Test
         [InlineData("18900101", "18900101")]
         [InlineData("20180229", "20180229")]
         [InlineData("99991231", "99991231")]
+        [InlineData("1890010", "18900100")]
+        [InlineData("19000", "19000000")]
+        [InlineData("9999", "99990000")]
+        [InlineData("1", "00010000")]
+        [InlineData("0", "00000000")]
+        [InlineData("10000000JHDKJHDUIDANDSNAKJNDKAJLSDJA", "10000000")]
         public void DatePart_NewFromString_ValidDatePart(string dateString, string expected)
         {
             var datePart = new DatePart(dateString);
@@ -489,10 +495,16 @@ namespace GenDateTools.Test
         }
 
         [Theory]
+        [InlineData(100, 1, 200)]
+        [InlineData(900, 1, 1000)]
+        [InlineData(1000, 1, 1100)]
         [InlineData(10000, 1, 10100)]
         [InlineData(19000000, 1000, 19830400)]
+        [InlineData(19040229, -48, 19000228)]
         [InlineData(20000131, 1, 20000229)]
-        [InlineData(20000229, 12, 20010228)]
+        [InlineData(20000228, 12, 20010228)]
+        [InlineData(20040229, -12, 20030228)]
+        [InlineData(20040229, -48, 20000229)]
         [InlineData(99991231, -1, 99991130)]
         public void DatePart_AddMonths_DatePartWithAddedMonths(long datePartLong, int months, long expected)
         {
@@ -506,6 +518,7 @@ namespace GenDateTools.Test
         [Theory]
         [InlineData(0, -1)]
         [InlineData(1, -2)]
+        [InlineData(20000000, 100000)]
         [InlineData(99991231, 1)]
         [InlineData(99991231, -100000000)]
         public void DatePart_AddMonths_ThrowsArgumentOutOfRangeException(long datePartLong, int years)
@@ -530,6 +543,18 @@ namespace GenDateTools.Test
             var datePartExpected = new DatePart(expected);
 
             Assert.Equal(datePartExpected, datePartAdded);
+        }
+
+        [Theory]
+        [InlineData(0, -1)]
+        [InlineData(1, -2)]
+        [InlineData(90000000, 370000)]
+        [InlineData(99991231, 1)]
+        public void DatePart_AddDays_ThrowsArgumentOutOfRangeException(long datePartLong, int days)
+        {
+            var datePart = new DatePart(datePartLong);
+
+            Assert.Throws<ArgumentOutOfRangeException>(() => datePart.AddDays(days));
         }
 
         [Fact]
