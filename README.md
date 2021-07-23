@@ -5,5 +5,5 @@
 [![NuGet](https://img.shields.io/nuget/v/GenDateTools.svg)](https://www.nuget.org/packages/GenDateTools)
 [![NuGet](https://img.shields.io/nuget/dt/GenDateTools.svg)](https://www.nuget.org/packages/GenDateTools)
 
-Class library for Genealogy dates, where there can be one or more unknown parts. Features approximate dates, before/after dates, date ranges and free text. Have basic arithmetic and compare functions. Parsing dates from other Genealogy software.
+Class library for Genealogy dates, where day, month or year can be unknown or not precise. Features approximate dates, before/after dates, date ranges and free text. Have basic arithmetic and compare functions. Parses dates from other Genealogy software, like GEDCOM, Legacy Family Tree and RootsMagic.
 
