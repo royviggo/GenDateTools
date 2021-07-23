@@ -1,0 +1,29 @@
+name: Publish to nuget.org
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'GenDateTools/**'
+
+jobs:
+  publish:
+    name: Publish nuget
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup dotnet
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 3.1.411
+      
+      - name: Publish new version
+        uses: rohith/publish-nuget@v2
+        with:
+          PROJECT_FILE_PATH: GenDateTools/GenDateTools.csproj # Relative to repository root
+          VERSION_REGEX: <Version>(.*)<\/Version> # Regex pattern to extract version info in a capturing group
+          TAG_COMMIT: true # Flag to enable / disable git tagging
+          TAG_FORMAT: v* # Format of the git tag, [*] gets replaced with version
+          NUGET_KEY: ${{secrets.NUGET_API_KEY}} # nuget.org API key
