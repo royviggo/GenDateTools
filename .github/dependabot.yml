@@ -1,0 +1,18 @@
+# Dependabot for NuGet packages and GitHub Actions
+# Please see the documentation for all configuration options:
+# https://help.github.com/github/administering-a-repository/configuration-options-for-dependency-updates
+
+version: 2
+updates:
+  # NuGet Packages
+  - package-ecosystem: "nuget"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    open-pull-requests-limit: 10
+
+  # GitHub Actions
+	- package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "daily"
