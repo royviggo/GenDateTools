@@ -1,5 +1,4 @@
 using System;
-using System.Text.RegularExpressions;
 
 namespace GenDateTools.Parser
 {
@@ -7,22 +6,18 @@ namespace GenDateTools.Parser
     {
         public virtual GenDate Parse(string dateString)
         {
-            var regex = new Regex(@"^(?<stype>\d)(?<fromdate>\d{8})(?<dtype>\d)(?<todate>\d{8})");
-            var m = regex.Match(dateString);
-
-            if (m.Success)
+            if (dateString.Length >= 18)
             {
-                if (Enum.TryParse(m.Groups["dtype"].Value, out GenDateType dateTypeOut))
+                if (Enum.TryParse(dateString.Substring(9, 1), out GenDateType dateTypeOut))
                 {
-                    var fromDate = GetDatePartFromStringDate(m.Groups["fromdate"].Value);
-                    var toDate = GetDatePartFromStringDate(m.Groups["todate"].Value);
+                    var fromDate = GetDatePartFromStringDate(dateString.Substring(1, 8));
+                    var toDate = GetDatePartFromStringDate(dateString.Substring(10, 8));
 
                     return new GenDate(dateTypeOut, fromDate, toDate, true);
                 }
             }
-            var datePhrase = dateString.Length > 1 ? dateString.Substring(1, dateString.Length - 1) : string.Empty;
 
-            return new GenDate(GenDateType.Invalid, datePhrase, false);
+            return new GenDate(GenDateType.Invalid, dateString, false);
         }
 
         public virtual DatePart GetDatePartFromStringDate(string sDate)

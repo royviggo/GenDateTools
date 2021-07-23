@@ -1,55 +1,53 @@
-﻿using System.Text.RegularExpressions;
-
-namespace GenDateTools.Parser
+﻿namespace GenDateTools.Parser
 {
     public class RootsMagicDateStringParser : DateStringParser
     {
         public override GenDate Parse(string dateString)
         {
-            var regex = new Regex(@"^(?<stype>D)(?<dtype>.).+(?<fromdate>\d{8}).(?<dstype>\S).(?<todate>\d{8})..");
-            var m = regex.Match(dateString);
-
-            if (m.Success)
+            if (dateString.Substring(0, 1) == "T")
             {
-                var dateTypeStr = m.Groups["dtype"].Value;
-                GenDateType dateType;
-
-                switch (dateTypeStr)
-                {
-                    case "B":
-                        dateType = GenDateType.Before;
-                        break;
-                    case "A":
-                        dateType = GenDateType.After;
-                        break;
-                    case "R":
-                        dateType = GenDateType.Between;
-                        break;
-                    case "S":
-                        dateType = GenDateType.Period;
-                        break;
-                    case ".":
-                        if (m.Groups["dstype"].Value == "A")
-                            dateType = GenDateType.About;
-                        else if (m.Groups["dstype"].Value == "L")
-                            dateType = GenDateType.Calculated;
-                        else
-                            dateType = GenDateType.Exact;
-                        break;
-                    default:
-                        dateType = GenDateType.Invalid;
-                        break;
-                }
-
-                var fromDate = new DatePart(m.Groups["fromdate"].Value);
-                var toDate = (dateType == GenDateType.Between || dateType == GenDateType.Period) ? new DatePart(m.Groups["todate"].Value) : fromDate;
-
-                return new GenDate(dateType, fromDate, toDate, true);
+                var datePhrase = dateString.Length > 1 ? dateString.Substring(1, dateString.Length - 1) : string.Empty;
+                return new GenDate(GenDateType.Invalid, datePhrase, false);
             }
 
-            var datePhrase = dateString.Length > 1 ? dateString.Substring(1, dateString.Length - 1) : string.Empty;
+            if (dateString.Length < 23)
+                return new GenDate(GenDateType.Invalid, datePhrase: "", isValid: false);
 
-            return new GenDate(GenDateType.Invalid, datePhrase, false);
+            var dType = dateString.Substring(1, 1);
+            var dsType = dateString.Substring(12, 1);
+            GenDateType dateType;
+
+            switch (dType)
+            {
+                case "B":
+                    dateType = GenDateType.Before;
+                    break;
+                case "A":
+                    dateType = GenDateType.After;
+                    break;
+                case "R":
+                    dateType = GenDateType.Between;
+                    break;
+                case "S":
+                    dateType = GenDateType.Period;
+                    break;
+                case ".":
+                    if (dsType == "A")
+                        dateType = GenDateType.About;
+                    else if (dsType == "L")
+                        dateType = GenDateType.Calculated;
+                    else
+                        dateType = GenDateType.Exact;
+                    break;
+                default:
+                    dateType = GenDateType.Invalid;
+                    break;
+            }
+
+            var fromDate = new DatePart(dateString.Substring(3, 8));
+            var toDate = (dateType == GenDateType.Between || dateType == GenDateType.Period) ? new DatePart(dateString.Substring(14, 8)) : fromDate;
+
+            return new GenDate(dateType, fromDate, toDate, true);
         }
     }
 }
