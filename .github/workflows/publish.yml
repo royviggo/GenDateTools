@@ -5,6 +5,7 @@ on:
       - master
     paths:
       - 'GenDateTools/**'
+  workflow_dispatch:
 
 jobs:
   publish:
