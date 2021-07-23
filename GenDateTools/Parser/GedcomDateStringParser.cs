@@ -6,20 +6,31 @@ namespace GenDateTools.Parser
 {
     public class GedcomDateStringParser : DateStringParser
     {
+        private static readonly Dictionary<string, int> rangeTypePre = new Dictionary<string, int>() { { "BET", 6 }, { "FROM", 7 } };
+        private static readonly Dictionary<string, int> rangeTypeMid = new Dictionary<string, int>() { { "AND", 6 }, { "TO", 7 } };
+        private static readonly Dictionary<string, int> modifierType = new Dictionary<string, int>() { { "BEF", 1 }, { "ABT", 3 }, { "CAL", 4 }, { "EST", 5 }, { "INT", 8 }, { "AFT", 9 } };
+        private static readonly Dictionary<string, int> modTextType = new Dictionary<string, int>() { { "INT", 8 } };
+
+        private static readonly Regex regexRange = new Regex(@"^(?<rangepre>"
+                                                             + string.Join("|", rangeTypePre.Keys) + @")\s+?(?<fromdate>.+?)\s+?(?<rangemid>"
+                                                             + string.Join("|", rangeTypeMid.Keys) + @")\s+?(?<todate>.+)");
+        private static readonly Regex regexModText = new Regex(@"^(?<mod>" + string.Join("|", modTextType.Keys) + @")\s+?(?<date>[^(]+)[\s]+\((?<text>.+)\)", RegexOptions.IgnoreCase);
+        private static readonly Regex regexModifier = new Regex(@"^(?<mod>" + string.Join("|", modifierType.Keys) + @")\s+?(?<date>[\w\d]{1,4}\b.*)");
+        private static readonly Regex regexPhrase = new Regex(@"^\((?<phrase>.*?)\)");
+
+        private static readonly string beginRegex = "^";
+        private static readonly string endRegex = "$";
+        private static readonly string spaceRegex = @"[\s]+";
+        private static readonly string dayRegex = @"(?<day>\d{1,2})";
+        private static readonly string monthRegex = @"(?<month>" + string.Join("|", GenTools.MonthsFromName().Keys) + ")";
+        private static readonly string yearRegex = @"(?<year>\d{1,4})";
+
+        private static readonly Regex regexDayMonYear = new Regex(beginRegex + dayRegex + spaceRegex + monthRegex + spaceRegex + yearRegex + endRegex);
+        private static readonly Regex regexMonYear = new Regex(beginRegex + monthRegex + spaceRegex + yearRegex + endRegex);
+        private static readonly Regex regexYear = new Regex(beginRegex + yearRegex + endRegex);
+
         public override GenDate Parse(string dateString)
         {
-            var rangeTypePre = new Dictionary<string, int>() { { "BET", 6 }, { "FROM", 7 } };
-            var rangeTypeMid = new Dictionary<string, int>() { { "AND", 6 }, { "TO", 7 } };
-            var modifierType = new Dictionary<string, int>() { { "BEF", 1 }, { "ABT", 3 }, { "CAL", 4 }, { "EST", 5 }, { "INT", 8 }, { "AFT", 9 } };
-            var modTextType = new Dictionary<string, int>() { { "INT", 8 } };
-
-            var regexRange = new Regex(@"^(?<rangepre>" 
-                                       + string.Join("|", rangeTypePre.Keys) + @")\s+?(?<fromdate>.+?)\s+?(?<rangemid>"
-                                       + string.Join("|", rangeTypeMid.Keys) + @")\s+?(?<todate>.+)");
-            var regexModText = new Regex(@"^(?<mod>" + string.Join("|", modTextType.Keys) + @")\s+?(?<date>[^(]+)[\s]+\((?<text>.+)\)", RegexOptions.IgnoreCase);
-            var regexModifier = new Regex(@"^(?<mod>" + string.Join("|", modifierType.Keys) + @")\s+?(?<date>[\w\d]{1,4}\b.*)");
-            var regexPhrase = new Regex(@"^\((?<phrase>.*?)\)");
-
             var dateStringUpper = dateString.ToUpper();
 
             // Try to match a range
@@ -90,28 +101,15 @@ namespace GenDateTools.Parser
 
         public override DatePart GetDatePartFromStringDate(string sDate)
         {
-            var months = GenTools.MonthsFromName();
-
-            var beginRegex = "^";
-            var endRegex = "$";
-            var spaceRegex = @"[\s]+";
-            var dayRegex = @"(?<day>\d{1,2})";
-            var monthRegex = @"(?<month>" + string.Join("|", months.Keys) + ")";
-            var yearRegex = @"(?<year>\d{1,4})";
-
-            var regexDayMonYear = new Regex(beginRegex + dayRegex + spaceRegex + monthRegex + spaceRegex + yearRegex + endRegex);
-            var regexMonYear = new Regex(beginRegex + monthRegex + spaceRegex + yearRegex + endRegex);
-            var regexYear = new Regex(beginRegex + yearRegex + endRegex);
-
             // Match on day month year
             var mDayMonYear = regexDayMonYear.Match(sDate);
-            if (mDayMonYear.Success && months.ContainsKey(mDayMonYear.Groups["month"].Value))
-                return new DatePart(mDayMonYear.Groups["year"].Value, months[mDayMonYear.Groups["month"].Value].ToString(), mDayMonYear.Groups["day"].Value);
+            if (mDayMonYear.Success && GenTools.MonthsFromName().ContainsKey(mDayMonYear.Groups["month"].Value))
+                return new DatePart(mDayMonYear.Groups["year"].Value, GenTools.MonthsFromName()[mDayMonYear.Groups["month"].Value].ToString(), mDayMonYear.Groups["day"].Value);
 
             // Match on month year
             var mMonYear = regexMonYear.Match(sDate);
-            if (mMonYear.Success && months.ContainsKey(mMonYear.Groups["month"].Value))
-                return new DatePart(mMonYear.Groups["year"].Value, months[mMonYear.Groups["month"].Value].ToString(), "0");
+            if (mMonYear.Success && GenTools.MonthsFromName().ContainsKey(mMonYear.Groups["month"].Value))
+                return new DatePart(mMonYear.Groups["year"].Value, GenTools.MonthsFromName()[mMonYear.Groups["month"].Value].ToString(), "0");
 
             // Match on year
             var mYear = regexYear.Match(sDate);
