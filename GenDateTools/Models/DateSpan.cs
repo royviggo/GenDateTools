@@ -116,5 +116,35 @@ namespace GenDateTools
 
             return output + ((Days > 0 || Years == 0) ? days : "");
         }
+
+        public static bool operator ==(DateSpan left, DateSpan right)
+        {
+            return left.CompareTo(right) == 0;
+        }
+
+        public static bool operator !=(DateSpan left, DateSpan right)
+        {
+            return left.CompareTo(right) != 0;
+        }
+
+        public static bool operator <(DateSpan left, DateSpan right)
+        {
+            return left.CompareTo(right) < 0;
+        }
+
+        public static bool operator >(DateSpan left, DateSpan right)
+        {
+            return left.CompareTo(right) > 0;
+        }
+
+        public static bool operator <=(DateSpan left, DateSpan right)
+        {
+            return left.CompareTo(right) <= 0;
+        }
+
+        public static bool operator >=(DateSpan left, DateSpan right)
+        {
+            return left.CompareTo(right) >= 0;
+        }
     }
 }
