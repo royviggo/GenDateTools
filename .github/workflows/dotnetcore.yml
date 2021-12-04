@@ -20,6 +20,8 @@ jobs:
     - name: Test with dotnet
       run: dotnet test --configuration Release /p:CollectCoverage=true /p:CoverletOutput=TestResults/ /p:CoverletOutputFormat=lcov
 
-    - name: Test Results
-      run: ls -al GenDateTools/GenDateTools.Test/TestResults/*
-      
+    - name: Run codacy-coverage-reporter
+      uses: codacy/codacy-coverage-reporter-action@v1
+      with:
+        project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
+        coverage-reports: GenDateTools/GenDateTools.Test/TestResults/coverage.info
