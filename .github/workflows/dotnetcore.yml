@@ -19,3 +19,7 @@ jobs:
 
     - name: Test with dotnet
       run: dotnet test --configuration Release /p:CollectCoverage=true /p:CoverletOutput=TestResults/ /p:CoverletOutputFormat=lcov
+
+    - name: Test Results
+      run: ls -al TestResults/*
+      
