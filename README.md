@@ -1,6 +1,7 @@
 # GenDateTools
 
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/02a15a1df76543e6b883438bc32283e2)](https://www.codacy.com/gh/royviggo/GenDateTools/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=royviggo/GenDateTools&amp;utm_campaign=Badge_Grade)
+[![Codacy Badge](https://app.codacy.com/project/badge/Coverage/02a15a1df76543e6b883438bc32283e2)](https://www.codacy.com/gh/royviggo/GenDateTools/dashboard?utm_source=github.com&utm_medium=referral&utm_content=royviggo/GenDateTools&utm_campaign=Badge_Coverage)
 ![Build](https://github.com/royviggo/GenDateTools/workflows/.NET%20Core/badge.svg)
 [![Publish to nuget.org](https://github.com/royviggo/GenDateTools/actions/workflows/publish.yml/badge.svg)](https://github.com/royviggo/GenDateTools/actions/workflows/publish.yml)
 [![NuGet](https://img.shields.io/nuget/v/GenDateTools.svg)](https://www.nuget.org/packages/GenDateTools)
