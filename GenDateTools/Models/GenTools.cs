@@ -59,7 +59,7 @@ namespace GenDateTools
             var dictionary = new Dictionary<string, int>();
             foreach (var entry in source)
             {
-                var entryUpper = entry.Value.ToString().ToUpper();
+                var entryUpper = entry.Value.ToUpper();
 
                 if (!dictionary.ContainsKey(entryUpper))
                 {
