@@ -148,23 +148,35 @@ namespace GenDateTools
         /// <summary>
         /// Gets the number of days in the month.
         /// </summary>
-        public int DaysInMonth() => DaysInMonth(Year, Month);
+        public int DaysInMonth()
+        {
+            return DaysInMonth(Year, Month);
+        }
 
         /// <summary>
         /// Checks if the DatePart object is valid, which means a valid date in the Gregorian calendar, except that 
         /// one or more of the values Year, Month and Day can be 0. If a value is 0, it means that it is unknown.
         /// </summary>
-        public bool IsValidDate() => IsValidDate(Year, Month, Day);
+        public bool IsValidDate()
+        {
+            return IsValidDate(Year, Month, Day);
+        }
 
         /// <summary>
         /// Check if the DatePart object is a valid DateTime.
         /// </summary>
-        public bool IsValidDateTime() => IsValidDateTime(Year, Month, Day);
+        public bool IsValidDateTime()
+        {
+            return IsValidDateTime(Year, Month, Day);
+        }
 
         /// <summary>
         /// Check if the year is a leap year.
         /// </summary>
-        public bool IsLeapYear() => IsLeapYear(Year);
+        public bool IsLeapYear()
+        {
+            return IsLeapYear(Year);
+        }
 
         /// <summary>
         /// Adds a number of years to the DatePart.

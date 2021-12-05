@@ -40,7 +40,7 @@ namespace GenDateTools.Parser
                 var rangePreVal = rMatch.Groups["rangepre"].Value;
                 var rangeMidVal = rMatch.Groups["rangemid"].Value;
 
-                if (_rangeTypePre.ContainsKey(rangePreVal) 
+                if (_rangeTypePre.ContainsKey(rangePreVal)
                     && _rangeTypeMid.ContainsKey(rangeMidVal)
                     && _rangeTypePre[rangePreVal].ToString() == _rangeTypeMid[rangeMidVal].ToString()
                     && Enum.TryParse(_rangeTypePre[rangePreVal].ToString(), out GenDateType dateType))

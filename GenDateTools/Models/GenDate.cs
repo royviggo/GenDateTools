@@ -33,8 +33,8 @@ namespace GenDateTools
         /// </remarks>
         public DateRangeStrategy DateRangeStrategy
         {
-            get { return _dateRangeStrategy != null ? _dateRangeStrategy : DateRangeStrategy.Strategy; }
-            set { _dateRangeStrategy = value; }
+            get => _dateRangeStrategy != null ? _dateRangeStrategy : DateRangeStrategy.Strategy;
+            set => _dateRangeStrategy = value;
         }
 
         internal GenDate() { }
@@ -178,11 +178,11 @@ namespace GenDateTools
 
                 if (IsAboutType(DateType))
                 {
-                    date = DateFrom.AddYears(- DateRangeStrategy.AboutYearsBefore);
+                    date = DateFrom.AddYears(-DateRangeStrategy.AboutYearsBefore);
                 }
                 else if (DateType == GenDateType.Before)
                 {
-                    date = DateFrom.AddYears(- DateRangeStrategy.BeforeYears);
+                    date = DateFrom.AddYears(-DateRangeStrategy.BeforeYears);
                 }
                 else if (DateType == GenDateType.After)
                 {
@@ -193,8 +193,8 @@ namespace GenDateTools
                     date = DateFrom;
                 }
 
-                return Convert.ToInt32(DateRangeStrategy.UseRelaxedDates 
-                    ? new DatePart(date.Year, date.Month, 0) 
+                return Convert.ToInt32(DateRangeStrategy.UseRelaxedDates
+                    ? new DatePart(date.Year, date.Month, 0)
                     : date);
             }
         }
@@ -222,7 +222,7 @@ namespace GenDateTools
                     date = DatePart.GetMaxRange(DateTo);
                 }
 
-                return Convert.ToInt32(DateRangeStrategy.UseRelaxedDates 
+                return Convert.ToInt32(DateRangeStrategy.UseRelaxedDates
                     ? new DatePart(date.Year, date.Month, 0).AddMonths(1)
                     : date);
             }
@@ -230,7 +230,10 @@ namespace GenDateTools
 
         public int SortDate => (DatePart.CompareValue(DateFrom) * 10) + (int)DateType;
 
-        public bool IsValidDate() => IsValidDate(DateType, DateFrom, DateTo);
+        public bool IsValidDate()
+        {
+            return IsValidDate(DateType, DateFrom, DateTo);
+        }
 
         public static bool IsValidDate(GenDateType dateType, DatePart dateFrom, DatePart dateTo)
         {
