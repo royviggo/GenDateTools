@@ -1,13 +1,18 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27703.2035
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31912.275
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GenDateTools", "GenDateTools\GenDateTools.csproj", "{CA2E7E46-B408-40C1-BA81-729FB28EA428}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GenDateTools.Test", "GenDateTools.Test\GenDateTools.Test.csproj", "{F45F87C3-2578-47DB-97EE-65AB31288085}"
 	ProjectSection(ProjectDependencies) = postProject
 		{CA2E7E46-B408-40C1-BA81-729FB28EA428} = {CA2E7E46-B408-40C1-BA81-729FB28EA428}
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{E141320A-2E85-408B-901A-8E8E53A31939}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
 Global
