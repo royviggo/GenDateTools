@@ -31,7 +31,7 @@ namespace GenDateTools.Parser
 
         public override GenDate Parse(string dateString)
         {
-            var dateStringUpper = dateString.ToUpper();
+            var dateStringUpper = dateString.ToUpperInvariant();
 
             // Try to match a range
             var rMatch = _regexRange.Match(dateStringUpper);
@@ -56,11 +56,11 @@ namespace GenDateTools.Parser
             var mTextMatch = _regexModText.Match(dateString);
             if (mTextMatch.Success)
             {
-                var modVal = mTextMatch.Groups["mod"].Value.ToUpper();
+                var modVal = mTextMatch.Groups["mod"].Value.ToUpperInvariant();
 
-                if (_modTextType.ContainsKey(modVal) && Enum.TryParse(_modTextType[modVal].ToString().ToUpper(), out GenDateType dateType))
+                if (_modTextType.ContainsKey(modVal) && Enum.TryParse(_modTextType[modVal].ToString().ToUpperInvariant(), out GenDateType dateType))
                 {
-                    var date = GetDatePartFromStringDate(mTextMatch.Groups["date"].Value.ToUpper());
+                    var date = GetDatePartFromStringDate(mTextMatch.Groups["date"].Value.ToUpperInvariant());
                     var datePhrase = mTextMatch.Groups["text"].Value ?? string.Empty;
 
                     return new GenDate(dateType, date, date, datePhrase, date.IsValidDate());

@@ -6,8 +6,6 @@
     /// </summary>
     public class DateRangeStrategy
     {
-        public DateRangeStrategy() { }
-
         /// <summary>
         /// Limit for how many years before we should set the range for a approximate date.
         /// </summary>
