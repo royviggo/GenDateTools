@@ -41,32 +41,44 @@ namespace GenDateTools.Parser
             // Match on day month year
             var mDayMonYear = regexDayMonYear.Match(sDate);
             if (mDayMonYear.Success && months.ContainsKey(mDayMonYear.Groups["month"].Value))
+            {
                 return new DatePart(mDayMonYear.Groups["year"].Value, months[mDayMonYear.Groups["month"].Value].ToString(), mDayMonYear.Groups["day"].Value);
+            }
 
             // Match on month year
             var mMonYear = regexMonYear.Match(sDate);
             if (mMonYear.Success && months.ContainsKey(mMonYear.Groups["month"].Value))
+            {
                 return new DatePart(mMonYear.Groups["year"].Value, months[mMonYear.Groups["month"].Value].ToString(), "0");
+            }
 
             // Match on dd.mm.yyyy
             var mNor = regexNor.Match(sDate);
             if (mNor.Success)
+            {
                 return new DatePart(mNor.Groups["year"].Value, mNor.Groups["month"].Value, mNor.Groups["day"].Value);
+            }
 
             // Match on ISO
             var mIso = regexIso.Match(sDate);
             if (mIso.Success)
+            {
                 return new DatePart(mIso.Groups["year"].Value, mIso.Groups["month"].Value, mIso.Groups["day"].Value);
+            }
 
             // Match on ISO year and month
             var mIsoYM = regexIsoMonYear.Match(sDate);
             if (mIsoYM.Success)
+            {
                 return new DatePart(mIsoYM.Groups["year"].Value, mIsoYM.Groups["month"].Value, "0");
+            }
 
             // Match on year
             var mYear = regexYear.Match(sDate);
             if (mYear.Success)
+            {
                 return new DatePart(mYear.Groups["year"].Value, "0", "0");
+            }
 
             return new DatePart();
         }

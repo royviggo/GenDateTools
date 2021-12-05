@@ -5,7 +5,9 @@
         public override GenDate Parse(string dateString)
         {
             if (dateString.Length < 18)
+            {
                 return new GenDate(GenDateType.Invalid, datePhrase: "", isValid: false);
+            }
 
             var dateTypeStr = dateString.Substring(0, 1);
             GenDateType dateType;

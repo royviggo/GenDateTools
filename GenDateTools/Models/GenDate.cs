@@ -33,8 +33,8 @@ namespace GenDateTools
         /// </remarks>
         public DateRangeStrategy DateRangeStrategy
         {
-            get { return _dateRangeStrategy != null ? _dateRangeStrategy : DateRangeStrategy.Strategy; }
-            set { _dateRangeStrategy = value; }
+            get => _dateRangeStrategy != null ? _dateRangeStrategy : DateRangeStrategy.Strategy;
+            set => _dateRangeStrategy = value;
         }
 
         internal GenDate() { }
@@ -156,7 +156,9 @@ namespace GenDateTools
             get
             {
                 if (!IsValidDate())
+                {
                     return 0;
+                }
 
                 return ((DatePart.CompareValue(DateFrom) + 100000000L) * 1000000000L) +
                        (((long)DateType) * 100000000L) +
@@ -175,16 +177,24 @@ namespace GenDateTools
                 DatePart date;
 
                 if (IsAboutType(DateType))
-                    date = DateFrom.AddYears(- DateRangeStrategy.AboutYearsBefore);
+                {
+                    date = DateFrom.AddYears(-DateRangeStrategy.AboutYearsBefore);
+                }
                 else if (DateType == GenDateType.Before)
-                    date = DateFrom.AddYears(- DateRangeStrategy.BeforeYears);
+                {
+                    date = DateFrom.AddYears(-DateRangeStrategy.BeforeYears);
+                }
                 else if (DateType == GenDateType.After)
+                {
                     date = DateFrom.AddDays(1);
+                }
                 else
+                {
                     date = DateFrom;
+                }
 
-                return Convert.ToInt32(DateRangeStrategy.UseRelaxedDates 
-                    ? new DatePart(date.Year, date.Month, 0) 
+                return Convert.ToInt32(DateRangeStrategy.UseRelaxedDates
+                    ? new DatePart(date.Year, date.Month, 0)
                     : date);
             }
         }
@@ -196,15 +206,23 @@ namespace GenDateTools
                 DatePart date;
 
                 if (IsAboutType(DateType))
+                {
                     date = DatePart.GetMaxRange(DateFrom.AddYears(DateRangeStrategy.AboutYearsAfter));
+                }
                 else if (DateType == GenDateType.Before)
+                {
                     date = DateFrom.AddDays(-1);
+                }
                 else if (DateType == GenDateType.After)
+                {
                     date = DatePart.GetMaxRange(DateFrom.AddYears(DateRangeStrategy.AfterYears));
+                }
                 else
+                {
                     date = DatePart.GetMaxRange(DateTo);
+                }
 
-                return Convert.ToInt32(DateRangeStrategy.UseRelaxedDates 
+                return Convert.ToInt32(DateRangeStrategy.UseRelaxedDates
                     ? new DatePart(date.Year, date.Month, 0).AddMonths(1)
                     : date);
             }
@@ -212,7 +230,10 @@ namespace GenDateTools
 
         public int SortDate => (DatePart.CompareValue(DateFrom) * 10) + (int)DateType;
 
-        public bool IsValidDate() => IsValidDate(DateType, DateFrom, DateTo);
+        public bool IsValidDate()
+        {
+            return IsValidDate(DateType, DateFrom, DateTo);
+        }
 
         public static bool IsValidDate(GenDateType dateType, DatePart dateFrom, DatePart dateTo)
         {
@@ -222,7 +243,9 @@ namespace GenDateTools
         public static bool operator ==(GenDate genDate1, GenDate genDate2)
         {
             if (genDate1 is null)
+            {
                 return false;
+            }
 
             return genDate1.Equals(genDate2);
         }
@@ -230,7 +253,9 @@ namespace GenDateTools
         public static bool operator !=(GenDate genDate1, GenDate genDate2)
         {
             if (genDate1 is null)
+            {
                 return false;
+            }
 
             return !(genDate1 == genDate2);
         }
@@ -238,7 +263,9 @@ namespace GenDateTools
         public static bool operator >(GenDate genDate1, GenDate genDate2)
         {
             if (genDate1 is null)
+            {
                 return false;
+            }
 
             return genDate1.CompareTo(genDate2) == 1;
         }
@@ -246,7 +273,9 @@ namespace GenDateTools
         public static bool operator <(GenDate genDate1, GenDate genDate2)
         {
             if (genDate1 is null)
+            {
                 return false;
+            }
 
             return genDate1.CompareTo(genDate2) == -1;
         }
@@ -254,7 +283,9 @@ namespace GenDateTools
         public static bool operator >=(GenDate genDate1, GenDate genDate2)
         {
             if (genDate1 is null)
+            {
                 return false;
+            }
 
             return genDate1.CompareTo(genDate2) >= 0;
         }
@@ -262,7 +293,9 @@ namespace GenDateTools
         public static bool operator <=(GenDate genDate1, GenDate genDate2)
         {
             if (genDate1 is null)
+            {
                 return false;
+            }
 
             return genDate1.CompareTo(genDate2) <= 0;
         }
@@ -277,9 +310,14 @@ namespace GenDateTools
         public bool Equals(GenDate other)
         {
             if (other is null)
+            {
                 return false;
+            }
+
             if (ReferenceEquals(this, other))
+            {
                 return true;
+            }
 
             return (DateType == other.DateType && DateFrom == other.DateFrom && DateTo == other.DateTo &&
                     DatePhrase == other.DatePhrase && IsValid == other.IsValid && SortDate == other.SortDate);
@@ -288,9 +326,14 @@ namespace GenDateTools
         public override bool Equals(object obj)
         {
             if (obj is null)
+            {
                 return false;
+            }
+
             if (GetType() != obj.GetType())
+            {
                 return false;
+            }
 
             return Equals((GenDate)obj);
         }
@@ -315,13 +358,17 @@ namespace GenDateTools
             var rangeJoin = new Dictionary<int, string> { { 6, " - " }, { 7, " to " } };
 
             if (!IsValid)
+            {
                 return DatePhrase;
+            }
 
             var result = typeNames[(int)DateType];
             result += DateFrom.ToString();
 
             if (DateType == GenDateType.Between || DateType == GenDateType.Period)
+            {
                 result += rangeJoin[(int)DateType] + DateTo;
+            }
 
             return result;
         }
@@ -331,7 +378,9 @@ namespace GenDateTools
             foreach (var aboutType in _aboutTypes)
             {
                 if (dateType == aboutType)
+                {
                     return true;
+                }
             }
 
             return false;

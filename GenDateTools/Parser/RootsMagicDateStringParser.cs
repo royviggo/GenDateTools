@@ -11,7 +11,9 @@
             }
 
             if (dateString.Length < 23)
+            {
                 return new GenDate(GenDateType.Invalid, datePhrase: "", isValid: false);
+            }
 
             var dType = dateString.Substring(1, 1);
             var dsType = dateString.Substring(12, 1);
@@ -33,11 +35,18 @@
                     break;
                 case ".":
                     if (dsType == "A")
+                    {
                         dateType = GenDateType.About;
+                    }
                     else if (dsType == "L")
+                    {
                         dateType = GenDateType.Calculated;
+                    }
                     else
+                    {
                         dateType = GenDateType.Exact;
+                    }
+
                     break;
                 default:
                     dateType = GenDateType.Invalid;

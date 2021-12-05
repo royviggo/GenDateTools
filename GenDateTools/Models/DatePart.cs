@@ -11,18 +11,18 @@ namespace GenDateTools
     [Serializable]
     public class DatePart : IEquatable<DatePart>, IComparable<DatePart>, IConvertible, ISerializable
     {
-        internal const int MaxDaysInMonth = 31;
-        internal const int MinDaysInMonth = 0;
-        internal const int MaxMonthInYear = 12;
-        internal const int MinMonthInYear = 0;
-        private const int MaxYear = 9999;
-        private const int MinYear = 0;
+        internal const int _maxDaysInMonth = 31;
+        internal const int _minDaysInMonth = 0;
+        internal const int _maxMonthInYear = 12;
+        internal const int _minMonthInYear = 0;
+        private const int _maxYear = 9999;
+        private const int _minYear = 0;
 
-        public static readonly DatePart MinValue = new DatePart(MinYear, MinMonthInYear, MinDaysInMonth);
-        public static readonly DatePart MaxValue = new DatePart(MaxYear, MaxMonthInYear, MaxDaysInMonth);
+        public static readonly DatePart MinValue = new DatePart(_minYear, _minMonthInYear, _minDaysInMonth);
+        public static readonly DatePart MaxValue = new DatePart(_maxYear, _maxMonthInYear, _maxDaysInMonth);
 
-        private static readonly int[] DaysToMonth365 = { 0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334, 365 };
-        private static readonly int[] DaysToMonth366 = { 0, 31, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335, 366 };
+        private static readonly int[] _daysToMonth365 = { 0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334, 365 };
+        private static readonly int[] _daysToMonth366 = { 0, 31, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335, 366 };
 
         public int Year { get; set; }
         public int Month { get; set; }
@@ -47,8 +47,10 @@ namespace GenDateTools
         /// <exception cref="ArgumentOutOfRangeException"></exception>
         public DatePart(int year, int month, int day)
         {
-            if (!(year >= MinYear && year <= MaxYear && month >= MinMonthInYear && month <= MaxMonthInYear && day >= MinDaysInMonth && day <= MaxDaysInMonth))
+            if (!(year >= _minYear && year <= _maxYear && month >= _minMonthInYear && month <= _maxMonthInYear && day >= _minDaysInMonth && day <= _maxDaysInMonth))
+            {
                 throw new ArgumentOutOfRangeException("Arguments out of range");
+            }
 
             Year = year;
             Month = month;
@@ -90,7 +92,9 @@ namespace GenDateTools
         protected DatePart(SerializationInfo info, StreamingContext context)
         {
             if (info == null)
+            {
                 throw new ArgumentNullException("info");
+            }
 
             Year = Convert.ToInt32(info.GetString("Year"));
             Month = Convert.ToInt32(info.GetString("Month"));
@@ -103,19 +107,26 @@ namespace GenDateTools
         /// <exception cref="ArgumentOutOfRangeException"></exception>
         public DatePart(int year, int dayOfYear)
         {
-            if (!(year >= MinYear && year <= MaxYear))
+            if (!(year >= _minYear && year <= _maxYear))
+            {
                 throw new ArgumentOutOfRangeException(nameof(year), year, "Arguments out of range");
+            }
 
             if (!(dayOfYear >= 0 && dayOfYear <= DaysInYear(year)))
+            {
                 throw new ArgumentOutOfRangeException(nameof(dayOfYear), dayOfYear, "Arguments out of range");
+            }
 
             var month = 0;
-            int[] daysInMonth = IsLeapYear(year) ? DaysToMonth366 : DaysToMonth365;
+            int[] daysInMonth = IsLeapYear(year) ? _daysToMonth366 : _daysToMonth365;
 
             while (dayOfYear > daysInMonth[month])
             {
                 month++;
-                if (month == 13) break;
+                if (month == 13)
+                {
+                    break;
+                }
             }
 
             Year = year;
@@ -128,7 +139,7 @@ namespace GenDateTools
         /// </summary>
         public int DayOfYear()
         {
-            int[] daysInMonth = IsLeapYear(Year) ? DaysToMonth366 : DaysToMonth365;
+            int[] daysInMonth = IsLeapYear(Year) ? _daysToMonth366 : _daysToMonth365;
             var prevMonth = Month > 0 ? Month - 1 : 0;
 
             return daysInMonth[prevMonth] + Day;
@@ -137,23 +148,35 @@ namespace GenDateTools
         /// <summary>
         /// Gets the number of days in the month.
         /// </summary>
-        public int DaysInMonth() => DaysInMonth(Year, Month);
+        public int DaysInMonth()
+        {
+            return DaysInMonth(Year, Month);
+        }
 
         /// <summary>
         /// Checks if the DatePart object is valid, which means a valid date in the Gregorian calendar, except that 
         /// one or more of the values Year, Month and Day can be 0. If a value is 0, it means that it is unknown.
         /// </summary>
-        public bool IsValidDate() => IsValidDate(Year, Month, Day);
+        public bool IsValidDate()
+        {
+            return IsValidDate(Year, Month, Day);
+        }
 
         /// <summary>
         /// Check if the DatePart object is a valid DateTime.
         /// </summary>
-        public bool IsValidDateTime() => IsValidDateTime(Year, Month, Day);
+        public bool IsValidDateTime()
+        {
+            return IsValidDateTime(Year, Month, Day);
+        }
 
         /// <summary>
         /// Check if the year is a leap year.
         /// </summary>
-        public bool IsLeapYear() => IsLeapYear(Year);
+        public bool IsLeapYear()
+        {
+            return IsLeapYear(Year);
+        }
 
         /// <summary>
         /// Adds a number of years to the DatePart.
@@ -161,8 +184,10 @@ namespace GenDateTools
         /// <exception cref="ArgumentOutOfRangeException"></exception>
         public DatePart AddYears(int years)
         {
-            if (((Year + years) > MaxYear) || ((Year + years) < MinYear))
-                throw new ArgumentOutOfRangeException(nameof(years), years, $"Resulting year must be between {MinYear} and {MaxYear}.");
+            if (((Year + years) > _maxYear) || ((Year + years) < _minYear))
+            {
+                throw new ArgumentOutOfRangeException(nameof(years), years, $"Resulting year must be between {_minYear} and {_maxYear}.");
+            }
 
             return new DatePart(Year + years, Month, Day);
         }
@@ -178,21 +203,25 @@ namespace GenDateTools
             var calcMonth = mon - 1 + months;
             if (calcMonth >= 0)
             {
-                mon = calcMonth % 12 + 1;
-                year = year + calcMonth / 12;
+                mon = (calcMonth % 12) + 1;
+                year += calcMonth / 12;
             }
             else
             {
-                mon = 12 + (calcMonth + 1) % 12;
-                year = year + (calcMonth - 11) / 12;
+                mon = 12 + ((calcMonth + 1) % 12);
+                year += (calcMonth - 11) / 12;
             }
 
-            if (year < MinYear || year > MaxYear)
-                throw new ArgumentOutOfRangeException(nameof(months), months, $"Resulting year must be between {MinYear} and {MaxYear}.");
+            if (year < _minYear || year > _maxYear)
+            {
+                throw new ArgumentOutOfRangeException(nameof(months), months, $"Resulting year must be between {_minYear} and {_maxYear}.");
+            }
 
             var daysInMonth = DaysInMonth(year, mon);
             if (day > daysInMonth)
+            {
                 day = daysInMonth;
+            }
 
             return new DatePart(year, mon, day);
         }
@@ -215,8 +244,10 @@ namespace GenDateTools
                     calcDayOfYear -= DaysInYear(year);
                     year++;
 
-                    if (year > MaxYear)
-                        throw new ArgumentOutOfRangeException(nameof(days), $"Resulting year must be between {MinYear} and {MaxYear}.");
+                    if (year > _maxYear)
+                    {
+                        throw new ArgumentOutOfRangeException(nameof(days), $"Resulting year must be between {_minYear} and {_maxYear}.");
+                    }
                 }
             }
             else
@@ -226,8 +257,10 @@ namespace GenDateTools
                 {
                     year--;
 
-                    if (year < MinYear)
-                        throw new ArgumentOutOfRangeException(nameof(days), $"Resulting year must be between {MinYear} and {MaxYear}.");
+                    if (year < _minYear)
+                    {
+                        throw new ArgumentOutOfRangeException(nameof(days), $"Resulting year must be between {_minYear} and {_maxYear}.");
+                    }
 
                     calcDayOfYear += DaysInYear(year);
                 }
@@ -241,9 +274,9 @@ namespace GenDateTools
         /// </summary>
         public static int DaysInMonth(int year, int month)
         {
-            int[] daysInMonth = IsLeapYear(year) ? DaysToMonth366 : DaysToMonth365;
+            int[] daysInMonth = IsLeapYear(year) ? _daysToMonth366 : _daysToMonth365;
 
-            return month == 0 ? MaxDaysInMonth : daysInMonth[month] - daysInMonth[month - 1];
+            return month == 0 ? _maxDaysInMonth : daysInMonth[month] - daysInMonth[month - 1];
         }
 
         /// <summary>
@@ -251,7 +284,7 @@ namespace GenDateTools
         /// </summary>
         public static int DaysInYear(int year)
         {
-            int[] daysInMonth = IsLeapYear(year) ? DaysToMonth366 : DaysToMonth365;
+            int[] daysInMonth = IsLeapYear(year) ? _daysToMonth366 : _daysToMonth365;
 
             return daysInMonth[daysInMonth.Length - 1];
         }
@@ -262,8 +295,8 @@ namespace GenDateTools
         /// </summary>
         public static bool IsValidDate(int year, int month, int day)
         {
-            return year >= MinYear && year <= MaxYear && month >= MinMonthInYear && month <= MaxMonthInYear &&
-                   day >= MinDaysInMonth && day <= DaysInMonth(year, month);
+            return year >= _minYear && year <= _maxYear && month >= _minMonthInYear && month <= _maxMonthInYear &&
+                   day >= _minDaysInMonth && day <= DaysInMonth(year, month);
         }
 
         /// <summary>
@@ -279,8 +312,10 @@ namespace GenDateTools
         /// </summary>
         public static bool IsLeapYear(int year)
         {
-            if (year <= MinYear || year > MaxYear)
+            if (year <= _minYear || year > _maxYear)
+            {
                 return false;
+            }
 
             return (year % 4 == 0 && year % 100 != 0) || year % 400 == 0;
         }
@@ -305,13 +340,15 @@ namespace GenDateTools
 
         public static int CompareValue(DatePart datePart)
         {
-            return datePart != null ? (datePart.Year * 10000 + datePart.Month * 100 + datePart.Day) : 0;
+            return datePart != null ? ((datePart.Year * 10000) + (datePart.Month * 100) + datePart.Day) : 0;
         }
 
         public static bool operator ==(DatePart datePart1, DatePart datePart2)
         {
             if (datePart1 is null)
+            {
                 return false;
+            }
 
             return datePart1.Equals(datePart2);
         }
@@ -319,7 +356,9 @@ namespace GenDateTools
         public static bool operator !=(DatePart datePart1, DatePart datePart2)
         {
             if (datePart1 is null)
+            {
                 return false;
+            }
 
             return !(datePart1 == datePart2);
         }
@@ -327,7 +366,9 @@ namespace GenDateTools
         public static bool operator >(DatePart datePart1, DatePart datePart2)
         {
             if (datePart1 is null)
+            {
                 return false;
+            }
 
             return datePart1.CompareTo(datePart2) == 1;
         }
@@ -335,7 +376,9 @@ namespace GenDateTools
         public static bool operator <(DatePart datePart1, DatePart datePart2)
         {
             if (datePart1 is null)
+            {
                 return false;
+            }
 
             return datePart1.CompareTo(datePart2) == -1;
         }
@@ -343,7 +386,9 @@ namespace GenDateTools
         public static bool operator >=(DatePart datePart1, DatePart datePart2)
         {
             if (datePart1 is null)
+            {
                 return false;
+            }
 
             return datePart1.CompareTo(datePart2) >= 0;
         }
@@ -351,7 +396,9 @@ namespace GenDateTools
         public static bool operator <=(DatePart datePart1, DatePart datePart2)
         {
             if (datePart1 is null)
+            {
                 return false;
+            }
 
             return datePart1.CompareTo(datePart2) <= 0;
         }
@@ -359,9 +406,14 @@ namespace GenDateTools
         public bool Equals(DatePart other)
         {
             if (other is null)
+            {
                 return false;
+            }
+
             if (ReferenceEquals(this, other))
+            {
                 return true;
+            }
 
             return (Year == other.Year && Month == other.Month && Day == other.Day);
         }
@@ -369,9 +421,14 @@ namespace GenDateTools
         public override bool Equals(object obj)
         {
             if (obj is null)
+            {
                 return false;
+            }
+
             if (GetType() != obj.GetType())
+            {
                 return false;
+            }
 
             return Equals((DatePart)obj);
         }
@@ -392,8 +449,8 @@ namespace GenDateTools
         /// </summary>
         public override string ToString()
         {
-            var output = Day > 0 && Day <= MaxDaysInMonth ? Day.ToString().PadLeft(2, '0') : "";
-            var month = Month > 0 && Month <= MaxMonthInYear ? GenTools.MonthName(Month) : "";
+            var output = Day > 0 && Day <= _maxDaysInMonth ? Day.ToString().PadLeft(2, '0') : "";
+            var month = Month > 0 && Month <= _maxMonthInYear ? GenTools.MonthName(Month) : "";
             var year = Year > 0 ? Year.ToString() : "";
 
             output += output != "" && month != "" ? " " : "";
@@ -500,7 +557,9 @@ namespace GenDateTools
         void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
         {
             if (info == null)
+            {
                 throw new ArgumentNullException("info");
+            }
 
             GetObjectData(info, context);
         }
@@ -508,7 +567,7 @@ namespace GenDateTools
         internal static DatePart GetMaxRange(DatePart datePart)
         {
             return new DatePart(datePart.Year,
-                    datePart.Month != 0 ? datePart.Month : MaxMonthInYear,
+                    datePart.Month != 0 ? datePart.Month : _maxMonthInYear,
                     datePart.Day != 0 ? datePart.Day : DaysInMonth(datePart.Year, datePart.Month));
         }
     }

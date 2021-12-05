@@ -341,7 +341,7 @@ namespace GenDateTools.Test
                 AboutYearsBefore = 1,
                 UseRelaxedDates = false,
             };
-            DateRangeStrategy.Strategy =expected;
+            DateRangeStrategy.Strategy = expected;
 
             var actual = DateRangeStrategy.Strategy;
 
