@@ -238,3 +238,6 @@ dotnet_naming_style.underscore_as_first_char.required_prefix = _
 dotnet_naming_style.underscore_as_first_char.required_suffix = 
 dotnet_naming_style.underscore_as_first_char.word_separator = 
 dotnet_naming_style.underscore_as_first_char.capitalization = camel_case
+
+[*.{cs,vb}]
+dotnet_style_prefer_conditional_expression_over_return=true:silent
