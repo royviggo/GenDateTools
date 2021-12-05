@@ -47,7 +47,9 @@ namespace GenDateTools
             foreach (var entry in source)
             {
                 if (!dictionary.ContainsKey(entry.Value))
+                {
                     dictionary.Add(entry.Value, entry.Key);
+                }
             }
             return dictionary;
         }
@@ -60,7 +62,9 @@ namespace GenDateTools
                 var entryUpper = entry.Value.ToString().ToUpper();
 
                 if (!dictionary.ContainsKey(entryUpper))
+                {
                     dictionary.Add(entryUpper, entry.Key);
+                }
             }
             return dictionary;
         }
