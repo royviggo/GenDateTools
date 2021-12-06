@@ -4,7 +4,7 @@ namespace GenDateTools
 {
     public static class GenTools
     {
-        public static Dictionary<int, string> MonthsFromNumber()
+        private static Dictionary<int, string> MonthsFromNumber()
         {
             return new Dictionary<int, string>
             {
