@@ -5,7 +5,7 @@ namespace GenDateTools.Parser
 {
     public class GenDateParser : GedcomDateStringParser
     {
-        private static readonly Dictionary<string, int> months = new Dictionary<string, int> { { "jan", 1 }, { "feb", 2 }, { "mar", 3 }, { "mär", 3 }, { "maa", 3 }, { "apr", 4 },
+        private static readonly Dictionary<string, int> _months = new Dictionary<string, int> { { "jan", 1 }, { "feb", 2 }, { "mar", 3 }, { "mär", 3 }, { "maa", 3 }, { "apr", 4 },
             { "mai", 5 }, { "may", 5 },  { "maj", 5 },  { "mei", 5 }, { "jun", 6 }, { "jul", 7 }, { "aug", 8 }, { "sep", 9 }, {"oct", 10 },
             {"okt", 10 }, {"nov", 11 }, {"des", 12 }, {"dec", 12 }, {"dez", 12 } };
 
