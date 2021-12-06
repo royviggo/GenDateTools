@@ -36,7 +36,7 @@ namespace GenDateTools.Parser
 
         public override DatePart GetDatePartFromStringDate(string sDate)
         {
-            sDate = sDate.ToLower();
+            sDate = sDate.ToLowerInvariant();
 
             // Match on day month year
             Match mDayMonYear = _regexDayMonYear.Match(sDate);
