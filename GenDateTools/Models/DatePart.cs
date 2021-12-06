@@ -47,11 +47,21 @@ namespace GenDateTools
         /// <exception cref="ArgumentOutOfRangeException"></exception>
         public DatePart(int year, int month, int day)
         {
-            if (!(year >= _minYear && year <= _maxYear && month >= _minMonthInYear && month <= _maxMonthInYear && day >= _minDaysInMonth && day <= _maxDaysInMonth))
+            if (year < _minYear || year > _maxYear)
             {
-                throw new ArgumentOutOfRangeException("Arguments out of range");
+                throw new ArgumentOutOfRangeException(nameof(year), "Arguments out of range");
             }
 
+            if (month < _minMonthInYear || month > _maxMonthInYear)
+            {
+                throw new ArgumentOutOfRangeException(nameof(month), "Arguments out of range");
+            }
+            
+            if (day < _minDaysInMonth || day > _maxDaysInMonth)
+            {
+                throw new ArgumentOutOfRangeException(nameof(day), "Arguments out of range");
+            }
+            
             Year = year;
             Month = month;
             Day = day;
