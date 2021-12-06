@@ -33,7 +33,7 @@ namespace GenDateTools.Test
 
         [Theory]
         [InlineData("Int. 1 Jul 1900 (some text)", "119000701819000701", "some text")]
-        public void GenDateParser_ParseIntepretedWithText_ReturnsValidGenDate(string dateString, string expected, string expectedPhrase)
+        public void GenDateParser_ParseInterpretedWithText_ReturnsValidGenDate(string dateString, string expected, string expectedPhrase)
         {
             GenDateParser parser = new GenDateParser();
             GenDate genDate = new GenDate(parser, dateString);

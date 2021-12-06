@@ -176,7 +176,7 @@ namespace GenDateTools.Test
         [InlineData("100000001100000001", "Bef. 01")]
         [InlineData("100500000600700000", "Bet. 50 - 70")]
         [InlineData("108600000609100000", "Bet. 860 - 910")]
-        public void Gendate_ToString_EqualString(string dateString, string expected)
+        public void GenDate_ToString_EqualString(string dateString, string expected)
         {
             GenDate genDate = new GenDate(dateString);
 

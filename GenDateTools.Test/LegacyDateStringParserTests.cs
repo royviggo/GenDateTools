@@ -30,7 +30,7 @@ namespace GenDateTools.Test
 
         [Theory]
         [InlineData(@":00000183100000000\Langfredag? 1831", "118310000218310000", "Langfredag? 1831")]
-        public void LegacyDateStringParser_ParseIntepretedWithText_ReturnsValidGenDate(string dateString, string expected, string expectedPhrase)
+        public void LegacyDateStringParser_ParseInterpretedWithText_ReturnsValidGenDate(string dateString, string expected, string expectedPhrase)
         {
             LegacyDateStringParser parser = new LegacyDateStringParser();
             GenDate genDate = new GenDate(parser, dateString);
