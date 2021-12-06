@@ -58,7 +58,7 @@ namespace GenDateTools.Parser
             {
                 string modVal = mTextMatch.Groups["mod"].Value.ToUpperInvariant();
 
-                if (_modTextType.ContainsKey(modVal) && Enum.TryParse(_modTextType[modVal].ToString().ToUpper(), out GenDateType dateType))
+                if (_modTextType.ContainsKey(modVal) && Enum.TryParse(_modTextType[modVal].ToString().ToUpperInvariant(), out GenDateType dateType))
                 {
                     DatePart date = GetDatePartFromStringDate(mTextMatch.Groups["date"].Value.ToUpperInvariant());
                     string datePhrase = mTextMatch.Groups["text"].Value;
