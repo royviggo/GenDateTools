@@ -135,12 +135,12 @@ namespace GenDateTools
 
         public static bool operator ==(DateSpan left, DateSpan right)
         {
-            return left.CompareTo(right) == 0;
+            return left != null && left.CompareTo(right) == 0;
         }
 
         public static bool operator !=(DateSpan left, DateSpan right)
         {
-            return left.CompareTo(right) != 0;
+            return left != null && left.CompareTo(right) != 0;
         }
 
         public static bool operator <(DateSpan left, DateSpan right)
