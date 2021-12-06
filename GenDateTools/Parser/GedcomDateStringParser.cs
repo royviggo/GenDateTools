@@ -31,68 +31,68 @@ namespace GenDateTools.Parser
 
         public override GenDate Parse(string dateString)
         {
-            var dateStringUpper = dateString.ToUpperInvariant();
+            string dateStringUpper = dateString.ToUpperInvariant();
 
             // Try to match a range
-            var rMatch = _regexRange.Match(dateStringUpper);
+            Match rMatch = _regexRange.Match(dateStringUpper);
             if (rMatch.Success)
             {
-                var rangePreVal = rMatch.Groups["rangepre"].Value;
-                var rangeMidVal = rMatch.Groups["rangemid"].Value;
+                string rangePreVal = rMatch.Groups["rangepre"].Value;
+                string rangeMidVal = rMatch.Groups["rangemid"].Value;
 
                 if (_rangeTypePre.ContainsKey(rangePreVal)
                     && _rangeTypeMid.ContainsKey(rangeMidVal)
                     && _rangeTypePre[rangePreVal].ToString() == _rangeTypeMid[rangeMidVal].ToString()
                     && Enum.TryParse(_rangeTypePre[rangePreVal].ToString(), out GenDateType dateType))
                 {
-                    var fromDate = GetDatePartFromStringDate(rMatch.Groups["fromdate"].Value);
-                    var toDate = GetDatePartFromStringDate(rMatch.Groups["todate"].Value);
+                    DatePart fromDate = GetDatePartFromStringDate(rMatch.Groups["fromdate"].Value);
+                    DatePart toDate = GetDatePartFromStringDate(rMatch.Groups["todate"].Value);
 
                     return new GenDate(dateType, fromDate, toDate, fromDate.IsValidDate() && toDate.IsValidDate());
                 }
             }
 
             // Try to match date with a modifier and a text
-            var mTextMatch = _regexModText.Match(dateString);
+            Match mTextMatch = _regexModText.Match(dateString);
             if (mTextMatch.Success)
             {
-                var modVal = mTextMatch.Groups["mod"].Value.ToUpperInvariant();
+                string modVal = mTextMatch.Groups["mod"].Value.ToUpperInvariant();
 
                 if (_modTextType.ContainsKey(modVal) && Enum.TryParse(_modTextType[modVal].ToString().ToUpperInvariant(), out GenDateType dateType))
                 {
-                    var date = GetDatePartFromStringDate(mTextMatch.Groups["date"].Value.ToUpperInvariant());
-                    var datePhrase = mTextMatch.Groups["text"].Value ?? string.Empty;
+                    DatePart date = GetDatePartFromStringDate(mTextMatch.Groups["date"].Value.ToUpperInvariant());
+                    string datePhrase = mTextMatch.Groups["text"].Value;
 
                     return new GenDate(dateType, date, date, datePhrase, date.IsValidDate());
                 }
             }
 
             // Try to match date with a modifier
-            var mMatch = _regexModifier.Match(dateStringUpper);
+            Match mMatch = _regexModifier.Match(dateStringUpper);
             if (mMatch.Success)
             {
-                var modVal = mMatch.Groups["mod"].Value;
+                string modVal = mMatch.Groups["mod"].Value;
 
                 if (_modifierType.ContainsKey(modVal) && Enum.TryParse(_modifierType[modVal].ToString(), out GenDateType dateType))
                 {
-                    var date = GetDatePartFromStringDate(mMatch.Groups["date"].Value);
+                    DatePart date = GetDatePartFromStringDate(mMatch.Groups["date"].Value);
 
                     return new GenDate(dateType, date, date, date.IsValidDate());
                 }
             }
 
             // A regular date
-            var exactDate = GetDatePartFromStringDate(dateStringUpper);
+            DatePart exactDate = GetDatePartFromStringDate(dateStringUpper);
             if (exactDate != DatePart.MinValue)
             {
                 return new GenDate(GenDateType.Exact, exactDate, exactDate, exactDate.IsValidDate());
             }
 
             // Try to match a phrase
-            var pMatch = _regexPhrase.Match(dateString);
+            Match pMatch = _regexPhrase.Match(dateString);
             if (pMatch.Success)
             {
-                var datePhrase = pMatch.Groups["phrase"].Value;
+                string datePhrase = pMatch.Groups["phrase"].Value;
 
                 return new GenDate(GenDateType.Invalid, datePhrase, false);
             }
@@ -104,21 +104,21 @@ namespace GenDateTools.Parser
         public override DatePart GetDatePartFromStringDate(string sDate)
         {
             // Match on day month year
-            var mDayMonYear = _regexDayMonYear.Match(sDate);
+            Match mDayMonYear = _regexDayMonYear.Match(sDate);
             if (mDayMonYear.Success && GenTools.MonthsFromName().ContainsKey(mDayMonYear.Groups["month"].Value))
             {
                 return new DatePart(mDayMonYear.Groups["year"].Value, GenTools.MonthsFromName()[mDayMonYear.Groups["month"].Value].ToString(), mDayMonYear.Groups["day"].Value);
             }
 
             // Match on month year
-            var mMonYear = _regexMonYear.Match(sDate);
+            Match mMonYear = _regexMonYear.Match(sDate);
             if (mMonYear.Success && GenTools.MonthsFromName().ContainsKey(mMonYear.Groups["month"].Value))
             {
                 return new DatePart(mMonYear.Groups["year"].Value, GenTools.MonthsFromName()[mMonYear.Groups["month"].Value].ToString(), "0");
             }
 
             // Match on year
-            var mYear = _regexYear.Match(sDate);
+            Match mYear = _regexYear.Match(sDate);
             if (mYear.Success)
             {
                 return new DatePart(mYear.Groups["year"].Value, "0", "0");

@@ -25,19 +25,19 @@ namespace GenDateTools.Test
         [InlineData("(some text", "2")]
         public void GedcomDateStringParser_Parse_ReturnsValidGenDate(string dateString, string expected)
         {
-            var parser = new GedcomDateStringParser();
-            var genDate = new GenDate(parser, dateString);
+            GedcomDateStringParser parser = new GedcomDateStringParser();
+            GenDate genDate = new GenDate(parser, dateString);
 
             Assert.Equal(expected, genDate.DateString);
         }
 
         [Theory]
         [InlineData("INT 1 JUL 1900 (some text)", "119000701819000701", "some text")]
-        public void GedcomDateStringParser_ParseIntepretedWithText_ReturnsValidGenDate(string dateString, string expected, string expectedPhrase)
+        public void GedcomDateStringParser_ParseInterpretedWithText_ReturnsValidGenDate(string dateString, string expected, string expectedPhrase)
         {
-            var parser = new GedcomDateStringParser();
-            var genDate = new GenDate(parser, dateString);
-            var expectedGenDate = new GenDate(expected);
+            GedcomDateStringParser parser = new GedcomDateStringParser();
+            GenDate genDate = new GenDate(parser, dateString);
+            GenDate expectedGenDate = new GenDate(expected);
 
             Assert.Equal(expectedGenDate.DateString, genDate.DateString);
             Assert.Equal(expectedPhrase, genDate.DatePhrase);

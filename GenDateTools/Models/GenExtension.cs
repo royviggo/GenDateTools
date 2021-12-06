@@ -1,4 +1,6 @@
-﻿namespace GenDateTools
+﻿using System.Globalization;
+
+namespace GenDateTools
 {
     public static class GenExtension
     {
@@ -19,7 +21,7 @@
 
         public static string ToGenString(this DatePart datePart)
         {
-            return datePart.ToString();
+            return datePart.ToString(CultureInfo.InvariantCulture);
         }
 
         public static string ToGenString(this GenDate genDate)

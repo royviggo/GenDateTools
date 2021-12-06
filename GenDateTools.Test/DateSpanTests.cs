@@ -13,7 +13,7 @@ namespace GenDateTools.Test
         [InlineData(9999999, 27397, 94)]
         public void DataSpan_NewFromDays_ReturnsDateSpan(int expectedTotalDays, int expectedYears, int expectedDays)
         {
-            var dateSpan = new DateSpan(expectedTotalDays);
+            DateSpan dateSpan = new DateSpan(expectedTotalDays);
 
             Assert.Equal(expectedYears, dateSpan.Years);
             Assert.Equal(expectedDays, dateSpan.Days);
@@ -29,7 +29,7 @@ namespace GenDateTools.Test
         [InlineData(9999999, 27397, 94)]
         public void DataSpan_NewFromYearsAndDays_ReturnsDateSpan(int expectedTotalDays, int expectedYears, int expectedDays)
         {
-            var dateSpan = new DateSpan(expectedYears, expectedDays);
+            DateSpan dateSpan = new DateSpan(expectedYears, expectedDays);
 
             Assert.Equal(expectedYears, dateSpan.Years);
             Assert.Equal(expectedDays, dateSpan.Days);
@@ -54,10 +54,10 @@ namespace GenDateTools.Test
         [InlineData(20120301, 20001001, 4169, 11, 152)]
         public void DataSpan_NewFromDateParts_ReturnsDateSpan(long datePartLong1, long datePartLong2, int expectedTotalDays, int expectedYears, int expectedDays)
         {
-            var datePart1 = new DatePart(datePartLong1);
-            var datePart2 = new DatePart(datePartLong2);
+            DatePart datePart1 = new DatePart(datePartLong1);
+            DatePart datePart2 = new DatePart(datePartLong2);
 
-            var dateSpan = new DateSpan(datePart1, datePart2);
+            DateSpan dateSpan = new DateSpan(datePart1, datePart2);
 
             Assert.Equal(expectedTotalDays, dateSpan.TotalDays);
             Assert.Equal(expectedYears, dateSpan.Years);
@@ -78,7 +78,7 @@ namespace GenDateTools.Test
         [InlineData(3650, "10 years")]
         public void DataSpan_ToString_ReturnsValidString(int totalDays, string expected)
         {
-            var dateSpan = new DateSpan(totalDays);
+            DateSpan dateSpan = new DateSpan(totalDays);
 
             Assert.Equal(expected, dateSpan.ToString());
         }

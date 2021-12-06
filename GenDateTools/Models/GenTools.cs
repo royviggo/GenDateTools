@@ -4,7 +4,7 @@ namespace GenDateTools
 {
     public static class GenTools
     {
-        public static Dictionary<int, string> MonthsFromNumber()
+        private static Dictionary<int, string> MonthsFromNumber()
         {
             return new Dictionary<int, string>
             {
@@ -36,15 +36,15 @@ namespace GenDateTools
         /// <returns></returns>
         public static string GetSubString(string source, int startIndex, int length)
         {
-            var returnString = source;
+            string returnString = source;
 
             return returnString.Substring(startIndex, length);
         }
 
         private static Dictionary<TValue, TKey> Reverse<TKey, TValue>(this IDictionary<TKey, TValue> source)
         {
-            var dictionary = new Dictionary<TValue, TKey>();
-            foreach (var entry in source)
+            Dictionary<TValue, TKey> dictionary = new Dictionary<TValue, TKey>();
+            foreach (KeyValuePair<TKey, TValue> entry in source)
             {
                 if (!dictionary.ContainsKey(entry.Value))
                 {
@@ -56,10 +56,10 @@ namespace GenDateTools
 
         private static Dictionary<string, int> ReverseUpper(this IDictionary<int, string> source)
         {
-            var dictionary = new Dictionary<string, int>();
-            foreach (var entry in source)
+            Dictionary<string, int> dictionary = new Dictionary<string, int>();
+            foreach (KeyValuePair<int, string> entry in source)
             {
-                var entryUpper = entry.Value.ToUpperInvariant();
+                string entryUpper = entry.Value.ToUpperInvariant();
 
                 if (!dictionary.ContainsKey(entryUpper))
                 {
