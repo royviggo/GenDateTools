@@ -103,7 +103,7 @@ namespace GenDateTools
         {
             if (info == null)
             {
-                throw new ArgumentNullException("info");
+                throw new ArgumentNullException(nameof(info));
             }
 
             Year = Convert.ToInt32(info.GetString("Year"));
@@ -262,7 +262,6 @@ namespace GenDateTools
             }
             else
             {
-                calcDayOfYear = calcDayOfYear > 0 ? 0 - calcDayOfYear : calcDayOfYear;
                 while (calcDayOfYear < 1)
                 {
                     year--;
