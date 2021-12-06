@@ -537,6 +537,7 @@ namespace GenDateTools.Test
         [InlineData(20000101, -1, 19991231)]
         [InlineData(20000301, -1, 20000229)]
         [InlineData(99991231, -1, 99991230)]
+        [InlineData(20010101, -367, 19991231)]
         public void DatePart_AddDays_DatePartWithAddedDays(long datePartLong, int days, long expected)
         {
             var datePart = new DatePart(datePartLong);
