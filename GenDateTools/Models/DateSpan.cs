@@ -61,7 +61,7 @@ namespace GenDateTools
         public int Years => _years;
         public int TotalDays => _totalDays;
 
-        public static int Compare(DateSpan dateSpan1, DateSpan dateSpan2)
+        private static int Compare(DateSpan dateSpan1, DateSpan dateSpan2)
         {
             if (dateSpan1.TotalDays > dateSpan2.TotalDays)
             {
