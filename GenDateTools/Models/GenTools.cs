@@ -27,20 +27,6 @@ namespace GenDateTools
             return MonthsFromNumber().ContainsKey(month) ? MonthsFromNumber()[month] : "";
         }
 
-        /// <summary>
-        /// Returns substring instead of modifying the string.
-        /// </summary>
-        /// <param name="source">String to find substring in</param>
-        /// <param name="startIndex">Start position</param>
-        /// <param name="length">Length of the string</param>
-        /// <returns></returns>
-        public static string GetSubString(string source, int startIndex, int length)
-        {
-            string returnString = source;
-
-            return returnString.Substring(startIndex, length);
-        }
-
         private static Dictionary<TValue, TKey> Reverse<TKey, TValue>(this IDictionary<TKey, TValue> source)
         {
             Dictionary<TValue, TKey> dictionary = new Dictionary<TValue, TKey>();
