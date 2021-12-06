@@ -28,9 +28,7 @@ namespace GenDateTools
         {
             if (datePart1 > datePart2)
             {
-                var datePartTemp = datePart1;
-                datePart1 = datePart2;
-                datePart2 = datePartTemp;
+                (datePart1, datePart2) = (datePart2, datePart1);
             }
 
             _years = 0;
