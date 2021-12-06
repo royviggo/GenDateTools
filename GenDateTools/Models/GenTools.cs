@@ -27,19 +27,6 @@ namespace GenDateTools
             return MonthsFromNumber().ContainsKey(month) ? MonthsFromNumber()[month] : "";
         }
 
-        private static Dictionary<TValue, TKey> Reverse<TKey, TValue>(this IDictionary<TKey, TValue> source)
-        {
-            Dictionary<TValue, TKey> dictionary = new Dictionary<TValue, TKey>();
-            foreach (KeyValuePair<TKey, TValue> entry in source)
-            {
-                if (!dictionary.ContainsKey(entry.Value))
-                {
-                    dictionary.Add(entry.Value, entry.Key);
-                }
-            }
-            return dictionary;
-        }
-
         private static Dictionary<string, int> ReverseUpper(this IDictionary<int, string> source)
         {
             Dictionary<string, int> dictionary = new Dictionary<string, int>();
