@@ -131,26 +131,26 @@ namespace GenDateTools
         /// <summary>Gets or sets the type of the date.</summary>
         /// <value>The type of the date</value>
         [DataMember]
-        public GenDateType DateType { get; set; }
+        public GenDateType DateType { get; }
 
         /// <summary>Gets or sets the from date in a date sequence.</summary>
         /// <value>The from date</value>
         [DataMember]
-        public DatePart DateFrom { get; set; }
+        public DatePart DateFrom { get; }
 
         /// <summary>Gets or sets the to date in a date sequence.</summary>
         /// <value>The to date</value>
         [DataMember]
-        public DatePart DateTo { get; set; }
+        public DatePart DateTo { get; }
 
         /// <summary>Gets or sets the date phrase.</summary>
         /// <value>Textual value of the date</value>
         [DataMember]
-        public string DatePhrase { get; set; }
+        public string DatePhrase { get; }
 
         /// <summary>Gets or sets if the date is a valid GenDate or not.</summary>
         /// <value>True or false</value>
-        public bool IsValid { get; set; }
+        public bool IsValid { get; }
 
         public long DateLong
         {
