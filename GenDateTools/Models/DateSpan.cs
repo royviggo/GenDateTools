@@ -6,9 +6,9 @@ namespace GenDateTools
     {
         private const int _daysPerYear = 365;
 
-        internal int _years;
-        internal int _days;
-        internal int _totalDays;
+        private readonly int _years;
+        private readonly int _days;
+        private readonly int _totalDays;
 
         public DateSpan(int totalDays)
         {
