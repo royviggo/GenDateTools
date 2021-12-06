@@ -16,7 +16,7 @@ namespace GenDateTools.Test
         [InlineData(99991231, "99991231")]
         public void DatePart_NewFromLong_ValidDatePart(long dateNum, string expected)
         {
-            var datePart = new DatePart(dateNum);
+            DatePart datePart = new DatePart(dateNum);
 
             Assert.Equal(expected, datePart.ToSortString());
         }
@@ -28,7 +28,7 @@ namespace GenDateTools.Test
         [InlineData(9999, 12, 31, "99991231")]
         public void DatePart_NewFromYearMonthDay_ValidDatePart(int year, int month, int day, string expected)
         {
-            var datePart = new DatePart(year, month, day);
+            DatePart datePart = new DatePart(year, month, day);
 
             Assert.Equal(expected, datePart.ToSortString());
         }
@@ -41,7 +41,7 @@ namespace GenDateTools.Test
         [InlineData(9999, 365, "99991231")]
         public void DatePart_NewFromYearDayOfYear_ValidDatePart(int year, int dayOfYear, string expected)
         {
-            var datePart = new DatePart(year, dayOfYear);
+            DatePart datePart = new DatePart(year, dayOfYear);
 
             Assert.Equal(expected, datePart.ToSortString());
         }
@@ -61,7 +61,7 @@ namespace GenDateTools.Test
         [InlineData("10000000JHDKJHDUIDANDSNAKJNDKAJLSDJA", "10000000")]
         public void DatePart_NewFromString_ValidDatePart(string dateString, string expected)
         {
-            var datePart = new DatePart(dateString);
+            DatePart datePart = new DatePart(dateString);
 
             Assert.Equal(expected, datePart.ToSortString());
         }
@@ -87,8 +87,8 @@ namespace GenDateTools.Test
         [InlineData("99991231", "99991230")]
         public void DatePart_NotEqualToOtherDatePartUsingOperator_ReturnsTrue(string date, string compareDate)
         {
-            var datePart1 = new DatePart(date);
-            var datePart2 = new DatePart(compareDate);
+            DatePart datePart1 = new DatePart(date);
+            DatePart datePart2 = new DatePart(compareDate);
 
             Assert.True(datePart1 != datePart2);
         }
@@ -102,8 +102,8 @@ namespace GenDateTools.Test
         [InlineData("99991231", "99991231", 0)]
         public void DatePart_CompareToOtherDatePart_ReturnsTrue(string date, string compareDate, int expected)
         {
-            var datePart1 = new DatePart(date);
-            var datePart2 = new DatePart(compareDate);
+            DatePart datePart1 = new DatePart(date);
+            DatePart datePart2 = new DatePart(compareDate);
 
             Assert.Equal(expected, datePart1.CompareTo(datePart2));
         }
@@ -122,7 +122,7 @@ namespace GenDateTools.Test
         [InlineData("20170015", "15 2017")]
         public void DatePart_ToString_EqualString(string dateString, string expected)
         {
-            var datePart = new DatePart(dateString);
+            DatePart datePart = new DatePart(dateString);
 
             Assert.Equal(expected, datePart.ToString(CultureInfo.InvariantCulture));
         }
@@ -142,7 +142,7 @@ namespace GenDateTools.Test
         [InlineData(10000, false)]
         public void DatePart_IsLeapYear_Expected(int year, bool expected)
         {
-            var isValid = DatePart.IsLeapYear(year);
+            bool isValid = DatePart.IsLeapYear(year);
 
             Assert.Equal(expected, isValid);
         }
@@ -162,7 +162,7 @@ namespace GenDateTools.Test
         [InlineData(9999, 12, 31, true)]
         public void DatePart_YearMonthDay_IsValidDate(int year, int month, int day, bool expected)
         {
-            var isValid = DatePart.IsValidDate(year, month, day);
+            bool isValid = DatePart.IsValidDate(year, month, day);
 
             Assert.Equal(expected, isValid);
         }
@@ -178,7 +178,7 @@ namespace GenDateTools.Test
         [InlineData(9999, 12, 31, true)]
         public void DatePart_YearMonthDay_IsValidDateTime(int year, int month, int day, bool expected)
         {
-            var isValid = DatePart.IsValidDateTime(year, month, day);
+            bool isValid = DatePart.IsValidDateTime(year, month, day);
 
             Assert.Equal(expected, isValid);
         }
@@ -194,7 +194,7 @@ namespace GenDateTools.Test
         [InlineData(2020, 12, 31, 366)]
         public void DatePart_DayOfYear_IsValidDay(int year, int month, int day, int expected)
         {
-            var datePart = new DatePart(year, month, day);
+            DatePart datePart = new DatePart(year, month, day);
 
             Assert.Equal(expected, datePart.DayOfYear());
         }
@@ -210,7 +210,7 @@ namespace GenDateTools.Test
         [InlineData(2020, 12, 31)]
         public void DatePart_DaysInMonth_IsValidDays(int year, int month, int expected)
         {
-            var daysInMonth = DatePart.DaysInMonth(year, month);
+            int daysInMonth = DatePart.DaysInMonth(year, month);
 
             Assert.Equal(expected, daysInMonth);
         }
@@ -228,7 +228,7 @@ namespace GenDateTools.Test
         [InlineData(9999, 365)]
         public void DatePart_DaysInYear_IsValidDays(int year, int expected)
         {
-            var daysInYear = DatePart.DaysInYear(year);
+            int daysInYear = DatePart.DaysInYear(year);
 
             Assert.Equal(expected, daysInYear);
         }
@@ -242,8 +242,8 @@ namespace GenDateTools.Test
         [InlineData(9999, 12, 31, "99991231")]
         public void DatePart_Equals_ReturnsTrue(int year, int month, int day, string compareDate)
         {
-            var datePart1 = new DatePart(year, month, day);
-            var datePart2 = new DatePart(compareDate);
+            DatePart datePart1 = new DatePart(year, month, day);
+            DatePart datePart2 = new DatePart(compareDate);
 
             Assert.True(datePart1.Equals(datePart2));
         }
@@ -257,8 +257,8 @@ namespace GenDateTools.Test
         [InlineData(9999, 12, 31, "99991231")]
         public void DatePart_OperatorEqual_ReturnsTrue(int year, int month, int day, string compareDate)
         {
-            var datePart1 = new DatePart(year, month, day);
-            var datePart2 = new DatePart(compareDate);
+            DatePart datePart1 = new DatePart(year, month, day);
+            DatePart datePart2 = new DatePart(compareDate);
 
             Assert.True(datePart1 == datePart2);
         }
@@ -272,8 +272,8 @@ namespace GenDateTools.Test
         [InlineData(9999, 12, 31, "99991231")]
         public void DatePart_OperatorNotEqual_ReturnsTrue(int year, int month, int day, string compareDate)
         {
-            var datePart1 = new DatePart(year, month, day);
-            var datePart2 = new DatePart(compareDate);
+            DatePart datePart1 = new DatePart(year, month, day);
+            DatePart datePart2 = new DatePart(compareDate);
 
             Assert.False(datePart1 != datePart2);
         }
@@ -287,8 +287,8 @@ namespace GenDateTools.Test
         [InlineData(9999, 12, 31, "99991230")]
         public void DatePart_OperatorLargerThan_ReturnsTrue(int year, int month, int day, string compareDate)
         {
-            var datePart1 = new DatePart(year, month, day);
-            var datePart2 = new DatePart(compareDate);
+            DatePart datePart1 = new DatePart(year, month, day);
+            DatePart datePart2 = new DatePart(compareDate);
 
             Assert.True(datePart1 > datePart2);
         }
@@ -302,8 +302,8 @@ namespace GenDateTools.Test
         [InlineData(9999, 12, 30, "99991231")]
         public void DatePart_OperatorLessThan_ReturnsTrue(int year, int month, int day, string compareDate)
         {
-            var datePart1 = new DatePart(year, month, day);
-            var datePart2 = new DatePart(compareDate);
+            DatePart datePart1 = new DatePart(year, month, day);
+            DatePart datePart2 = new DatePart(compareDate);
 
             Assert.True(datePart1 < datePart2);
         }
@@ -317,8 +317,8 @@ namespace GenDateTools.Test
         [InlineData(9999, 12, 31, "99991231")]
         public void DatePart_OperatorLargerThanOrEqual_ReturnsTrue(int year, int month, int day, string compareDate)
         {
-            var datePart1 = new DatePart(year, month, day);
-            var datePart2 = new DatePart(compareDate);
+            DatePart datePart1 = new DatePart(year, month, day);
+            DatePart datePart2 = new DatePart(compareDate);
 
             Assert.True(datePart1 >= datePart2);
         }
@@ -332,8 +332,8 @@ namespace GenDateTools.Test
         [InlineData(9999, 12, 31, "99991231")]
         public void DatePart_OperatorLessThanOrEqual_ReturnsTrue(int year, int month, int day, string compareDate)
         {
-            var datePart1 = new DatePart(year, month, day);
-            var datePart2 = new DatePart(compareDate);
+            DatePart datePart1 = new DatePart(year, month, day);
+            DatePart datePart2 = new DatePart(compareDate);
 
             Assert.True(datePart1 <= datePart2);
         }
@@ -377,8 +377,8 @@ namespace GenDateTools.Test
         [Fact]
         public void DatePart_ConvertToInt32_IsEqualToType()
         {
-            var datePartConverted = Convert.ToInt32(new DatePart(20000101));
-            var expected = Convert.ToInt32(20000101);
+            int datePartConverted = Convert.ToInt32(new DatePart(20000101));
+            int expected = Convert.ToInt32(20000101);
 
             Assert.Equal(expected, datePartConverted);
             Assert.IsType<Int32>(datePartConverted);
@@ -387,8 +387,8 @@ namespace GenDateTools.Test
         [Fact]
         public void DatePart_ConvertToInt64_IsEqualToType()
         {
-            var datePartConverted = Convert.ToInt64(new DatePart(20000101));
-            var expected = Convert.ToInt64(20000101);
+            long datePartConverted = Convert.ToInt64(new DatePart(20000101));
+            long expected = Convert.ToInt64(20000101);
 
             Assert.Equal(expected, datePartConverted);
             Assert.IsType<Int64>(datePartConverted);
@@ -397,8 +397,8 @@ namespace GenDateTools.Test
         [Fact]
         public void DatePart_ConvertToUInt32_IsEqualToType()
         {
-            var datePartConverted = Convert.ToUInt32(new DatePart(20000101));
-            var expected = Convert.ToUInt32(20000101);
+            uint datePartConverted = Convert.ToUInt32(new DatePart(20000101));
+            uint expected = Convert.ToUInt32(20000101);
 
             Assert.Equal(expected, datePartConverted);
             Assert.IsType<UInt32>(datePartConverted);
@@ -407,8 +407,8 @@ namespace GenDateTools.Test
         [Fact]
         public void DatePart_ConvertToUInt64_IsEqualToType()
         {
-            var datePartConverted = Convert.ToUInt64(new DatePart(20000101));
-            var expected = Convert.ToUInt64(20000101);
+            ulong datePartConverted = Convert.ToUInt64(new DatePart(20000101));
+            ulong expected = Convert.ToUInt64(20000101);
 
             Assert.Equal(expected, datePartConverted);
             Assert.IsType<UInt64>(datePartConverted);
@@ -417,8 +417,8 @@ namespace GenDateTools.Test
         [Fact]
         public void DatePart_ConvertToSingle_IsEqualToType()
         {
-            var datePartConverted = Convert.ToSingle(new DatePart(20000101));
-            var expected = Convert.ToSingle(20000101);
+            float datePartConverted = Convert.ToSingle(new DatePart(20000101));
+            float expected = Convert.ToSingle(20000101);
 
             Assert.Equal(expected, datePartConverted);
             Assert.IsType<Single>(datePartConverted);
@@ -427,8 +427,8 @@ namespace GenDateTools.Test
         [Fact]
         public void DatePart_ConvertToDouble_IsEqualToType()
         {
-            var datePartConverted = Convert.ToDouble(new DatePart(20000101));
-            var expected = Convert.ToDouble(20000101);
+            double datePartConverted = Convert.ToDouble(new DatePart(20000101));
+            double expected = Convert.ToDouble(20000101);
 
             Assert.Equal(expected, datePartConverted);
             Assert.IsType<Double>(datePartConverted);
@@ -437,8 +437,8 @@ namespace GenDateTools.Test
         [Fact]
         public void DatePart_ConvertToDecimal_IsEqualToType()
         {
-            var datePartConverted = Convert.ToDecimal(new DatePart(20000101));
-            var expected = Convert.ToDecimal(20000101);
+            decimal datePartConverted = Convert.ToDecimal(new DatePart(20000101));
+            decimal expected = Convert.ToDecimal(20000101);
 
             Assert.Equal(expected, datePartConverted);
             Assert.IsType<Decimal>(datePartConverted);
@@ -457,7 +457,7 @@ namespace GenDateTools.Test
         [InlineData("20170015", "15 2017")]
         public void DatePart_ConvertToString_IsStringAndEqual(string dateString, string expected)
         {
-            var datePartConverted = Convert.ToString(new DatePart(dateString));
+            string datePartConverted = Convert.ToString(new DatePart(dateString), CultureInfo.InvariantCulture);
 
             Assert.Equal(expected, datePartConverted);
             Assert.IsType<string>(datePartConverted);
@@ -476,9 +476,9 @@ namespace GenDateTools.Test
         [InlineData(99991231, -1, 99981231)]
         public void DatePart_AddYear_DatePartWithAddedYears(long datePartLong, int years, long expected)
         {
-            var datePart = new DatePart(datePartLong);
-            var datePartAdded = datePart.AddYears(years);
-            var datePartExpected = new DatePart(expected);
+            DatePart datePart = new DatePart(datePartLong);
+            DatePart datePartAdded = datePart.AddYears(years);
+            DatePart datePartExpected = new DatePart(expected);
 
             Assert.Equal(datePartExpected, datePartAdded);
         }
@@ -490,7 +490,7 @@ namespace GenDateTools.Test
         [InlineData(99991231, -100000000)]
         public void DatePart_AddYear_ThrowsArgumentOutOfRangeException(long datePartLong, int years)
         {
-            var datePart = new DatePart(datePartLong);
+            DatePart datePart = new DatePart(datePartLong);
 
             Assert.Throws<ArgumentOutOfRangeException>(() => datePart.AddYears(years));
         }
@@ -509,9 +509,9 @@ namespace GenDateTools.Test
         [InlineData(99991231, -1, 99991130)]
         public void DatePart_AddMonths_DatePartWithAddedMonths(long datePartLong, int months, long expected)
         {
-            var datePart = new DatePart(datePartLong);
-            var datePartAdded = datePart.AddMonths(months);
-            var datePartExpected = new DatePart(expected);
+            DatePart datePart = new DatePart(datePartLong);
+            DatePart datePartAdded = datePart.AddMonths(months);
+            DatePart datePartExpected = new DatePart(expected);
 
             Assert.Equal(datePartExpected, datePartAdded);
         }
@@ -524,7 +524,7 @@ namespace GenDateTools.Test
         [InlineData(99991231, -100000000)]
         public void DatePart_AddMonths_ThrowsArgumentOutOfRangeException(long datePartLong, int years)
         {
-            var datePart = new DatePart(datePartLong);
+            DatePart datePart = new DatePart(datePartLong);
 
             Assert.Throws<ArgumentOutOfRangeException>(() => datePart.AddMonths(years));
         }
@@ -540,9 +540,9 @@ namespace GenDateTools.Test
         [InlineData(20010101, -367, 19991231)]
         public void DatePart_AddDays_DatePartWithAddedDays(long datePartLong, int days, long expected)
         {
-            var datePart = new DatePart(datePartLong);
-            var datePartAdded = datePart.AddDays(days);
-            var datePartExpected = new DatePart(expected);
+            DatePart datePart = new DatePart(datePartLong);
+            DatePart datePartAdded = datePart.AddDays(days);
+            DatePart datePartExpected = new DatePart(expected);
 
             Assert.Equal(datePartExpected, datePartAdded);
         }
@@ -554,7 +554,7 @@ namespace GenDateTools.Test
         [InlineData(99991231, 1)]
         public void DatePart_AddDays_ThrowsArgumentOutOfRangeException(long datePartLong, int days)
         {
-            var datePart = new DatePart(datePartLong);
+            DatePart datePart = new DatePart(datePartLong);
 
             Assert.Throws<ArgumentOutOfRangeException>(() => datePart.AddDays(days));
         }
@@ -562,9 +562,9 @@ namespace GenDateTools.Test
         [Fact]
         public void DatePart_Serialize_ReturnsValidObject()
         {
-            var datePart = new DatePart(2000, 1, 1);
-            var expected = "{\"Year\":2000,\"Month\":1,\"Day\":1}";
-            var actual = JsonConvert.SerializeObject(datePart);
+            DatePart datePart = new DatePart(2000, 1, 1);
+            string expected = "{\"Year\":2000,\"Month\":1,\"Day\":1}";
+            string actual = JsonConvert.SerializeObject(datePart);
 
             Assert.Equal(expected, actual);
         }

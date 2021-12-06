@@ -127,7 +127,7 @@ namespace GenDateTools
                 throw new ArgumentOutOfRangeException(nameof(dayOfYear), dayOfYear, "Arguments out of range");
             }
 
-            var month = 0;
+            int month = 0;
             int[] daysInMonth = IsLeapYear(year) ? _daysToMonth366 : _daysToMonth365;
 
             while (dayOfYear > daysInMonth[month])
@@ -150,7 +150,7 @@ namespace GenDateTools
         public int DayOfYear()
         {
             int[] daysInMonth = IsLeapYear(Year) ? _daysToMonth366 : _daysToMonth365;
-            var prevMonth = Month > 0 ? Month - 1 : 0;
+            int prevMonth = Month > 0 ? Month - 1 : 0;
 
             return daysInMonth[prevMonth] + Day;
         }
@@ -210,7 +210,7 @@ namespace GenDateTools
         {
             int year = Year, mon = Month, day = Day;
 
-            var calcMonth = mon - 1 + months;
+            int calcMonth = mon - 1 + months;
             if (calcMonth >= 0)
             {
                 mon = (calcMonth % 12) + 1;
@@ -227,7 +227,7 @@ namespace GenDateTools
                 throw new ArgumentOutOfRangeException(nameof(months), months, $"Resulting year must be between {_minYear} and {_maxYear}.");
             }
 
-            var daysInMonth = DaysInMonth(year, mon);
+            int daysInMonth = DaysInMonth(year, mon);
             if (day > daysInMonth)
             {
                 day = daysInMonth;
@@ -244,8 +244,8 @@ namespace GenDateTools
         {
             int year = Year;
 
-            var dayOfYear = DayOfYear();
-            var calcDayOfYear = dayOfYear + days;
+            int dayOfYear = DayOfYear();
+            int calcDayOfYear = dayOfYear + days;
 
             if (calcDayOfYear > 0)
             {
@@ -334,15 +334,15 @@ namespace GenDateTools
         /// </summary>
         public static DatePart Today()
         {
-            var dateTime = DateTime.Today;
+            DateTime dateTime = DateTime.Today;
 
             return new DatePart(dateTime.Year, dateTime.Month, dateTime.Day);
         }
 
         public int CompareTo(DatePart other)
         {
-            var sortDate = CompareValue(this);
-            var sortDateOther = CompareValue(other);
+            int sortDate = CompareValue(this);
+            int sortDateOther = CompareValue(other);
 
             return sortDate.CompareTo(sortDateOther);
         }
@@ -446,7 +446,7 @@ namespace GenDateTools
         {
             unchecked
             {
-                var hashCode = Year.GetHashCode();
+                int hashCode = Year.GetHashCode();
                 hashCode = (hashCode * 397) ^ Month.GetHashCode();
                 hashCode = (hashCode * 397) ^ Day.GetHashCode();
                 return hashCode;
@@ -458,9 +458,9 @@ namespace GenDateTools
         /// </summary>
         public override string ToString()
         {
-            var output = Day > 0 && Day <= _maxDaysInMonth ? Day.ToString().PadLeft(2, '0') : "";
-            var month = Month > 0 && Month <= _maxMonthInYear ? GenTools.MonthName(Month) : "";
-            var year = Year > 0 ? Year.ToString() : "";
+            string output = Day > 0 && Day <= _maxDaysInMonth ? Day.ToString().PadLeft(2, '0') : "";
+            string month = Month > 0 && Month <= _maxMonthInYear ? GenTools.MonthName(Month) : "";
+            string year = Year > 0 ? Year.ToString() : "";
 
             output += output != "" && month != "" ? " " : "";
             output += month;

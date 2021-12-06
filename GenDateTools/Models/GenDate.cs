@@ -106,7 +106,7 @@ namespace GenDateTools
         /// <param name="dateString">Format: string type | from date part | date type | to date part</param>
         public GenDate(IDateStringParser parser, string dateString)
         {
-            var genDate = parser.Parse(dateString);
+            GenDate genDate = parser.Parse(dateString);
             DateType = genDate.DateType;
             DateFrom = genDate.DateFrom;
             DateTo = genDate.DateTo;
@@ -303,7 +303,7 @@ namespace GenDateTools
 
         public int CompareTo(GenDate other)
         {
-            var longDate = DateLong;
+            long longDate = DateLong;
             return longDate.CompareTo(other.DateLong);
 
         }
@@ -343,7 +343,7 @@ namespace GenDateTools
         {
             unchecked
             {
-                var hashCode = (int)DateType;
+                int hashCode = (int)DateType;
                 hashCode = (hashCode * 397) ^ (DateFrom?.GetHashCode() ?? 0);
                 hashCode = (hashCode * 397) ^ (DateTo?.GetHashCode() ?? 0);
                 hashCode = (hashCode * 397) ^ (DatePhrase?.GetHashCode() ?? 0);
@@ -355,8 +355,8 @@ namespace GenDateTools
 
         public override string ToString()
         {
-            var typeNames = new Dictionary<int, string> { { 0, "" }, { 1, "Bef. " }, { 2, "" }, { 3, "Abt. " }, { 4, "Cal. " }, { 5, "Est. " }, { 6, "Bet. " }, { 7, "From " }, { 8, "Int. " }, { 9, "Aft. " } };
-            var rangeJoin = new Dictionary<int, string> { { 6, " - " }, { 7, " to " } };
+            Dictionary<int, string> typeNames = new Dictionary<int, string> { { 0, "" }, { 1, "Bef. " }, { 2, "" }, { 3, "Abt. " }, { 4, "Cal. " }, { 5, "Est. " }, { 6, "Bet. " }, { 7, "From " }, { 8, "Int. " }, { 9, "Aft. " } };
+            Dictionary<int, string> rangeJoin = new Dictionary<int, string> { { 6, " - " }, { 7, " to " } };
 
             if (!IsValid)
             {
@@ -376,7 +376,7 @@ namespace GenDateTools
 
         private static bool IsAboutType(GenDateType dateType)
         {
-            foreach (var aboutType in _aboutTypes)
+            foreach (GenDateType aboutType in _aboutTypes)
             {
                 if (dateType == aboutType)
                 {

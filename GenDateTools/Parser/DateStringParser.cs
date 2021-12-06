@@ -8,10 +8,16 @@ namespace GenDateTools.Parser
         {
             if (dateString.Length >= 18)
             {
-                if (Enum.TryParse(dateString.Substring(9, 1), out GenDateType dateTypeOut))
-                {
-                    var fromDate = GetDatePartFromStringDate(dateString.Substring(1, 8));
-                    var toDate = GetDatePartFromStringDate(dateString.Substring(10, 8));
+                return new GenDate(GenDateType.Invalid, dateString, false);
+            }
+
+            if (!Enum.TryParse(dateString.Substring(9, 1), out GenDateType dateTypeOut))
+            {
+                return new GenDate(GenDateType.Invalid, dateString, false);
+            }
+
+            DatePart fromDate = GetDatePartFromStringDate(dateString.Substring(1, 8));
+            DatePart toDate = GetDatePartFromStringDate(dateString.Substring(10, 8));
 
                     return new GenDate(dateTypeOut, fromDate, toDate, true);
                 }

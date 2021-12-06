@@ -14,7 +14,7 @@ namespace GenDateTools.Test
         [InlineData(100000000300000000, "100000000300000000")]
         public void GenDate_NewFromLong_ValidGenDate(long dateNum, string expected)
         {
-            var genDate = new GenDate(dateNum);
+            GenDate genDate = new GenDate(dateNum);
 
             Assert.Equal(expected, genDate.DateString);
         }
@@ -28,7 +28,7 @@ namespace GenDateTools.Test
         [InlineData("100000000300000000", "100000000300000000")]
         public void GenDate_NewFromString_ValidGenDate(string dateString, string expected)
         {
-            var genDate = new GenDate(dateString);
+            GenDate genDate = new GenDate(dateString);
 
             Assert.Equal(expected, genDate.DateString);
         }
@@ -42,8 +42,8 @@ namespace GenDateTools.Test
         [InlineData("20000229", "120000229220000229")]
         public void GenDate_NewFromDatePart_ValidGenDate(string datePartString, string expected)
         {
-            var datePart = new DatePart(datePartString);
-            var genDate = new GenDate(datePart);
+            DatePart datePart = new DatePart(datePartString);
+            GenDate genDate = new GenDate(datePart);
 
             Assert.Equal(expected, genDate.DateString);
         }
@@ -57,8 +57,8 @@ namespace GenDateTools.Test
         [InlineData(4, "20000229", "120000229420000229")]
         public void GenDate_NewFromDateTypeAndDatePart_ValidGenDate(int dateType, string datePartString, string expected)
         {
-            var datePart = new DatePart(datePartString);
-            var genDate = new GenDate((GenDateType)dateType, datePart);
+            DatePart datePart = new DatePart(datePartString);
+            GenDate genDate = new GenDate((GenDateType)dateType, datePart);
 
             Assert.Equal(expected, genDate.DateString);
         }
@@ -72,9 +72,9 @@ namespace GenDateTools.Test
         [InlineData(9, "99991231", "99991231", "199991231999991231")]
         public void GenDate_NewFromDateTypeFromDatePartAndToDatePart_ValidGenDate(int dateType, string fromDatePartStr, string toDatePartStr, string expected)
         {
-            var fromDatePart = new DatePart(fromDatePartStr);
-            var toDatePart = new DatePart(toDatePartStr);
-            var genDate = new GenDate((GenDateType)dateType, fromDatePart, toDatePart);
+            DatePart fromDatePart = new DatePart(fromDatePartStr);
+            DatePart toDatePart = new DatePart(toDatePartStr);
+            GenDate genDate = new GenDate((GenDateType)dateType, fromDatePart, toDatePart);
 
             Assert.Equal(expected, genDate.DateString);
         }
@@ -88,11 +88,11 @@ namespace GenDateTools.Test
         [InlineData(9, "99991231", "99991231", true, "199991231999991231")]
         public void GenDate_NewFromDateTypeFromDatePartAndToDatePartIsValid_ValidGenDate(int dateType, string fromDatePartStr, string toDatePartStr, bool isValid, string expected)
         {
-            var fromDatePart = new DatePart(fromDatePartStr);
-            var toDatePart = new DatePart(toDatePartStr);
+            DatePart fromDatePart = new DatePart(fromDatePartStr);
+            DatePart toDatePart = new DatePart(toDatePartStr);
 
-            var genDate = new GenDate((GenDateType)dateType, fromDatePart, toDatePart, isValid);
-            var expectedGenDate = new GenDate(expected);
+            GenDate genDate = new GenDate((GenDateType)dateType, fromDatePart, toDatePart, isValid);
+            GenDate expectedGenDate = new GenDate(expected);
 
             Assert.Equal(expectedGenDate, genDate);
         }
@@ -106,12 +106,12 @@ namespace GenDateTools.Test
         [InlineData(9, "99991231", "99991231", true, "199991231999991231")]
         public void GenDate_NewFromAll_ValidGenDate(int dateType, string fromDatePartStr, string toDatePartStr, bool isValid, string expected)
         {
-            var fromDatePart = new DatePart(fromDatePartStr);
-            var toDatePart = new DatePart(toDatePartStr);
-            var datePhrase = "Testing a pretty long string";
+            DatePart fromDatePart = new DatePart(fromDatePartStr);
+            DatePart toDatePart = new DatePart(toDatePartStr);
+            string datePhrase = "Testing a pretty long string";
 
-            var genDate = new GenDate((GenDateType)dateType, fromDatePart, toDatePart, datePhrase, isValid);
-            var expectedGenDate = new GenDate(expected);
+            GenDate genDate = new GenDate((GenDateType)dateType, fromDatePart, toDatePart, datePhrase, isValid);
+            GenDate expectedGenDate = new GenDate(expected);
 
             Assert.Equal(expectedGenDate.DateLong, genDate.DateLong);
             Assert.Equal(expectedGenDate.DateString, genDate.DateString);
@@ -123,9 +123,9 @@ namespace GenDateTools.Test
         [Fact]
         public void GenDate_CallWithToDatePartEqualNull_ShouldReturnValid()
         {
-            var datePhrase = "Testing a pretty long string";
-            var genDate = new GenDate(GenDateType.Before, new DatePart("19000101"), null, datePhrase, true);
-            var expected = new GenDate("119000101119000101");
+            string datePhrase = "Testing a pretty long string";
+            GenDate genDate = new GenDate(GenDateType.Before, new DatePart("19000101"), null, datePhrase, true);
+            GenDate expected = new GenDate("119000101119000101");
 
             Assert.Equal(expected.DateLong, genDate.DateLong);
             Assert.Equal(expected.DateString, genDate.DateString);
@@ -137,8 +137,8 @@ namespace GenDateTools.Test
         [Fact]
         public void GenDate_CallWithIsValidEqualFalse_ShouldReturnValid()
         {
-            var genDate = new GenDate(GenDateType.Before, new DatePart("19000101"), new DatePart("19000101"), "", false);
-            var expected = new GenDate("119000101119000101");
+            GenDate genDate = new GenDate(GenDateType.Before, new DatePart("19000101"), new DatePart("19000101"), "", false);
+            GenDate expected = new GenDate("119000101119000101");
 
             Assert.Equal(expected.DateLong, genDate.DateLong);
             Assert.Equal(expected.DateString, genDate.DateString);
@@ -157,7 +157,7 @@ namespace GenDateTools.Test
         [InlineData(199991231999991231)]
         public void GenDate_GetDateLong_ValidGenDate(long dateNum)
         {
-            var genDate = new GenDate(dateNum);
+            GenDate genDate = new GenDate(dateNum);
 
             Assert.Equal(dateNum, genDate.DateLong);
         }
@@ -178,7 +178,7 @@ namespace GenDateTools.Test
         [InlineData("108600000609100000", "Bet. 860 - 910")]
         public void Gendate_ToString_EqualString(string dateString, string expected)
         {
-            var genDate = new GenDate(dateString);
+            GenDate genDate = new GenDate(dateString);
 
             Assert.Equal(expected, genDate.ToString());
         }
@@ -192,8 +192,8 @@ namespace GenDateTools.Test
         [InlineData(100000000300000000, "100000000300000000")]
         public void GenDate_Equals_ReturnsTrue(long dateNum, string compareDate)
         {
-            var genDate1 = new GenDate(dateNum);
-            var genDate2 = new GenDate(compareDate);
+            GenDate genDate1 = new GenDate(dateNum);
+            GenDate genDate2 = new GenDate(compareDate);
 
             Assert.True(genDate1.Equals(genDate2));
         }
@@ -207,8 +207,8 @@ namespace GenDateTools.Test
         [InlineData(100000000300000000, "100000000300000000")]
         public void GenDate_OperatorEqual_ReturnsTrue(long dateNum, string compareDate)
         {
-            var genDate1 = new GenDate(dateNum);
-            var genDate2 = new GenDate(compareDate);
+            GenDate genDate1 = new GenDate(dateNum);
+            GenDate genDate2 = new GenDate(compareDate);
 
             Assert.True(genDate1 == genDate2);
         }
@@ -222,8 +222,8 @@ namespace GenDateTools.Test
         [InlineData(100000000300000000, "100000000300000000")]
         public void GenDate_OperatorNotEqual_ReturnsTrue(long dateNum, string compareDate)
         {
-            var genDate1 = new GenDate(dateNum);
-            var genDate2 = new GenDate(compareDate);
+            GenDate genDate1 = new GenDate(dateNum);
+            GenDate genDate2 = new GenDate(compareDate);
 
             Assert.False(genDate1 != genDate2);
         }
@@ -237,8 +237,8 @@ namespace GenDateTools.Test
         [InlineData(100000000300000000, "100000000200000000")]
         public void GenDate_OperatorLargerThan_ReturnsTrue(long dateNum, string compareDate)
         {
-            var genDate1 = new GenDate(dateNum);
-            var genDate2 = new GenDate(compareDate);
+            GenDate genDate1 = new GenDate(dateNum);
+            GenDate genDate2 = new GenDate(compareDate);
 
             Assert.True(genDate1 > genDate2);
         }
@@ -252,8 +252,8 @@ namespace GenDateTools.Test
         [InlineData(100000000200000000, "100000000300000000")]
         public void GenDate_OperatorLessThan_ReturnsTrue(long dateNum, string compareDate)
         {
-            var genDate1 = new GenDate(dateNum);
-            var genDate2 = new GenDate(compareDate);
+            GenDate genDate1 = new GenDate(dateNum);
+            GenDate genDate2 = new GenDate(compareDate);
 
             Assert.True(genDate1 < genDate2);
         }
@@ -267,8 +267,8 @@ namespace GenDateTools.Test
         [InlineData(120000229220000229, "120000229220000229")]
         public void GenDate_OperatorLargerThanOrEqual_ReturnsTrue(long dateNum, string compareDate)
         {
-            var genDate1 = new GenDate(dateNum);
-            var genDate2 = new GenDate(compareDate);
+            GenDate genDate1 = new GenDate(dateNum);
+            GenDate genDate2 = new GenDate(compareDate);
 
             Assert.True(genDate1 >= genDate2);
         }
@@ -282,8 +282,8 @@ namespace GenDateTools.Test
         [InlineData(120000229220000229, "120000229220000229")]
         public void GenDate_OperatorLessThanOrEqual_ReturnsTrue(long dateNum, string compareDate)
         {
-            var genDate1 = new GenDate(dateNum);
-            var genDate2 = new GenDate(compareDate);
+            GenDate genDate1 = new GenDate(dateNum);
+            GenDate genDate2 = new GenDate(compareDate);
 
             Assert.True(genDate1 <= genDate2);
         }
@@ -300,7 +300,7 @@ namespace GenDateTools.Test
         [InlineData(119000101719001200, 19000101)]
         public void GenDate_From_ReturnsInt(long dateNum, int expected)
         {
-            var genDate = new GenDate(dateNum);
+            GenDate genDate = new GenDate(dateNum);
 
             Assert.Equal(expected, genDate.From);
         }
@@ -317,7 +317,7 @@ namespace GenDateTools.Test
         [InlineData(119000101719001200, 19001231)]
         public void GenDate_To_ReturnsInt(long dateNum, int expected)
         {
-            var genDate = new GenDate(dateNum);
+            GenDate genDate = new GenDate(dateNum);
 
             Assert.Equal(expected, genDate.To);
         }
@@ -325,7 +325,7 @@ namespace GenDateTools.Test
         [Fact]
         public void GenDate_GetDateRangeStrategy_ReturnsDefault()
         {
-            var actual = DateRangeStrategy.Strategy;
+            DateRangeStrategy actual = DateRangeStrategy.Strategy;
 
             Assert.IsAssignableFrom<DateRangeStrategy>(actual);
         }
@@ -333,7 +333,7 @@ namespace GenDateTools.Test
         [Fact]
         public void GenDate_SetDateRangeStrategy_ReturnsChanged()
         {
-            var expected = new DateRangeStrategy
+            DateRangeStrategy expected = new DateRangeStrategy
             {
                 AfterYears = 10,
                 BeforeYears = 10,
@@ -343,7 +343,7 @@ namespace GenDateTools.Test
             };
             DateRangeStrategy.Strategy = expected;
 
-            var actual = DateRangeStrategy.Strategy;
+            DateRangeStrategy actual = DateRangeStrategy.Strategy;
 
             Assert.Equal(expected.AboutYearsAfter, actual.AboutYearsAfter);
             Assert.Equal(expected.AboutYearsBefore, actual.AboutYearsBefore);
@@ -358,14 +358,16 @@ namespace GenDateTools.Test
         [InlineData(99991231, 99991200)]
         public void GenDate_From_DateRangeStrategyUseRelaxedDates_ReturnsZeroDays(int input, int expected)
         {
-            var genDate = new GenDate(new DatePart(input));
-            genDate.DateRangeStrategy = new DateRangeStrategy
+            GenDate genDate = new GenDate(new DatePart(input))
             {
-                AfterYears = 10,
-                BeforeYears = 10,
-                AboutYearsAfter = 0,
-                AboutYearsBefore = 0,
-                UseRelaxedDates = true,
+                DateRangeStrategy = new DateRangeStrategy
+                {
+                    AfterYears = 10,
+                    BeforeYears = 10,
+                    AboutYearsAfter = 0,
+                    AboutYearsBefore = 0,
+                    UseRelaxedDates = true,
+                }
             };
 
             Assert.Equal(expected, genDate.From);
@@ -378,14 +380,16 @@ namespace GenDateTools.Test
         [InlineData(99991130, 99991200)]
         public void GenDate_To_DateRangeStrategyUseRelaxedDates_ReturnsNextMonthZeroDays(int input, int expected)
         {
-            var genDate = new GenDate(new DatePart(input));
-            genDate.DateRangeStrategy = new DateRangeStrategy
+            GenDate genDate = new GenDate(new DatePart(input))
             {
-                AfterYears = 10,
-                BeforeYears = 10,
-                AboutYearsAfter = 0,
-                AboutYearsBefore = 0,
-                UseRelaxedDates = true,
+                DateRangeStrategy = new DateRangeStrategy
+                {
+                    AfterYears = 10,
+                    BeforeYears = 10,
+                    AboutYearsAfter = 0,
+                    AboutYearsBefore = 0,
+                    UseRelaxedDates = true,
+                }
             };
 
             Assert.Equal(expected, genDate.To);
@@ -397,14 +401,16 @@ namespace GenDateTools.Test
         [InlineData(20040229, 20030229)]
         public void GenDate_From_DateRangeStrategyAboutYears_ReturnsYearBefore(int input, int expected)
         {
-            var genDate = new GenDate(GenDateType.About, new DatePart(input));
-            genDate.DateRangeStrategy = new DateRangeStrategy
+            GenDate genDate = new GenDate(GenDateType.About, new DatePart(input))
             {
-                AfterYears = 0,
-                BeforeYears = 0,
-                AboutYearsAfter = 0,
-                AboutYearsBefore = 1,
-                UseRelaxedDates = false,
+                DateRangeStrategy = new DateRangeStrategy
+                {
+                    AfterYears = 0,
+                    BeforeYears = 0,
+                    AboutYearsAfter = 0,
+                    AboutYearsBefore = 1,
+                    UseRelaxedDates = false,
+                }
             };
 
             Assert.Equal(expected, genDate.From);
@@ -417,14 +423,16 @@ namespace GenDateTools.Test
         [InlineData(99981231, 99991231)]
         public void GenDate_To_DateRangeStrategyAboutYears_ReturnsYearAfter(int input, int expected)
         {
-            var genDate = new GenDate(GenDateType.About, new DatePart(input));
-            genDate.DateRangeStrategy = new DateRangeStrategy
+            GenDate genDate = new GenDate(GenDateType.About, new DatePart(input))
             {
-                AfterYears = 0,
-                BeforeYears = 0,
-                AboutYearsAfter = 1,
-                AboutYearsBefore = 0,
-                UseRelaxedDates = false,
+                DateRangeStrategy = new DateRangeStrategy
+                {
+                    AfterYears = 0,
+                    BeforeYears = 0,
+                    AboutYearsAfter = 1,
+                    AboutYearsBefore = 0,
+                    UseRelaxedDates = false,
+                }
             };
 
             Assert.Equal(expected, genDate.To);

@@ -9,7 +9,7 @@
                 return new GenDate(GenDateType.Invalid, datePhrase: "", isValid: false);
             }
 
-            var dateTypeStr = dateString.Substring(0, 1);
+            string dateTypeStr = dateString.Substring(0, 1);
             GenDateType dateType;
 
             switch (dateTypeStr)
@@ -46,9 +46,9 @@
                     break;
             }
 
-            var fromDate = GetDatePartFromStringDate(dateString.Substring(2, 8));
-            var toDate = dateType == GenDateType.Between || dateType == GenDateType.Period ? GetDatePartFromStringDate(dateString.Substring(10, 8)) : fromDate;
-            var datePhrase = dateString.Length > 18 ? dateString.Substring(19, dateString.Length - 19) : string.Empty;
+            DatePart fromDate = GetDatePartFromStringDate(dateString.Substring(2, 8));
+            DatePart toDate = dateType == GenDateType.Between || dateType == GenDateType.Period ? GetDatePartFromStringDate(dateString.Substring(10, 8)) : fromDate;
+            string datePhrase = dateString.Length > 18 ? dateString.Substring(19, dateString.Length - 19) : string.Empty;
 
             return new GenDate(dateType, fromDate, toDate, datePhrase, isValid: fromDate.IsValidDate() && toDate.IsValidDate());
         }

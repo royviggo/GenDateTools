@@ -6,7 +6,7 @@
         {
             if (dateString.Substring(0, 1) == "T")
             {
-                var datePhrase = dateString.Length > 1 ? dateString.Substring(1, dateString.Length - 1) : string.Empty;
+                string datePhrase = dateString.Length > 1 ? dateString.Substring(1, dateString.Length - 1) : string.Empty;
                 return new GenDate(GenDateType.Invalid, datePhrase, false);
             }
 
@@ -15,8 +15,8 @@
                 return new GenDate(GenDateType.Invalid, datePhrase: "", isValid: false);
             }
 
-            var dType = dateString.Substring(1, 1);
-            var dsType = dateString.Substring(12, 1);
+            string dType = dateString.Substring(1, 1);
+            string dsType = dateString.Substring(12, 1);
             GenDateType dateType;
 
             switch (dType)
@@ -53,8 +53,8 @@
                     break;
             }
 
-            var fromDate = new DatePart(dateString.Substring(3, 8));
-            var toDate = (dateType == GenDateType.Between || dateType == GenDateType.Period) ? new DatePart(dateString.Substring(14, 8)) : fromDate;
+            DatePart fromDate = new DatePart(dateString.Substring(3, 8));
+            DatePart toDate = (dateType == GenDateType.Between || dateType == GenDateType.Period) ? new DatePart(dateString.Substring(14, 8)) : fromDate;
 
             return new GenDate(dateType, fromDate, toDate, true);
         }

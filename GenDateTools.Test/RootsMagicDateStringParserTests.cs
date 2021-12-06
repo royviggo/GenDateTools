@@ -24,9 +24,9 @@ namespace GenDateTools.Test
         [InlineData("D.+20011105.L+00000000..", "120011105420011105")]
         public void RootsMagicDateStringParser_Parse_ReturnsValidGenDate(string dateString, string expected)
         {
-            var parser = new RootsMagicDateStringParser();
-            var genDate = new GenDate(parser, dateString);
-            var expectedGenDate = new GenDate(expected);
+            RootsMagicDateStringParser parser = new RootsMagicDateStringParser();
+            GenDate genDate = new GenDate(parser, dateString);
+            GenDate expectedGenDate = new GenDate(expected);
 
             Assert.Equal(expectedGenDate, genDate);
         }
@@ -37,8 +37,8 @@ namespace GenDateTools.Test
         [InlineData(".", "")]
         public void RootsMagicDateStringParser_Parse_ReturnsInvalidGenDate(string dateString, string expected)
         {
-            var parser = new RootsMagicDateStringParser();
-            var genDate = new GenDate(parser, dateString);
+            RootsMagicDateStringParser parser = new RootsMagicDateStringParser();
+            GenDate genDate = new GenDate(parser, dateString);
 
             Assert.Equal(expected, genDate.DatePhrase);
             Assert.Equal(expected, genDate.ToString());

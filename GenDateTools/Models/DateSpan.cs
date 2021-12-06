@@ -35,7 +35,7 @@ namespace GenDateTools
             _totalDays = DatePart.DaysInYear(datePart1.Year) - datePart1.DayOfYear() - (DatePart.DaysInYear(datePart2.Year) - datePart2.DayOfYear());
             _days = datePart2.DayOfYear() - datePart1.DayOfYear();
 
-            var processYear = datePart1.Year;
+            int processYear = datePart1.Year;
 
             while (processYear < datePart2.Year)
             {
@@ -115,7 +115,7 @@ namespace GenDateTools
         {
             unchecked
             {
-                var hashCode = TotalDays.GetHashCode();
+                int hashCode = TotalDays.GetHashCode();
                 hashCode = (hashCode * 397) ^ Years.GetHashCode();
                 hashCode = (hashCode * 397) ^ Days.GetHashCode();
                 return hashCode;
@@ -124,10 +124,10 @@ namespace GenDateTools
 
         public override string ToString()
         {
-            var years = $"{Years} year{(Years > 1 ? "s" : "")}";
-            var days = $"{Days} day{(Days == 0 || Days > 1 ? "s" : "")}";
+            string years = $"{Years} year{(Years > 1 ? "s" : "")}";
+            string days = $"{Days} day{(Days == 0 || Days > 1 ? "s" : "")}";
 
-            var output = Years > 0 ? years : "";
+            string output = Years > 0 ? years : "";
             output += (Years > 0 && Days > 0) ? " and " : "";
 
             return output + ((Days > 0 || Years == 0) ? days : "");

@@ -35,7 +35,7 @@ namespace GenDateTools.Test
         [InlineData("99991231", "99991231")]
         public void GenExtension_ToSortString_ReturnSortString(string datePartStr, string expected)
         {
-            var datePart = new DatePart(datePartStr);
+            DatePart datePart = new DatePart(datePartStr);
 
             Assert.Equal(expected, datePart.ToSortString());
         }
@@ -47,7 +47,7 @@ namespace GenDateTools.Test
         [InlineData("99991231", "9999-12-31")]
         public void GenExtension_ToIsoString_ReturnIsoString(string datePartStr, string expected)
         {
-            var datePart = new DatePart(datePartStr);
+            DatePart datePart = new DatePart(datePartStr);
 
             Assert.Equal(expected, datePart.ToIsoString());
         }
@@ -59,7 +59,7 @@ namespace GenDateTools.Test
         [InlineData("99991231", "31 Dec 9999")]
         public void GenExtension_DatePartToGenString_ReturnGenString(string datePartStr, string expected)
         {
-            var datePart = new DatePart(datePartStr);
+            DatePart datePart = new DatePart(datePartStr);
 
             Assert.Equal(expected, datePart.ToGenString());
         }
@@ -80,7 +80,7 @@ namespace GenDateTools.Test
         [InlineData("108600000609100000", "Bet. 860 - 910")]
         public void GenExtension_GenDateToGenString_ReturnGenString(string genDateStr, string expected)
         {
-            var genDate = new GenDate(genDateStr);
+            GenDate genDate = new GenDate(genDateStr);
 
             Assert.Equal(expected, genDate.ToGenString());
         }
@@ -111,7 +111,7 @@ namespace GenDateTools.Test
         [InlineData(9999, 12, 31, true)]
         public void GenExtension_YearMonthDay_IsValidDate(int year, int month, int day, bool expected)
         {
-            var datePart = new DatePart(year, month, day);
+            DatePart datePart = new DatePart(year, month, day);
 
             Assert.Equal(expected, datePart.IsValidDate());
             Assert.IsType<DatePart>(datePart);
@@ -127,7 +127,7 @@ namespace GenDateTools.Test
         [InlineData(9999, 12, 31, true)]
         public void GenExtension_YearMonthDay_IsValidDateTime(int year, int month, int day, bool expected)
         {
-            var datePart = new DatePart(year, month, day);
+            DatePart datePart = new DatePart(year, month, day);
 
             Assert.Equal(expected, datePart.IsValidDateTime());
             Assert.IsType<DatePart>(datePart);

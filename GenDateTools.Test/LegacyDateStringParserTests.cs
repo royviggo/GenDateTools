@@ -22,8 +22,8 @@ namespace GenDateTools.Test
         [InlineData(@":00000183100000000\Langfredag? 1831", "118310000218310000")]
         public void LegacyDateStringParser_Parse_ReturnsValidGenDate(string dateString, string expected)
         {
-            var parser = new LegacyDateStringParser();
-            var genDate = new GenDate(parser, dateString);
+            LegacyDateStringParser parser = new LegacyDateStringParser();
+            GenDate genDate = new GenDate(parser, dateString);
 
             Assert.Equal(expected, genDate.DateString);
         }
@@ -32,9 +32,9 @@ namespace GenDateTools.Test
         [InlineData(@":00000183100000000\Langfredag? 1831", "118310000218310000", "Langfredag? 1831")]
         public void LegacyDateStringParser_ParseIntepretedWithText_ReturnsValidGenDate(string dateString, string expected, string expectedPhrase)
         {
-            var parser = new LegacyDateStringParser();
-            var genDate = new GenDate(parser, dateString);
-            var expectedGenDate = new GenDate(expected);
+            LegacyDateStringParser parser = new LegacyDateStringParser();
+            GenDate genDate = new GenDate(parser, dateString);
+            GenDate expectedGenDate = new GenDate(expected);
 
             Assert.Equal(expectedGenDate.DateString, genDate.DateString);
             Assert.Equal(expectedPhrase, genDate.DatePhrase);
