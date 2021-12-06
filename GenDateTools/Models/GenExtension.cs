@@ -33,15 +33,5 @@ namespace GenDateTools
         {
             return DatePart.IsLeapYear(year);
         }
-
-        public static bool IsValidDate(this DatePart datePart)
-        {
-            return DatePart.IsValidDate(datePart.Year, datePart.Month, datePart.Day);
-        }
-
-        public static bool IsValidDateTime(this DatePart datePart)
-        {
-            return DatePart.IsValidDateTime(datePart.Year, datePart.Month, datePart.Day);
-        }
     }
 }
