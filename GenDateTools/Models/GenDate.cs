@@ -2,6 +2,7 @@
 using GenDateTools.Parser;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Runtime.Serialization;
 
 namespace GenDateTools
@@ -362,8 +363,8 @@ namespace GenDateTools
                 return DatePhrase;
             }
 
-            var result = typeNames[(int)DateType];
-            result += DateFrom.ToString();
+            string result = typeNames[(int)DateType];
+            result += DateFrom.ToString(CultureInfo.InvariantCulture);
 
             if (DateType == GenDateType.Between || DateType == GenDateType.Period)
             {

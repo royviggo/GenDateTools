@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.Globalization;
 using Xunit;
 
 namespace GenDateTools.Test
@@ -123,7 +124,7 @@ namespace GenDateTools.Test
         {
             var datePart = new DatePart(dateString);
 
-            Assert.Equal(expected, datePart.ToString());
+            Assert.Equal(expected, datePart.ToString(CultureInfo.InvariantCulture));
         }
 
         [Theory]
