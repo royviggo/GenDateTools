@@ -33,7 +33,7 @@ namespace GenDateTools
         /// </remarks>
         public DateRangeStrategy DateRangeStrategy
         {
-            get => _dateRangeStrategy != null ? _dateRangeStrategy : DateRangeStrategy.Strategy;
+            get => _dateRangeStrategy ?? DateRangeStrategy.Strategy;
             set => _dateRangeStrategy = value;
         }
 
