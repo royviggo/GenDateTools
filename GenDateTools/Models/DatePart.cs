@@ -21,8 +21,8 @@ namespace GenDateTools
         public static readonly DatePart MinValue = new DatePart(_minYear, _minMonthInYear, _minDaysInMonth);
         public static readonly DatePart MaxValue = new DatePart(_maxYear, _maxMonthInYear, _maxDaysInMonth);
 
-        private static readonly int[] _daysToMonth365 = { 0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334, 365 };
-        private static readonly int[] _daysToMonth366 = { 0, 31, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335, 366 };
+        private static readonly int[] _daysToMonth365 = {0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334, 365};
+        private static readonly int[] _daysToMonth366 = {0, 31, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335, 366};
 
         public int Year { get; }
         public int Month { get; }
@@ -69,24 +69,28 @@ namespace GenDateTools
 
         /// <summary>
         /// Creates a DatePart object using 3 string parameters; year, month and day. 
-        /// See also: <seealso cref="DatePart.DatePart(int, int, int)"/>
+        /// See also: <seealso cref="DatePart(int, int, int)"/>
         /// </summary>
         /// <exception cref="ArgumentOutOfRangeException"></exception>
         public DatePart(string year, string month, string day)
-            : this(Convert.ToInt32(year), Convert.ToInt32(month), Convert.ToInt32(day)) { }
+            : this(Convert.ToInt32(year), Convert.ToInt32(month), Convert.ToInt32(day))
+        {
+        }
 
         /// <summary>
         /// Creates a DatePart object using a numeric date as a parameter. It is a long between 0 and 99991231, which is made with the formula:
         /// <para><c>Year * 10000 + Month * 100 + Day</c></para>
-        /// <para>These values are recreated from the long value, and passed to <see cref="DatePart.DatePart(int, int, int)"/>.</para>
+        /// <para>These values are recreated from the long value, and passed to <see cref="DatePart(int, int, int)"/>.</para>
         /// </summary>
         /// <exception cref="ArgumentOutOfRangeException"></exception>
         public DatePart(long date)
-            : this((int)date / 10000, (int)(date / 100) % 100, (int)date % 100) { }
+            : this((int)date / 10000, (int)(date / 100) % 100, (int)date % 100)
+        {
+        }
 
         /// <summary>
         /// Creates a DatePart object using a string date of the format <c>YYYYMMDD</c>. The values are split and passed to 
-        /// <see cref="DatePart.DatePart(int, int, int)"/>. If the string is shorter than 8 numbers, it converts the first 
+        /// <see cref="DatePart(int, int, int)"/>. If the string is shorter than 8 numbers, it converts the first 
         /// 4 numbers to year, and the next 2 to month if it's 6 characters long.
         /// </summary>
         /// <exception cref="ArgumentOutOfRangeException"></exception>
@@ -194,9 +198,10 @@ namespace GenDateTools
         /// <exception cref="ArgumentOutOfRangeException"></exception>
         public DatePart AddYears(int years)
         {
-            if (((Year + years) > _maxYear) || ((Year + years) < _minYear))
+            if ((Year + years) > _maxYear || (Year + years) < _minYear)
             {
-                throw new ArgumentOutOfRangeException(nameof(years), years, $"Resulting year must be between {_minYear} and {_maxYear}.");
+                throw new ArgumentOutOfRangeException(nameof(years), years,
+                    $"Resulting year must be between {_minYear} and {_maxYear}.");
             }
 
             return new DatePart(Year + years, Month, Day);
@@ -224,7 +229,8 @@ namespace GenDateTools
 
             if (year < _minYear || year > _maxYear)
             {
-                throw new ArgumentOutOfRangeException(nameof(months), months, $"Resulting year must be between {_minYear} and {_maxYear}.");
+                throw new ArgumentOutOfRangeException(nameof(months), months,
+                    $"Resulting year must be between {_minYear} and {_maxYear}.");
             }
 
             int daysInMonth = DaysInMonth(year, mon);
@@ -256,7 +262,8 @@ namespace GenDateTools
 
                     if (year > _maxYear)
                     {
-                        throw new ArgumentOutOfRangeException(nameof(days), $"Resulting year must be between {_minYear} and {_maxYear}.");
+                        throw new ArgumentOutOfRangeException(nameof(days),
+                            $"Resulting year must be between {_minYear} and {_maxYear}.");
                     }
                 }
             }
@@ -268,7 +275,8 @@ namespace GenDateTools
 
                     if (year < _minYear)
                     {
-                        throw new ArgumentOutOfRangeException(nameof(days), $"Resulting year must be between {_minYear} and {_maxYear}.");
+                        throw new ArgumentOutOfRangeException(nameof(days),
+                            $"Resulting year must be between {_minYear} and {_maxYear}.");
                     }
 
                     calcDayOfYear += DaysInYear(year);
@@ -434,12 +442,7 @@ namespace GenDateTools
                 return false;
             }
 
-            if (GetType() != obj.GetType())
-            {
-                return false;
-            }
-
-            return Equals((DatePart)obj);
+            return GetType() == obj.GetType() && Equals((DatePart)obj);
         }
 
         public override int GetHashCode()
@@ -470,6 +473,7 @@ namespace GenDateTools
         }
 
         #region IConvertible GetTypeCode and Methods
+
         public TypeCode GetTypeCode()
         {
             return TypeCode.Object;
@@ -554,6 +558,7 @@ namespace GenDateTools
         {
             return Convert.ToUInt64(CompareValue(this));
         }
+
         #endregion
 
         public virtual void GetObjectData(SerializationInfo info, StreamingContext context)
@@ -576,8 +581,8 @@ namespace GenDateTools
         internal static DatePart GetMaxRange(DatePart datePart)
         {
             return new DatePart(datePart.Year,
-                    datePart.Month != 0 ? datePart.Month : _maxMonthInYear,
-                    datePart.Day != 0 ? datePart.Day : DaysInMonth(datePart.Year, datePart.Month));
+                datePart.Month != 0 ? datePart.Month : _maxMonthInYear,
+                datePart.Day != 0 ? datePart.Day : DaysInMonth(datePart.Year, datePart.Month));
         }
     }
 }
