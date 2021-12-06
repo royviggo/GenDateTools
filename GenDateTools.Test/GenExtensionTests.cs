@@ -25,7 +25,7 @@ namespace GenDateTools.Test
         [InlineData(999999999, "")]
         public void GenExtension_ToMonthName_ReturnMonth(int month, string expected)
         {
-            Assert.Equal(expected, GenTools.MonthName(month));
+            Assert.Equal(expected, month.ToMonthName());
         }
 
         [Theory]
